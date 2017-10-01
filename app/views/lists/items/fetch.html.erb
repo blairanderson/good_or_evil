@@ -1,0 +1,17 @@
+<small><%= current_list.inspect %></small>
+<hr/>
+
+<h2>
+  amazon: <%= @list_item.is_amazon? %> <hr/>
+  asin: <%= @list_item.asin %> <hr/>
+  <ul>
+    <% @fetch.each do |key,value| %>
+      <li><%= key %>:<%= value %></li>
+    <% end %>
+  </ul>
+  <%= @list_item.inspect %>
+</h2>
+<small>
+  Something not look right? <%= link_to("delete this", list_item_path(current_list, @list_item), method: :delete)  %>
+</small>
+

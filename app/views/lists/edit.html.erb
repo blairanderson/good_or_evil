@@ -1,0 +1,33 @@
+<div class="row">
+  <div class="col-xs-12">
+    <div class="pull-right">
+      <% can_preview = @list_items.length > 0  %>
+      <% can_publish = can_preview %>
+      <%= link_to('Preview List!', preview_list_path(@list), {class: "btn btn-default #{'disabled' unless can_preview}"}) %>
+      <%= link_to('Publish List!', status_list_path(@list, status: 'published'), {class: "btn btn-default #{'disabled' unless can_publish}", data: {confirm: 'are you sure?'}}) %>
+    </div>
+    <h3>List/Review</h3>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-xs-12">
+    <%= render 'lists/form' %>
+  </div>
+</div>
+
+<hr/>
+
+<div class="row">
+  <div class="col-xs-12">
+    <h4>List Items</h4>
+    <%= link_to("Add items to the list", new_list_item_path(@list), class: "btn btn-default btn-block") %>
+    <hr/>
+    <ul style='list-style-type: none;padding:0;'>
+      <%= render @list_items %>
+    </ul>
+  </div>
+</div>
+
+<script src="https://cdn.rawgit.com/basecamp/trix/e34a0db3c9e0ca303488227fceb6cd9b33cfdd09/dist/trix.js" charset="utf-8"></script>
+<link rel="stylesheet" href="https://cdn.rawgit.com/basecamp/trix/e34a0db3c9e0ca303488227fceb6cd9b33cfdd09/dist/trix.css" media="screen" title="no title" charset="utf-8">

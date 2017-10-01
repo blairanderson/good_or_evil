@@ -1,0 +1,10 @@
+<%= simple_form_for @list do |f| %>
+  <%= f.input :name, label: 'List Title', required: true, placeholder: "Gifts for Awesome Grandmas", input_html: {style: "height: 64px;font-size: 34px;text-align: center;"} %>
+  <!-- the trix editor goes here: https://github.com/basecamp/trix -->
+  <%= f.input :body, as: :hidden %>
+  <trix-editor input="list_body" placeholder="Add a super cool description to help people find this list!"></trix-editor>
+  <br>
+  <div class="pull-right">
+    <%= f.button 'submit', 'Save Changes' %>
+  </div>
+<% end %>

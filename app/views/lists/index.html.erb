@@ -1,0 +1,13 @@
+<%= render partial: "layouts/about_us" %>
+
+<ul style="padding: 0px;border-left: 2px solid rgba(190, 190, 190, 0.48);list-style-type: none;">
+  <% @lists.each do |list| %>
+  <% item = list.items.first %>
+    <li style="padding-left: 30px;background: url(http://thewirecutter.wpengine.netdna-cdn.com/wp-content/themes/thewirecutter/img/homepage/cat-dot.png) no-repeat 0 center;">
+      <div style="padding-bottom: 15px;">
+        <div><%= link_to list.name.html_safe, list_path(list.id) %></div>
+        <div><small><%= link_to "#{item.brand.name} item.name", list_path(list.id) %></small></div>
+      </div>
+    </li>
+  <% end %>
+</ul>

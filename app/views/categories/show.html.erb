@@ -1,0 +1,10 @@
+<%= render partial: "layouts/about_us" %>
+<h1><%= @category.name.html_safe %></h1>
+
+<ul>
+  <% @lists.each do |list| %>
+  <li>
+    <%= link_to list.name.html_safe, list  %>
+  </li>
+  <% end %>
+</ul>

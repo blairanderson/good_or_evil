@@ -1,0 +1,13 @@
+<p><%= link_to @list.category.name, category_path(@list.category_id) %></p>
+<h1 style="margin-top:0px;"><%= @list.name %></h1>
+<p><%= @list.body.try(:html_safe) %></p>
+
+<div class="row">
+  <div class="col-xs-6">
+    <% if @list.items.present? %>
+      <%= render partial: 'list_item', collection: @list.items %>
+    <% else %>
+      <%= link_to 'COMPLETE OR DELETE THIS REVIEW', edit_list_path(@list) %>
+    <% end %>
+  </div>
+</div>
