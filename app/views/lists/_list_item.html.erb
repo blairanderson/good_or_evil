@@ -13,7 +13,7 @@
       <p><%= list_item.details %></p>
     </div>
     <div class="col-sm-2">
-      <% if in_cart?(asin: item.asin) %>
+      <% if in_cart?(item.asin) %>
         <span>
           <%= current_cart[item.asin] %> in cart
           <%= link_to("Inc", cart_item_path(item.asin, quantity: current_cart[item.asin].to_i + 1), method: :patch) %>

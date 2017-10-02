@@ -1,6 +1,6 @@
 # AmazonFetch.item_lookup(asin: asin, amazon_only: true)
 class AmazonFetch
-  def self.fetch(asin: asin)
+  def self.fetch(asin)
     resp = item_lookup(asin: asin)
     resp ? parse_response(resp) : {error: "Not Found"}
   end

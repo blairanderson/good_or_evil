@@ -17,7 +17,7 @@ module Lists
 
     def fetch
       if @list_item.is_amazon?
-        fetch = AmazonFetch.fetch(asin: @list_item.asin).with_indifferent_access
+        fetch = AmazonFetch.fetch(@list_item.asin).with_indifferent_access
         item = OpenStruct.new(persisted?: false)
 
         Item.transaction do
@@ -47,7 +47,7 @@ module Lists
       @list_item = @list.list_items.build(item_params)
 
       if @list_item.is_amazon?
-        fetch = AmazonFetch.fetch(asin: @list_item.asin).with_indifferent_access
+        fetch = AmazonFetch.fetch(@list_item.asin).with_indifferent_access
         item = OpenStruct.new(persisted?: false)
 
         Item.transaction do

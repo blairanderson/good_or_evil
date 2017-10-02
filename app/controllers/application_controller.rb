@@ -24,7 +24,7 @@ class ApplicationController < ActionController::Base
     current_cart.values.map(&:to_i).sum > 0
   end
 
-  def in_cart?(asin: asin)
+  def in_cart?(asin)
     current_cart[asin].to_i > 0
   end
 
