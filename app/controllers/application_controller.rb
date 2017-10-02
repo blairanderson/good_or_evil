@@ -25,7 +25,7 @@ class ApplicationController < ActionController::Base
   end
 
   def in_cart?(asin)
-    current_cart[asin].to_i > 0
+    asin && current_cart[asin].to_i > 0
   end
 
   def checkout_on_amazon

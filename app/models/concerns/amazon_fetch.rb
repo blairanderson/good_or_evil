@@ -1,5 +1,6 @@
 # AmazonFetch.item_lookup(asin: asin, amazon_only: true)
 class AmazonFetch
+
   def self.fetch(asin)
     resp = item_lookup(asin: asin)
     resp ? parse_response(resp) : {error: "Not Found"}
@@ -32,7 +33,6 @@ class AmazonFetch
   end
 
   def self.item_lookup(asin: nil, amazon_only: true)
-    # Amazon::Ecs.item_lookup(asin, {response_group: AmazonResponseGroup::OFFER_FULL})
     lookup_options = {
       response_group: "OfferFull,Offers,Medium,Images",
       condition: "New"
