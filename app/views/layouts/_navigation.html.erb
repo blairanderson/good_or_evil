@@ -10,13 +10,25 @@
         <li><%= link_to('Register', new_user_registration_path) %></li>
       <% end %>
       <li><%= link_to('New List', new_list_path, {style: 'color:red'}) %></li>
-      <% if can_checkout_on_amazon? %>
-        <li><%= link_to("Checkout Now", checkout_on_amazon, target: "_blank", class: "") %></li>
-      <% else %>
-        <li><%= link_to("Empty Cart", "#", class: "disabled btn btn-default") %></li>
-      <% end %>
-
     </ul>
-
   </div>
 </nav>
+
+
+<% if can_checkout_on_amazon? %>
+  <form method="GET" target="_blank" class="text-center" id="cart" action="https://www.amazon.com/gp/aws/cart/add.html">
+    <%= hidden_field_tag("AWSAccessKeyId", ENV.fetch("AWS_AFFILIATES_ACCESS_KEY_ID")) %>
+    <%= hidden_field_tag("AssociateTag", ENV.fetch("AWS_AFFILIATES_ASSOCIATE_TAG")) %>
+    <% current_cart.to_a.each_with_index do |item, index| %>
+      <% i = index+1 %>
+      <%= hidden_field_tag("ASIN.#{i}", item[0]) %>
+      <%= hidden_field_tag("Quantity.#{i}", item[1]) %>
+    <% end %>
+    <input type="submit" name="add" value="Checkout Now" class="btn btn-default"/>
+  </form>
+  <%= image_tag("powered-by-amazon.png", style: "display: block; margin: 10px auto; cursor: pointer;", onclick: "$('form#cart').submit()") %>
+<% else %>
+  <div class="text-center">
+    <%= link_to("Cart is Empty", "#", class: "btn btn-default disabled") %>
+  </div>
+<% end %>
