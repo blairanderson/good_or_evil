@@ -19,6 +19,6 @@ class List < ActiveRecord::Base
   with_options if: :published? do |published|
     published.validates :name, presence: {message: "Please create a title"}
     published.validates :body, presence: {message: "Please add a description"}
-    published.validates :category, presence: {message: "Please select a category"}
+    # published.validates :category, presence: {message: "Please select a category"}
   end
 end

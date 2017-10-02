@@ -4,6 +4,7 @@ class CreateListItems < ActiveRecord::Migration
       t.integer :list_id, null: false
       t.string :source, null: false
       t.integer :item_id
+      t.string :title
       t.text :details
       t.integer :sort, default: 0
 

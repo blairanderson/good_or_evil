@@ -10,6 +10,13 @@
         <li><%= link_to('Register', new_user_registration_path) %></li>
       <% end %>
       <li><%= link_to('New List', new_list_path, {style: 'color:red'}) %></li>
+      <% if can_checkout_on_amazon? %>
+        <li><%= link_to("Checkout Now", checkout_on_amazon, target: "_blank", class: "") %></li>
+      <% else %>
+        <li><%= link_to("Empty Cart", "#", class: "disabled btn btn-default") %></li>
+      <% end %>
+
     </ul>
+
   </div>
 </nav>

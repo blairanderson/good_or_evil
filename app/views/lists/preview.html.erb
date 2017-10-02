@@ -1,11 +1,1 @@
-<% if @list.category %>
-  <p><%= link_to @list.category.name, category_path(@list.category_id) %></p>
-<% end %>
-<h1 style="margin-top:0px;"><%= @list.name %></h1>
-<p><%= @list.body.try(:html_safe) %></p>
-
-<div class="row">
-  <div class="col-xs-6">
-    <%= render partial: 'items/list_item', collection: @list_items %>
-  </div>
-</div>
+<%= render partial: "lists/show" %>

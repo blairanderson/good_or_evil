@@ -1,5 +1,5 @@
 class ListsController < ApplicationController
-  before_action :authenticate_user!, except: [:index, :show, :new]
+  before_action :authenticate_user!, except: [:index, :show]
   before_action :set_list, only: [:show, :edit, :update, :destroy]
 
   def index
@@ -7,18 +7,19 @@ class ListsController < ApplicationController
   end
 
   def show
-    @list = current_user.lists.includes(:category, :user).find(params[:id])
-    @list_items = @list.list_items.order("order ASC").includes(:items)
+    @list = List.published.includes(:category, :user).find(params[:id])
+    @list_items = @list.list_items.order("sort ASC").includes(:item)
   end
 
   def preview
     @list = current_user.lists.includes(:category, :user).find(params[:id])
-    @list_items = @list.list_items.order("order ASC").includes(:items)
+    @list_items = @list.list_items.order("sort ASC").includes(:item)
   end
 
   def new
     @list = false
-    @drafts = @published = []
+    @drafts = []
+    @published = []
     if current_user
       @list = current_user.lists.draft.where(name: nil).first_or_create
       @drafts = current_user.lists.draft.where.not(name: nil)
@@ -43,8 +44,13 @@ class ListsController < ApplicationController
   end
 
   def update
-    @list.update(list_params)
-    redirect_to new_list_item_path(@list)
+    if @list.update(list_params)
+      flash[:notice] = "Updated!"
+    else
+      flash[:alert] = @list.errors.full_messages.join(", ")
+    end
+    @list.reload
+    redirect_to(@list.published? ? list_path(@list) : new_list_item_path(@list))
   end
 
   def destroy
@@ -58,6 +64,6 @@ class ListsController < ApplicationController
   end
 
   def list_params
-    params.require(:list).permit(:name, :body, :item_id, :category_id)
+    params.require(:list).permit(:name, :body, :item_id, :category_id, :status, :display_theme)
   end
 end

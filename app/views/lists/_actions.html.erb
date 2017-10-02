@@ -1,0 +1,4 @@
+<% can_preview = @list_items.length > 0  %>
+<% can_publish = can_preview %>
+<%= link_to('Preview List!', preview_list_path(@list), {class: "btn btn-default #{'disabled' unless can_preview}"}) %>
+<%= link_to('Publish List!', list_path(@list, list: {status: 'published'}), method: :patch, class: "btn btn-default #{'disabled' unless can_publish}", data: {confirm: 'are you sure?'}) %>

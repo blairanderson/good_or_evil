@@ -11,11 +11,11 @@ Rails.application.routes.draw do
       end
     end
     member do
-      get 'preview'
-      post 'status'
+      get :preview
     end
 
   end
+  resources :cart_items
   resources :categories, path: 'leaderboard', only: [:show]
   resources :brands
 
