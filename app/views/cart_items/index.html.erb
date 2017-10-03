@@ -1,0 +1,7 @@
+<h1>Items in your Cart!</h1>
+
+<ul>
+  <% @items.each do |item| %>
+    <li><%= item.inspect %></li>
+  <% end %>
+</ul>
