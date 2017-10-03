@@ -19,7 +19,7 @@ class ListsController < ApplicationController
       render json: {count: current_user.lists.draft.count, status: 200} and return
 
     else
-      @lists = List.draft.where(user_id: nil).order("sort ASC, page_views DESC")
+      @lists = List.boostrap.amazon.order("sort ASC, page_views DESC")
     end
   end
 
