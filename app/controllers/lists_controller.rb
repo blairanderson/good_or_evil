@@ -9,12 +9,11 @@ class ListsController < ApplicationController
   def bootstrap
     if request.post? && current_user
       Array(params[:words]).each_with_index do |name, index|
-        List
-          .draft
-          .where(user_id: nil, name: name)
-          .first_or_create!(name: name, body: name * 10)
-          .update!(sort: index+1)
-          .increment!(:page_views)
+        List.transaction do
+          list = List.draft.where(user_id: nil, name: name).first_or_create!(name: name, body: name * 10)
+          list.update!(sort: index+1)
+          list.increment!(:page_views)
+        end
       end
       render json: {count: current_user.lists.draft.count, status: 200} and return
 
