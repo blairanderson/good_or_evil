@@ -10,7 +10,9 @@ class ListsController < ApplicationController
     if request.post? && current_user
       Array(params[:words]).each_with_index do |name, index|
         List.transaction do
-          list = List.draft.where(user_id: nil, name: name).first_or_create!(name: name, body: name * 10)
+          list = List
+                   .where(user_id: List::BOOTSTRAP_USER_ID, name: name)
+                   .first_or_create!(name: name, body: "#{name} " * 10)
           list.update!(sort: index+1)
           list.increment!(:page_views)
         end
@@ -18,7 +20,7 @@ class ListsController < ApplicationController
       render json: {count: current_user.lists.draft.count, status: 200} and return
 
     else
-      @lists = List.draft.where(user_id: nil).order("sort ASC")
+      @lists = List.draft.where(user_id: nil).order("sort ASC, page_views DESC")
     end
   end
 

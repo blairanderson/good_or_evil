@@ -6,6 +6,8 @@ class List < ActiveRecord::Base
   enum status: { draft: 0, published: 1, archived: 2, hidden: 3 }
   enum display_theme: { list: 0, carousel: 1 }
 
+  BOOTSTRAP_USER_ID = 0
+
   def to_param
     [
       id,
