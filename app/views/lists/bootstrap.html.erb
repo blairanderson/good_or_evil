@@ -29,10 +29,14 @@
   <div class="col-xs-6">
     <div>
       <form action="">
-        <input type="text" value="gifts for " id="search-input"/>
+        <input type="text" value="gifts for <%= @suggestions.sample %>" id="search-input"/>
       </form>
     </div>
-
+    <ul>
+      <% @suggestions.each do |sug| %>
+        <li><%= sug %></li>
+      <% end %>
+    </ul>
   </div>
   <div class="col-xs-6">
     <ul>

@@ -19,7 +19,23 @@ class ListsController < ApplicationController
       render json: {count: current_user.lists.draft.count, status: 200} and return
 
     else
-      @lists = List.boostrap.amazon.order("sort ASC, page_views DESC")
+      @lists = List.bootstrap.amazon.order("sort ASC, page_views DESC")
+      @suggestions = %w[
+women mom
+men dad
+elderly
+college
+geeks geek
+dogs dog
+cats cat
+babies baby
+cooks
+chefs
+nurses
+teachers
+doctors
+accountants
+      ]
     end
   end
 
