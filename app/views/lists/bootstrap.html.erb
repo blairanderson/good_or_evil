@@ -37,7 +37,7 @@
   <div class="col-xs-6">
     <ul>
       <% @lists.each do |list| %>
-        <li><%= list.sort %>: <%= list.name %></li>
+        <li>[<%= list.sort %>][<%= list.page_views %>] - <%= list.name %></li>
       <% end %>
     </ul>
 
