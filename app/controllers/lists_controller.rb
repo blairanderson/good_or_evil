@@ -6,6 +6,23 @@ class ListsController < ApplicationController
     @lists = List.published.includes(items: :brand).where.not(items: {id: nil})
   end
 
+  def bootstrap
+    if request.post? && current_user
+      Array(params[:words]).each_with_index do |name, index|
+        List
+          .draft
+          .where(user_id: nil, name: name)
+          .first_or_create!(name: name, body: name * 10)
+          .update!(sort: index+1)
+          .increment!(:page_views)
+      end
+      render json: {count: current_user.lists.draft.count, status: 200} and return
+
+    else
+      @lists = List.draft.where(user_id: nil).order("sort ASC")
+    end
+  end
+
   def show
     @list = List.published.includes(:category, :user).find(params[:id])
     @list_items = @list.list_items.order("sort ASC").includes(:item)
