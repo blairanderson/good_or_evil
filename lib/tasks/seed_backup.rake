@@ -1,12 +1,11 @@
-require 'json'
-
-desc 'backup'
-task backup: :environment do
-  return unless Rails.env.development?
-  items = Item.select(:name, :description, :price_cents, :brand_id, :buy_now).as_json.map{|a| a.except("id") }
-
-  File.open("db/seeds/items.json","w") do |f|
-    f.write(JSON.pretty_generate(items))
-    puts 'completed'
+namespace :seed do
+  task fetch: :environment do
+    fetched = Hash.from_xml(open("https://thewirecutter.com/post_review.xml"))
+    fetched["urlset"]["url"].each_with_index do |url, index|
+      List.transaction do
+        list = List.bootstrap.where(name: url["loc"].split("/").last.titleize).first_or_create!
+        list.update!(sort: index, source: url)
+      end
+    end
   end
 end

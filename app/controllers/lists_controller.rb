@@ -10,10 +10,9 @@ class ListsController < ApplicationController
     if request.post? && current_user
       Array(params[:words]).each_with_index do |name, index|
         List.transaction do
-          list = List
-                   .where(user_id: List::BOOTSTRAP_USER_ID, name: name)
+          list = List.bootstrap.where(name: name)
                    .first_or_create!(name: name, body: "#{name} " * 10)
-          list.update!(sort: index+1)
+          list.update!(sort: index + 1, source: "https://www.amazon.com/s?field-keywords=#{name.split(" ").join("+")}")
           list.increment!(:page_views)
         end
       end

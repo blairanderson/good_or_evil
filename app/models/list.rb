@@ -5,7 +5,7 @@ class List < ActiveRecord::Base
   has_many :items, through: :list_items
   enum status: { draft: 0, published: 1, archived: 2, hidden: 3 }
   enum display_theme: { list: 0, carousel: 1 }
-
+  scope :bootstrap, -> { where(user_id: BOOTSTRAP_USER_ID) }
   BOOTSTRAP_USER_ID = 0
 
   def to_param
