@@ -3,11 +3,18 @@ class List < ActiveRecord::Base
   belongs_to :user
   has_many :list_items
   has_many :items, through: :list_items
-  enum status: { draft: 0, published: 1, archived: 2, hidden: 3 }
-  enum display_theme: { list: 0, carousel: 1 }
+  enum status: {draft: 0, published: 1, archived: 2, hidden: 3}
+  enum display_theme: {list: 0, carousel: 1}
   scope :bootstrap, -> { where(user_id: BOOTSTRAP_USER_ID) }
   scope :amazon, -> { where("source LIKE '%amazon.com%'") }
   scope :wirecutter, -> { where("source LIKE '%wirecutter.com%'") }
+  SORT_SOURCE = "case
+    when source LIKE '%wirecutter.com%' THEN 1
+    when source LIKE '%amazon.com%' THEN 2
+    else 9999
+  end"
+
+  scope :sorted, -> { order("#{SORT_SOURCE} ASC, sort ASC, page_views DESC") }
   BOOTSTRAP_USER_ID = 0
 
   def to_param
@@ -17,8 +24,8 @@ class List < ActiveRecord::Base
     ].compact.join("-").parameterize
   end
 
-  validates :name, length: { minimum: 5 }, allow_blank: true
-  validates :body, length: { minimum: 30 }, allow_blank: true
+  validates :name, length: {minimum: 5}, allow_blank: true
+  validates :body, length: {minimum: 30}, allow_blank: true
 
   with_options if: :published? do |published|
     published.validates :name, presence: {message: "Please create a title"}

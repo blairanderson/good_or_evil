@@ -1,5 +1,5 @@
 class ListsController < ApplicationController
-  before_action :authenticate_user!, except: [:index, :show]
+  before_action :authenticate_user!, only: [:preview, :create, :edit, :update]
   before_action :set_list, only: [:edit, :update, :destroy]
 
   def index
@@ -19,7 +19,7 @@ class ListsController < ApplicationController
       render json: {count: current_user.lists.draft.count, status: 200} and return
 
     else
-      @lists = List.bootstrap.amazon.order("sort ASC, page_views DESC")
+      @lists = List.bootstrap.amazon.sorted
       @suggestions = %w[
 women mom
 men dad
@@ -61,6 +61,8 @@ accountants
       @list = List.draft.where(name: nil).first_or_create
       session[:list_id] = @list.id
     end
+
+    @bootstrap = List.bootstrap.sorted
   end
 
   def create

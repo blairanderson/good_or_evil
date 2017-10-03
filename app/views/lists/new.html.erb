@@ -20,5 +20,14 @@
         <% end %>
       </ul>
     <% end %>
+
+    <% if @bootstrap.present? %>
+      <h3>Suggestions</h3>
+      <ul>
+        <% @bootstrap.each do |sug| %>
+          <li><%= sug.name %></li>
+        <% end %>
+      </ul>
+    <% end %>
   </div>
 </div>
