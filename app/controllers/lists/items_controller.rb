@@ -44,31 +44,20 @@ module Lists
     end
 
     def create
-      @list_item = @list.list_items.build(item_params)
-
-      if @list_item.is_amazon?
-        fetch = AmazonFetch.fetch(@list_item.asin).with_indifferent_access
-        item = OpenStruct.new(persisted?: false)
-
-        Item.transaction do
-          brand = Brand.where(name: fetch[:brand]).first_or_create
-          new_state = fetch.slice(:title, :description, :buy_now, :total_offers, :sales_rank, :dimensions, :package_dimensions, :buy_box, :images)
-          new_state[:price_cents] = new_state.dig(:buy_box, :winning, :Amount).to_i
-          item = Item.where(fetch.slice(:asin)).first_or_create!(new_state)
-          item.update!(new_state.merge(brand_id: brand.id))
+      Item.transaction do
+        @item = Item.where_url(params.require(:item).permit(:url).dig(:url)).first_or_create! do |i|
+          i.sync!
         end
-        @list_item.item_id = item.id
+        @list_item = @list.list_items.where(item_id: @item.id).first_or_create!
       end
 
-      if @list_item.save
+      if @item.persisted? && @list_item.persisted?
         # verify an item exists for this list_item
         flash[:notice] = "Great Job! Now tell us why its a great gift?"
-        unless @list_item.item
-          redirect_to fetch_list_item_path(current_list, @list_item) and return
-        end
       else
-        flash[:error] = @list_item.errors.full_messages.join(", ")
+        flash[:error] = [@item,@list_item].map(&:errors).flatten.map(&:full_messages).flatten.join(", ")
       end
+
       redirect_to new_list_item_path(current_list)
     end
 

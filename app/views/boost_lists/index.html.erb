@@ -1,0 +1,72 @@
+<script src="https://cdn.rawgit.com/caroso1222/amazon-autocomplete/v1.0.1/dist/amazon-autocomplete.min.js"></script>
+
+<style>
+  /* Words container */
+  .ac__inner {
+    background: #f6f6f6;
+  }
+
+  /* Individual word element */
+  .ac__word {
+    margin: 0;
+    padding: 5px;
+  }
+
+  /* Word prefix style. It’s the span containing the
+  search keyword within the word. */
+  .ac__prefix {
+    font-weight: bold;
+  }
+
+  /* Style applied to each words while navigating through
+  the list or on hover */
+  .ac__word--selected, .ac__word:hover {
+    background-color: #e3e3e3;
+  }
+</style>
+
+<div class="row">
+  <div class="col-xs-6">
+    <div>
+      <form action="">
+        <input type="text" value="gifts for <%= @suggestions.sample %>" id="search-input"/>
+      </form>
+    </div>
+    <ul>
+      <% @suggestions.each do |sug| %>
+        <li><%= sug %></li>
+      <% end %>
+    </ul>
+  </div>
+  <div class="col-xs-6">
+    <ul>
+      <% if @lists.present? %>
+        <h3>Suggestions</h3>
+        <ul>
+          <% @lists.each do |sug| %>
+            <li><%= link_to("[#{sug.sort}][#{sug.page_views}][#{sug.item_count}] - #{sug.name}", edit_boost_list_path(sug.id)) %></li>
+          <% end %>
+        </ul>
+      <% end %>
+    </ul>
+  </div>
+</div>
+
+
+<script !src="">
+  window["__upload_count"] = 0;
+  new AmazonAutocomplete("#search-input").onNewWords(function(words) {
+    $.ajax({
+      type: "POST",
+      url: "<%= boost_lists_path(format: :json) %>", //submits it to the given url of the form
+      data: {words: words},
+      dataType: "JSON" // you want a difference between normal and ajax-calls, and json is standard
+    }).success(function(json) {
+      window["__upload_count"]++;
+      console.log("success", JSON.stringify(json));
+      if (parseInt(window["__upload_count"]) > 20) {
+        window.location.reload()
+      }
+    });
+  });
+</script>

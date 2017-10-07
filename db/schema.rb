@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171003162206) do
+ActiveRecord::Schema.define(version: 20171006220027) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -60,13 +60,13 @@ ActiveRecord::Schema.define(version: 20171003162206) do
     t.text     "images"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.text     "source"
   end
 
   add_index "items", ["brand_id"], name: "index_items_on_brand_id", using: :btree
 
   create_table "list_items", force: :cascade do |t|
     t.integer  "list_id",                null: false
-    t.string   "source",                 null: false
     t.integer  "item_id"
     t.text     "details"
     t.integer  "sort",       default: 0

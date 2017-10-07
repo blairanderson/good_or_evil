@@ -1,42 +1,9 @@
 class ListsController < ApplicationController
-  before_action :authenticate_user!, only: [:preview, :create, :edit, :update]
+  before_action :authenticate_user!, except: [:index, :show]
   before_action :set_list, only: [:edit, :update, :destroy]
 
   def index
     @lists = List.published.includes(items: :brand).where.not(items: {id: nil})
-  end
-
-  def bootstrap
-    if request.post? && current_user
-      Array(params[:words]).each_with_index do |name, index|
-        List.transaction do
-          list = List.bootstrap.where(name: name)
-                   .first_or_create!(name: name, body: "#{name} " * 10)
-          list.update!(sort: index + 1, source: "https://www.amazon.com/s?field-keywords=#{name.split(" ").join("+")}")
-          list.increment!(:page_views)
-        end
-      end
-      render json: {count: current_user.lists.draft.count, status: 200} and return
-
-    else
-      @lists = List.bootstrap.amazon.sorted
-      @suggestions = %w[
-women mom
-men dad
-elderly
-college
-geeks geek
-dogs dog
-cats cat
-babies baby
-cooks
-chefs
-nurses
-teachers
-doctors
-accountants
-      ]
-    end
   end
 
   def show
@@ -58,9 +25,11 @@ accountants
       @drafts = current_user.lists.draft.where.not(name: nil)
       @published = current_user.lists.published
     else
-      @list = List.draft.where(name: nil).first_or_create
-      session[:list_id] = @list.id
+      @list = if session[:list_id]
+                List.bootstrap.find(session[:list_id])
+              end
     end
+    @count = List.count
 
     @bootstrap = List.bootstrap.sorted
   end

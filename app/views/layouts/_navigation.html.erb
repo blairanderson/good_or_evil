@@ -14,7 +14,6 @@
   </div>
 </nav>
 
-
 <% if can_checkout_on_amazon? %>
   <form method="GET" target="_blank" class="text-center" id="cart" action="https://www.amazon.com/gp/aws/cart/add.html">
     <%= hidden_field_tag("AWSAccessKeyId", ENV.fetch("AWS_AFFILIATES_ACCESS_KEY_ID")) %>
@@ -27,7 +26,7 @@
     <input type="submit" name="add" value="Checkout Now" class="btn btn-default"/>
   </form>
   <%= image_tag("powered-by-amazon.png", style: "display: block; margin: 10px auto; cursor: pointer;", onclick: "$('form#cart').submit()") %>
-<% else %>
+<% elsif current_user %>
   <div class="text-center">
     <%= link_to("Cart is Empty", "#", class: "btn btn-default disabled") %>
   </div>

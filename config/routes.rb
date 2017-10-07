@@ -2,10 +2,8 @@ Rails.application.routes.draw do
 
   devise_for :users
   resources :items
+  resources :boost_lists
   resources :lists do
-    collection do
-      match :bootstrap, via: [:get, :post]
-    end
     scope module: :lists do
       resources :items do
         member do

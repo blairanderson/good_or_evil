@@ -1,0 +1,21 @@
+<h1><%= @list.name %></h1>
+<p class="alert alert-info">
+  Please Help fill out our list of <em><%= @list.name.pluralize %></em>.
+</p>
+
+<fieldset>
+  <legend for="directions">Directions</legend>
+  <ul id="directions">
+    <li>Open <%= link_to(@list.source, @list.source, target: "_blank") %> in another tab.</li>
+    <li>Please help figure out why each item is on the list.</li>
+  </ul>
+</fieldset>
+
+<fieldset>
+  <ul>
+    <% @list.items.each do |item| %>
+      <li><%= item.source %></li>
+    <% end %>
+  </ul>
+
+</fieldset>

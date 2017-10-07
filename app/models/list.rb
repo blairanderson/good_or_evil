@@ -5,7 +5,7 @@ class List < ActiveRecord::Base
   has_many :items, through: :list_items
   enum status: {draft: 0, published: 1, archived: 2, hidden: 3}
   enum display_theme: {list: 0, carousel: 1}
-  scope :bootstrap, -> { where(user_id: BOOTSTRAP_USER_ID) }
+  scope :bootstrap, -> { where(user_id: BOOTSTRAP_USER_ID).order("#{SORT_SOURCE} ASC, item_count DESC, sort ASC, page_views DESC") }
   scope :amazon, -> { where("source LIKE '%amazon.com%'") }
   scope :wirecutter, -> { where("source LIKE '%wirecutter.com%'") }
   SORT_SOURCE = "case
