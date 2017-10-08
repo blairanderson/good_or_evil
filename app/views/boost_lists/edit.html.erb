@@ -5,16 +5,35 @@
 
 <fieldset>
   <legend for="directions">Directions</legend>
-  <ul id="directions">
-    <li>Open <%= link_to(@list.source, @list.source, target: "_blank") %> in another tab.</li>
-    <li>Please help figure out why each item is on the list.</li>
-  </ul>
+    <h1>Open <%= link_to(@list.source, @list.source, target: "_blank") %> in another tab.</h1>
+    <h2>Please help figure out why each item is on the list.</h2>
 </fieldset>
 
 <fieldset>
   <ul>
-    <% @list.items.each do |item| %>
-      <li><%= item.source %></li>
+    <% @list_items.each_with_index do |list_item, index| %>
+      <% item = list_item.item %>
+      <li style="display: block; border: 1px solid grey; border-radius: 4px; padding: 15px; margin-bottom: 10px;">
+        <div class="row">
+          <div class="col-sm-2">
+            <%= image_tag(item.images.dig("MediumImage", "URL"), class: "img-responsive img-rounded") %>
+          </div>
+          <div class="col-sm-10">
+            <div>
+              <%= link_to(item.title, item.buy_now, target: "_blank") %>
+            </div>
+            <div>
+              <small>(Last time we checked this was <%= number_to_currency(item.price) %>)</small>
+            </div>
+            <%= simple_form_for list_item, url: boost_list_path(@list, list_item_id: list_item.id) do |f| %>
+              <%= f.input :id, as: :hidden %>
+              <%= hidden_field_tag(:secure_key, Base64.encode64(list_item.id.to_s)) %>
+              <%= f.input :details, label: "Why is this item on the list?" %>
+              <%= f.button(:submit) %>
+            <% end %>
+          </div>
+        </div>
+      </li>
     <% end %>
   </ul>
 

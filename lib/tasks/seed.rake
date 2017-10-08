@@ -43,7 +43,7 @@ namespace :seed do
       name = url.split("/").last.titleize
       name.gsub("Best ", "Best Gift ") if (name.include?("Best ") && !name.include?("Gift "))
       list = List.bootstrap.where(name: name).first_or_create!
-      updated = list.update!(sort: index, source: url)
+      list.update!(sort: index, source: url)
       before = Item.count
       amazon_links.each do |url|
         Item.transaction do
@@ -54,7 +54,7 @@ namespace :seed do
           list.list_items.where(item_id: item.id).first_or_create!
         end
       end
-      puts "#{index.to_s.rjust(3, "0")}[#{updated}][total before:#{before}, after: #{Item.count}][items: #{list.list_items.count}]: #{name}"
+      puts "#{index.to_s.rjust(3, "0")}[new:#{Item.count - before}]: #{name}"
     end
   end
 end

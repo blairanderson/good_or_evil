@@ -38,17 +38,24 @@ accountants
   end
 
   def edit
-    @list_items = @list.list_items.includes(:item, item: :brand)
+    @list_items = @list.list_items.order("LENGTH(details) DESC").includes(:item, item: :brand)
   end
 
   def update
-    binding.pry
-    # if @list.update(list_params)
-    #   flash[:notice] = "Updated!"
-    # else
-    #   flash[:alert] = @list.errors.full_messages.join(", ")
-    # end
-    # redirect_to(new_list_item_path(@list))
+    list_item_id = Base64.decode64(params[:secure_key].strip)
+    unless list_item_id == params[:list_item_id] && list_item_id == params.dig(:list_item, :id)
+      flash[:alert] = "GTFO"
+      redirect_to root_path and return
+    end
+
+    list_item = @list.list_items.find(list_item_id)
+
+    if list_item.update!(list_item_params.slice(:details))
+      flash[:notice] = "Updated!"
+    else
+      flash[:alert] = list_item.errors.full_messages.join(", ")
+    end
+    redirect_to edit_boost_list_path(@list)
   end
 
   private
@@ -56,7 +63,7 @@ accountants
     @list = List.bootstrap.find(params[:id])
   end
 
-  def list_params
-    params.require(:list).permit(:name, :body, :item_id, :category_id, :status, :display_theme)
+  def list_item_params
+    params.require(:list_item).permit(:id, :details)
   end
 end
