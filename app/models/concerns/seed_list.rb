@@ -56,6 +56,8 @@ class SeedList
     list = List.bootstrap.where(source: url).first_or_create!(name: name)
     list.update!(sort: index, name: name)
     SeedList.process(list: list, amazon_links: amazon_links)
-    puts "[new:#{Item.count - before}]: #{name}"
+
+    i_count = Item.count
+    puts "[new:#{i_count - before}][total:#{i_count}]: #{name}"
   end
 end

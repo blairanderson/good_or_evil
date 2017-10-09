@@ -1,7 +1,8 @@
 <h1><%= @list.name %></h1>
 <p class="alert alert-info">
-  Please Help fill out our list of <em><%= @list.name.pluralize %></em>.
+  Please Help fill out our list of <em><%= @list.name.pluralize %></em>. (<%= link_to("preview", list_path(@list)) %>)
 </p>
+
 
 <fieldset>
   <legend for="directions">Directions</legend>
