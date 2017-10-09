@@ -23,6 +23,10 @@ class Item < ActiveRecord::Base
     self.save!
   end
 
+  def self.sync!(limit: 50)
+    Item.where(title: nil, price_cents: 0).where.not(asin: nil).limit(limit).each { |i| safely { i.sync! } }
+  end
+
   def buy_now_url
     buy_now
   end
