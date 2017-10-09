@@ -52,9 +52,9 @@ class SeedList
     end
 
     name = url.split("/").last.titleize
-    name.gsub("Best ", "Best Gift ") if (name.include?("Best ") && !name.include?("Gift "))
-    list = List.bootstrap.where(name: name).first_or_create!
-    list.update!(sort: index, source: url)
+    name = name.gsub("Best ", "Best Gift ") if (name.include?("Best ") && !name.include?("Gift "))
+    list = List.bootstrap.where(source: url).first_or_create!(name: name)
+    list.update!(sort: index, name: name)
     SeedList.process(list: list, amazon_links: amazon_links)
     puts "[new:#{Item.count - before}]: #{name}"
   end
