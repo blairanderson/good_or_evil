@@ -1,10 +1,10 @@
 class SeedList
-  def self.process(list: nil, amazon_links: [])
+  def self.process(list: nil, amazon_links: [], sync: true)
     amazon_links.each do |url|
       safely do
         Item.transaction do
           item = Item.where_url(url).first_or_create! do |i|
-            i.sync!
+            i.sync! if sync
           end
           list.list_items.where(item_id: item.id).first_or_create!
         end
@@ -55,9 +55,8 @@ class SeedList
     name = name.gsub("Best ", "Best Gift ") if (name.include?("Best ") && !name.include?("Gift "))
     list = List.bootstrap.where(source: url).first_or_create!(name: name)
     list.update!(sort: index, name: name)
-    SeedList.process(list: list, amazon_links: amazon_links)
+    SeedList.process(list: list, amazon_links: amazon_links, sync: false)
 
-    i_count = Item.count
-    puts "[new:#{i_count - before}][total:#{i_count}]: #{name}"
+    puts "[new:#{Item.count - before}][total:#{list.items.count}]: #{name}"
   end
 end
