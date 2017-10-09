@@ -1,11 +1,13 @@
 class SeedList
   def self.process(list: nil, amazon_links: [])
     amazon_links.each do |url|
-      Item.transaction do
-        item = Item.where_url(url).first_or_create! do |i|
-          i.sync!
+      safely do
+        Item.transaction do
+          item = Item.where_url(url).first_or_create! do |i|
+            i.sync!
+          end
+          list.list_items.where(item_id: item.id).first_or_create!
         end
-        list.list_items.where(item_id: item.id).first_or_create!
       end
     end
   end
