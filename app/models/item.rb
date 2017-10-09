@@ -2,10 +2,10 @@ class Item < ActiveRecord::Base
   belongs_to :brand
   has_many :list_items
   has_many :lists, through: :list_items
-  serialize :dimensions
-  serialize :package_dimensions
-  serialize :buy_box
-  serialize :images
+  serialize :dimensions, Hash
+  serialize :package_dimensions, Hash
+  serialize :buy_box, Hash
+  serialize :images, Hash
 
   validates :title, length: {minimum: 5}, allow_blank: true
   validates :buy_now, url: true, allow_blank: true
