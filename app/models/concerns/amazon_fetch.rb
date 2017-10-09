@@ -3,6 +3,7 @@ class AmazonFetch
 
   def self.fetch(asin)
     resp = item_lookup(asin: asin)
+    puts "FETCH:#{asin}"
     resp ? parse_response(resp) : {error: "Not Found"}
   end
 

@@ -13,7 +13,8 @@ class Item < ActiveRecord::Base
   monetize :price_cents
 
   def sync!
-    sleep(4)
+    # SOME RATE LIMIT
+    sleep(5)
     fetch = AmazonFetch.fetch(asin).with_indifferent_access
     brand = Brand.where(name: fetch[:brand]).first_or_create!
     new_state = fetch.slice(:title, :description, :buy_now, :total_offers, :sales_rank, :dimensions, :package_dimensions, :buy_box, :images)

@@ -5,7 +5,7 @@
 
 <fieldset>
   <legend for="directions">Directions</legend>
-    <h1>Open <%= link_to(@list.source, @list.source, target: "_blank") %> in another tab.</h1>
+    <h1>Open <%= link_to(@list.source, @list.source, target: "_blank", rel: "noopener noreferrer") %> in another tab.</h1>
     <h2>Please help figure out why each item is on the list.</h2>
 </fieldset>
 
