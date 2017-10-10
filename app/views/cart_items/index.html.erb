@@ -1,7 +1,25 @@
-<h1>Items in your Cart!</h1>
+<h1 class="tc">Items in your Cart!</h1>
 
-<ul>
+<section class="cf w-100 pa2-ns">
   <% @items.each do |item| %>
-    <li><%= item.inspect %></li>
+    <article class="fl w-100 w-50-m  w-25-ns pa2-ns">
+      <div class="aspect-ratio aspect-ratio--1x1">
+        <a href="<%= item.buy_now %>">
+          <img style="background-image: url(<%= item.images.dig("LargeImage", "URL") %>)" } class="db bg-center cover aspect-ratio--object">
+        </a>
+      </div>
+      <a
+      href="<%= item.buy_now %>"
+      class="ph2 ph0-ns pb3 link db"
+      >
+        <h3 class="f5 f4-ns mb0 black-90">
+          <%= item.title %>
+        </h3>
+
+        <h3 class="f6 f5 fw4 mt2 black-60">
+          <%= item.description.to_s.truncate(40) %>
+        </h3>
+      </a>
+    </article>
   <% end %>
-</ul>
+</section>

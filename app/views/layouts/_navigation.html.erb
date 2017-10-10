@@ -15,6 +15,9 @@
 </nav>
 
 <% if can_checkout_on_amazon? %>
+  <div class="text-center">
+    <%= link_to("View Cart", cart_items_path) %>
+  </div>
   <form method="GET" target="_blank" class="text-center" id="cart" action="https://www.amazon.com/gp/aws/cart/add.html">
     <%= hidden_field_tag("AWSAccessKeyId", ENV.fetch("AWS_AFFILIATES_ACCESS_KEY_ID")) %>
     <%= hidden_field_tag("AssociateTag", ENV.fetch("AWS_AFFILIATES_ASSOCIATE_TAG")) %>

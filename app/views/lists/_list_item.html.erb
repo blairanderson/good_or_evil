@@ -1,28 +1,42 @@
 <% item = list_item.item %>
 
-<li style="display: block; border: 1px solid grey; border-radius: 4px; padding: 15px; margin-bottom: 10px;">
-  <div class="row">
-    <div class="col-sm-2">
-      <%= image_tag(item.images.dig("MediumImage", "URL"), class: "img-responsive img-rounded") %>
-    </div>
-    <div class="col-sm-8">
-      <div>
-        <%= item.brand.try(:name) %><%= item.title %>
-        <small>(Last time we checked this was <%= number_to_currency(item.price) %>)</small>
-      </div>
-      <p><%= list_item.details %></p>
-    </div>
-    <div class="col-sm-2">
-      <% if in_cart?(item.asin) %>
-        <span>
-          <%= current_cart[item.asin] %> in cart
-          <%= link_to("Inc", cart_item_path(item.asin, quantity: current_cart[item.asin].to_i + 1), method: :patch) %>
-          <%= link_to("Dec", cart_item_path(item.asin, quantity: current_cart[item.asin].to_i - 1), method: :patch) %>
-          <%= link_to("Remove", cart_item_path(item.asin, quantity: 0), method: :patch) %>
-        </span>
-      <% else %>
-        <span><%= link_to("Add to Cart", cart_item_path(item.asin, quantity: 1), method: :patch) %></span>
-      <% end %>
-    </div>
+<article id="item-<%= item.asin %>" data-asin="<%= item.asin %>" class="fl w-50 w-third-m  w-25-ns pa2-ns">
+  <div class="tc" style="min-height: 12px;">
+    <% if item.price %>
+      <small title="Last time we checked this was <%= number_to_currency(item.price) %>">Recently
+        @ <%= number_to_currency(item.price) %></small>
+    <% end %>
   </div>
-</li>
+  <div class="tc cf">
+    <% if in_cart?(item.asin) %>
+      <div class="fl w-10"><%= link_to("x", cart_item_path(item.asin, quantity: 0), method: :patch, class: "f2 pink") %></div>
+      <div class="fl w-90">
+        <%= link_to("-", cart_item_path(item.asin, quantity: current_cart[item.asin].to_i - 1), method: :patch, class: "f2 ttu  pv0") %>
+        <span class="bg-blue bn br3 ph2 pv0 white f2 tracked ttu hover-blue hover-bg-white"><%= current_cart[item.asin] %>
+          IN CART</span>
+        <%= link_to("+", cart_item_path(item.asin, quantity: current_cart[item.asin].to_i + 1), method: :patch, class: "f2 ttu pv0") %>
+      </div>
+    <% else %>
+      <div class="fl w-100">
+        <%= link_to("Add to Cart", cart_item_path(item.asin, quantity: 1), method: :patch, class: "f2 blue hover-white bg-white hover-bg-blue br3 ph2  pv0 tracked ttu") %>
+      </div>
+    <% end %>
+  </div>
+  <div class="aspect-ratio aspect-ratio--1x1">
+    <a href="<%= item.buy_now %>">
+      <img style="background-image: url(<%= item.images.dig("LargeImage", "URL") %>)" } class="db bg-center cover aspect-ratio--object">
+    </a>
+  </div>
+
+  <a
+  href="<%= item.buy_now %>"
+  class="pv0 ph1 link db overflow-hidden"
+  >
+    <h3 class="f5 f4-ns ma0 black-90 truncate">
+      <%= item.title %>
+    </h3>
+    <h3 class="f6 f5 fw4 ma0 black-60 truncate">
+      <%= list_item.details %>
+    </h3>
+  </a>
+</article>

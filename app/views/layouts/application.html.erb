@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title><%= nav_title %></title>
+  <title><%= content_for?(:title) ? "#{content_for(:title)} - #{nav_title}" : nav_title %></title>
+  <%= stylesheet_link_tag("https://unpkg.com/tachyons@4.8.1/css/tachyons.min.css") %>
   <%= stylesheet_link_tag "application" %>
   <%= javascript_include_tag "application" %>
   <%= csrf_meta_tags %>
@@ -9,7 +10,7 @@
 <body>
 
   <%= render partial: 'layouts/navigation' %>
-  <div class="container">
+  <div class="<%= container_class_name %>">
     <% if notice %>
       <p class="alert alert-info"><%= notice %></p>
     <% end %>

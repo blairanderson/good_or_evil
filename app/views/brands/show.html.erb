@@ -1,1 +1,20 @@
-<%= @brand.inspect %>
+<%= content_for(:title, "#{@brand.name} Gift Ideas") %>
+<h1 class="tc"><%= @brand.name %></h1>
+
+<div class="cf mw9 center">
+  <div class="fl w-20">
+    <ul class="list ma0pa0">
+      <% Brand.where.not(slug: nil).order("slug ASC").each do |brand| %>
+        <li><%= link_to(brand.name, brand) %></li>
+      <% end %>
+    </ul>
+
+  </div>
+  <div class="fl w-80">
+    <section class="cf w-100 pa2-ns">
+      <%= render partial: 'lists/list_item', collection: @list_items %>
+    </section>
+
+  </div>
+</div>
+

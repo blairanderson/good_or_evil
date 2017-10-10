@@ -1,5 +1,5 @@
 class Item < ActiveRecord::Base
-  belongs_to :brand
+  belongs_to :brand, counter_cache: :items_count
   has_many :list_items
   has_many :lists, through: :list_items
   serialize :dimensions, Hash
@@ -16,10 +16,12 @@ class Item < ActiveRecord::Base
     # SOME RATE LIMIT
     sleep(10)
     fetch = AmazonFetch.fetch(asin).with_indifferent_access
-    brand = Brand.where(name: fetch[:brand]).first_or_create!
     new_state = fetch.slice(:title, :description, :buy_now, :total_offers, :sales_rank, :dimensions, :package_dimensions, :buy_box, :images)
     new_state[:price_cents] = new_state.dig(:buy_box, :winning, :Amount).to_i
-    self.assign_attributes(new_state.merge(brand_id: brand.id))
+    if fetch[:brand].to_s.length > 2 && brand = Brand.where(name: fetch[:brand]).first_or_create
+      new_state[:brand_id] = brand.id
+    end
+    self.assign_attributes(new_state)
     self.save!
   end
 

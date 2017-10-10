@@ -7,8 +7,12 @@ class ListsController < ApplicationController
   end
 
   def show
-    @list = List.published.includes(:category, :user).find(params[:id])
-    @list_items = @list.list_items.order("sort ASC").includes(:item)
+    @list = List.published.find_by_id(params[:id]) || List.bootstrap.find_by_id(params[:id])
+    if @list
+      @list_items = @list.list_items.order("sort ASC").includes(:item)
+    else
+      raise(ActiveRecord::RecordNotFound)
+    end
   end
 
   def preview

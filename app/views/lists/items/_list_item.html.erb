@@ -1,6 +1,6 @@
 <% item = list_item.item %>
 
-<li style="display: block; border: 1px solid grey; border-radius: 4px; padding: 15px; margin-bottom: 10px;">
+<li style="display: block; border: 1px solid grey; border-radius: 4px; padding: 15px; margin-bottom: 10px;" id="item-<%= item.asin %>">
   <div class="row">
     <div class="col-sm-2">
       <%= image_tag(item.images.dig("MediumImage", "URL"), class: "img-responsive img-rounded") %>

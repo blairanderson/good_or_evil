@@ -1,1 +1,15 @@
-<%= render partial: "lists/show" %>
+<%= content_for(:title, @list.name) %>
+
+
+<div class="cf mw9 center">
+  <div class="fl w-20">
+    <ul class="list ma0pa0">
+      <% Brand.where.not(slug: nil).where("").order("slug ASC").each do |brand| %>
+      <li><%= link_to(brand.name, brand) %></li>
+      <% end %>
+    </ul>
+
+  </div>
+  <div class="fl w-80"><%= render partial: "lists/show" %></div>
+</div>
+

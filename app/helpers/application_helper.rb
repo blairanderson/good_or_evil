@@ -7,4 +7,9 @@ module ApplicationHelper
     PublicSuffix.domain(uri).domain
   end
 
+  def container_class_name
+    return "" if controller_name == "lists" && action_name == "show"
+    "container"
+  end
+
 end

@@ -4,8 +4,6 @@
 <h1 style="margin-top:0px;"><%= @list.name %></h1>
 <p><%= @list.body.try(:html_safe) %></p>
 
-<div class="row">
-  <div class="col-xs-12">
-    <%= render partial: 'lists/list_item', collection: @list_items %>
-  </div>
-</div>
+<section class="cf w-100 pa2-ns">
+  <%= render partial: 'lists/list_item', collection: @list_items %>
+</section>
