@@ -25,7 +25,7 @@
   </div>
   <div class="aspect-ratio aspect-ratio--1x1">
     <a href="<%= item.buy_now %>">
-      <img style="background-image: url(<%= item.images.dig("LargeImage", "URL") %>)" } class="db bg-center cover aspect-ratio--object">
+      <%= image_tag(nil, class: "db bg-center cover aspect-ratio--object",style: "background-image: url(#{item.images.dig("LargeImage", "URL")})") %>
     </a>
   </div>
 
