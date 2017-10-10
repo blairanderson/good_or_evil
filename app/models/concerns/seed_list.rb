@@ -36,15 +36,20 @@ class SeedList
       }
     end
 
+    # return only items with dollar signs(amazon has offer)
     amazon_links = amazon_links.select { |link| link[:text].include?("$") }
+    # return only the wirecutter URL
     amazon_links = amazon_links.map { |link| link[:href] }
     amazon_links = amazon_links.uniq
 
+    # convert wirecutter URL to Amazon URL
     amazon_links = amazon_links.map do |link|
       wcagent.get(link)
       wcagent.page.meta_refresh.first.uri.to_s
     end
-    amazon_links = amazon_links.select { |link| link.downcase.include?("amazon.com") }
+
+    amazon_links = amazon_links.uniq
+    amazon_links = amazon_links.select { |link| link.downcase.include?("amazon.com/") }
 
     if url.blank? || amazon_links.empty?
       puts "EMPTY: #{url}"

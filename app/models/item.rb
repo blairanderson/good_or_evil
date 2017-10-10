@@ -70,13 +70,13 @@ class Item < ActiveRecord::Base
   end
 
   def self.is_amazon?(uri)
-    URI(uri).host.include?("amazon.com")
+    url && uri.to_s.include?("amazon.com/")
   end
 
   ASIN_REGEX = /\/(B[A-Z0-9]{9})/
 
   def self.parse_asin(uri)
-    is_amazon?(uri) && URI(uri).path.match(ASIN_REGEX).captures[0]
+    is_amazon?(uri) && uri.match(ASIN_REGEX).captures[0]
   end
 
   def source_domain

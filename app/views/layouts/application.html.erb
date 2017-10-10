@@ -12,10 +12,10 @@
   <%= render partial: 'layouts/navigation' %>
   <div class="<%= container_class_name %>">
     <% if notice %>
-      <p class="alert alert-info"><%= notice %></p>
+      <p class="alert alert-info measure center tc"><%= notice %></p>
     <% end %>
     <% if alert %>
-      <p class="alert alert-danger"><%= alert %></p>
+      <p class="alert alert-danger measure center tc"><%= alert %></p>
     <% end %>
     <%= yield %>
   </div>

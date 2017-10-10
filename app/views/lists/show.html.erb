@@ -4,13 +4,15 @@
   <p><%= link_to @list.category.name, category_path(@list.category_id) %></p>
 <% end %>
 <h1 class="tc ma2 pa0"><%= @list.name %></h1>
-<p class="br3 bg-near-white ph4 pv3"><%= @list.body.try(:html_safe) %></p>
+<% if @list.body %>
+  <p class="measure center br3 bg-near-white ph4 pv3"><%= @list.body.try(:html_safe) %></p>
+<% end %>
 
 <div class="cf mw9 center">
   <div class="fl w-20">
     <ul class="list ma0pa0">
       <% @brands.each do |brand| %>
-        <li><%= link_to([brand.items_count,brand.name].join(" - "), brand) %></li>
+        <li><%= link_to([brand.items_count, brand.name].join(" - "), brand) %></li>
       <% end %>
     </ul>
   </div>
