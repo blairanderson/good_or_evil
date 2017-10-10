@@ -3,7 +3,7 @@ class ListsController < ApplicationController
   before_action :set_list, only: [:edit, :update, :destroy]
 
   def index
-    @lists = List.visible.includes(items: :brand).paginate(page: params[:page], per_page: 25)
+    @lists = List.visible.includes(items: :brand).where("items.title IS NOT NULL").paginate(page: params[:page], per_page: 25)
     @items = Item.order("page_views DESC").limit(25).includes(:list_items)
     @brands = Brand.top_list
   end
