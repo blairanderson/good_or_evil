@@ -1,6 +1,7 @@
 <% list_item ||= OpenStruct.new(details: false) %>
+<% class_name ||= "w-50 w-third-ns" %>
 
-<article id="item-<%= item.asin %>" data-asin="<%= item.asin %>" class="fl w-50 w-third-m  w-25-ns pa2-ns">
+<article id="item-<%= item.asin %>" data-asin="<%= item.asin %>" class="fl <%= class_name %> pa2-ns">
   <div class="tc" style="min-height: 12px;">
     <% if item.price %>
       <small title="Last time we checked this was <%= number_to_currency(item.price) %>">Recently
@@ -31,11 +32,12 @@
   <a
   href="<%= item.buy_now %>"
   class="pv0 ph1 link db overflow-hidden"
+  target="blank"
   >
     <h3 class="f5 f4-ns ma0 black-90 truncate">
       <%= item.title %>
     </h3>
-    <% if list_item %>
+    <% if list_item && list_item.details %>
       <h3 class="f6 f5 fw4 ma0 black-60 truncate">
         <%= list_item.details %>
       </h3>

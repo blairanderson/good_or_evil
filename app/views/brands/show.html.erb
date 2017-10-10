@@ -1,14 +1,13 @@
 <%= content_for(:title, "#{@brand.name} Gift Ideas") %>
 <h1 class="tc"><%= @brand.name %></h1>
 
-<div class="cf mw9 center">
+<div class="cf">
   <div class="fl w-20">
     <ul class="list ma0pa0">
       <% @brands.each do |brand| %>
         <li><%= link_to([brand.items_count,brand.name].join(" - "), brand) %></li>
       <% end %>
     </ul>
-
   </div>
   <div class="fl w-80">
     <section class="cf w-100 pa2-ns">
@@ -16,7 +15,6 @@
         <%= render partial: 'lists/list_item', locals: {item: item} %>
       <% end %>
     </section>
-
   </div>
 </div>
 
