@@ -8,6 +8,7 @@ module ApplicationHelper
   end
 
   def container_class_name
+    return "" if controller_name == "brands" && action_name == "show"
     return "" if controller_name == "lists" && action_name == "show"
     "container"
   end

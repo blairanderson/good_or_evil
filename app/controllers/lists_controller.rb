@@ -3,10 +3,13 @@ class ListsController < ApplicationController
   before_action :set_list, only: [:edit, :update, :destroy]
 
   def index
-    @lists = List.published.includes(items: :brand).where.not(items: {id: nil})
+    @lists = List.visible.includes(items: :brand).paginate(page: params[:page], per_page: 25)
+    @items = Item.order("page_views DESC").limit(25).includes(:list_items)
+    @brands = Brand.top_list
   end
 
   def show
+    @brands = Brand.top_list
     @list = List.published.find_by_id(params[:id]) || List.bootstrap.find_by_id(params[:id])
     if @list
       @list_items = @list.list_items.order("sort ASC").includes(:item)

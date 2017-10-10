@@ -1,4 +1,4 @@
-<% item = list_item.item %>
+<% list_item ||= OpenStruct.new(details: false) %>
 
 <article id="item-<%= item.asin %>" data-asin="<%= item.asin %>" class="fl w-50 w-third-m  w-25-ns pa2-ns">
   <div class="tc" style="min-height: 12px;">
@@ -35,8 +35,10 @@
     <h3 class="f5 f4-ns ma0 black-90 truncate">
       <%= item.title %>
     </h3>
-    <h3 class="f6 f5 fw4 ma0 black-60 truncate">
-      <%= list_item.details %>
-    </h3>
+    <% if list_item %>
+      <h3 class="f6 f5 fw4 ma0 black-60 truncate">
+        <%= list_item.details %>
+      </h3>
+    <% end %>
   </a>
 </article>

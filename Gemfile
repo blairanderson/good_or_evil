@@ -15,6 +15,7 @@ gem 'friendly_id', '~> 5.1.0'
 gem 'public_suffix'
 gem 'geocoder'
 gem 'jquery-rails'
+gem 'will_paginate'
 group :production do
   gem 'rails_12factor'
 end

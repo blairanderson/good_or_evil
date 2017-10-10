@@ -5,7 +5,10 @@ class List < ActiveRecord::Base
   has_many :items, through: :list_items
   enum status: {draft: 0, published: 1, archived: 2, hidden: 3}
   enum display_theme: {list: 0, carousel: 1}
-  scope :bootstrap, -> { where(user_id: BOOTSTRAP_USER_ID).order("#{SORT_SOURCE} ASC, item_count DESC, sort ASC, page_views DESC") }
+  scope :sorted, -> { order("#{SORT_SOURCE} ASC, item_count DESC, sort ASC, page_views DESC") }
+  scope :popular, -> { order("page_views DESC") }
+  scope :visible, -> { where("item_count > 0").where("user_id = :bootstrap_user_id OR status = :published", bootstrap_user_id: BOOTSTRAP_USER_ID, published: List.statuses["published"]) }
+  scope :bootstrap, -> { where(user_id: BOOTSTRAP_USER_ID).sorted }
   scope :amazon, -> { where("source LIKE '%amazon.com%'") }
   scope :wirecutter, -> { where("source LIKE '%wirecutter.com%'") }
   SORT_SOURCE = "case
@@ -14,7 +17,7 @@ class List < ActiveRecord::Base
     else 9999
   end"
 
-  scope :sorted, -> { order("#{SORT_SOURCE} ASC, sort ASC, page_views DESC") }
+
   BOOTSTRAP_USER_ID = 0
 
   def to_param

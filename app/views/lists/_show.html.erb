@@ -5,5 +5,7 @@
 <p><%= @list.body.try(:html_safe) %></p>
 
 <section class="cf w-100 pa2-ns">
-  <%= render partial: 'lists/list_item', collection: @list_items %>
+  <% @list_items.each do |list_item| %>
+    <%= render partial: 'lists/list_item', locals: {list_item: list_item, item: list_item.item} %>
+  <% end %>
 </section>
