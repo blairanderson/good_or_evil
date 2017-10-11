@@ -12,7 +12,7 @@
     <h1 class="cf w-100 tc"><%= @brand.name %></h1>
     <section class="cf w-100 pa2-ns">
       <% @items.each do |item| %>
-        <%= render partial: 'lists/list_item', locals: {item: item} %>
+        <%= render partial: 'lists/list_item_card', locals: {item: item} %>
       <% end %>
     </section>
   </div>

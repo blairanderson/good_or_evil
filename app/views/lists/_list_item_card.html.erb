@@ -1,0 +1,44 @@
+<% list_item ||= OpenStruct.new(details: false) %>
+
+<article id="item-<%= item.asin %>" data-asin="<%= item.asin %>" class="fl w-100 w-50-ns pa2">
+  <div class="br2 ba dark-gray b--black-10 hide-child z-4 relative">
+    <div class="child cf w-100 h-20 absolute z-5 tc white f3">
+      <div class="fl w-third near-black pt3">
+        Save <img src="https://icon.now.sh/bookmark_border" alt="bookmark save item"/>
+      </div>
+      <% if in_cart?(item.asin) %>
+        <% quantity = current_cart[item.asin].to_i %>
+        <div class="fl w-two-thirds bl b--black-10">
+          <div class="cf w-100">
+            <div class="fl w-third"><%= link_to("<img style='vertical-align: top;' class='svg' src='//icon.now.sh/minus/28/ffffff' alt='decrease cart quantity to #{quantity - 1}' />".html_safe, cart_item_path(item.asin, quantity: quantity - 1), method: :patch, class: "db bg-blue b--blue ba pa2 near-white f2 tracked hover-blue hover-bg-pink") %></div>
+            <div class="fl w-third"><span class="db bg-blue b--blue ba pa2 near-white f2 tracked ttu hover-blue hover-bg-white"><%= quantity %></span></div>
+            <div class="fl w-third"><%= link_to("<img style='vertical-align: top;' class='svg' src='//icon.now.sh/plus/28/ffffff' alt='increment cart quantity to #{quantity + 1}' />".html_safe, cart_item_path(item.asin, quantity: quantity + 1), method: :patch, class: "db bg-blue b--blue ba pa2 near-white f2 tracked hover-blue hover-bg-near-black") %></div>
+          </div>
+        </div>
+      <% else %>
+        <div class="fl w-two-thirds">
+          <%= link_to("Add to Cart", cart_item_path(item.asin, quantity: 1), method: :patch, class: "f2 pa0 tracked") %>
+          <br/>
+          <%= link_to("Whats This <img src='https://icon.now.sh/info_outline'/>".html_safe, page_path("about_cart")) %>
+        </div>
+      <% end %>
+    </div>
+    <div class="aspect-ratio aspect-ratio--6x4 z-3">
+      <div class="aspect-ratio--object cover" style="background:url(<%= item.images.dig("LargeImage", "URL") %>) center;">
+        <span class="clip"><%= item.title %></span>
+      </div>
+    </div>
+    <div class="pv2 ph3">
+      <h1 class="f2 fw3 ma0 truncate"><%= item.title %></h1>
+      <% if list_item && list_item.details %>
+        <h2 class="f2 fw2 ma0 pa0 truncate"><%= list_item.details %></h2>
+      <% end %>
+      <a title="Last time we checked was <%= number_to_currency(item.price) %>"
+         href="<%= item.buy_now %>"
+         class="f2 link no-underline hover-white br2 ph3 pv2 mv3 db w-100 tc white bg-blue">
+        On Amazon @ <%= number_to_currency(item.price) %></a>
+    </div>
+  </div>
+</article>
+
+

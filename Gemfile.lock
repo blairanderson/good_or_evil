@@ -91,6 +91,7 @@ GEM
     geocoder (1.2.14)
     globalid (0.3.6)
       activesupport (>= 4.1.0)
+    high_voltage (3.0.0)
     http-cookie (1.0.2)
       domain_name (~> 0.5)
     i18n (0.7.0)
@@ -266,6 +267,7 @@ DEPENDENCIES
   factory_girl_rails
   friendly_id (~> 5.1.0)
   geocoder
+  high_voltage (~> 3.0.0)
   jquery-rails
   mechanize
   money-rails (~> 1)

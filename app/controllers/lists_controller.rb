@@ -10,7 +10,8 @@ class ListsController < ApplicationController
 
   def show
     @brands = Brand.top_list
-    @list = List.published.find_by_id(params[:id]) || List.bootstrap.find_by_id(params[:id])
+    @list = List.visible.find(params[:id])
+    @lists = List.visible.select(:id, :name).where.not(id: @list.id).joins(:items).where("items.title IS NOT NULL").references(:items).limit(10)
     if @list
       @list_items = @list.list_items.order("sort ASC").includes(:item)
     else
