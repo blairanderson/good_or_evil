@@ -1,25 +1,7 @@
 <h1 class="tc">Items in your Cart!</h1>
 
-<section class="cf w-100 pa2-ns">
+<section class="cf w-100 mw9 center pa6">
   <% @items.each do |item| %>
-    <article class="fl w-100 w-50-m  w-25-ns pa2-ns">
-      <div class="aspect-ratio aspect-ratio--1x1">
-        <a href="<%= item.buy_now %>">
-          <img style="background-image: url(<%= item.images.dig("LargeImage", "URL") %>)" } class="db bg-center cover aspect-ratio--object">
-        </a>
-      </div>
-      <a
-      href="<%= item.buy_now %>"
-      class="ph2 ph0-ns pb3 link db"
-      >
-        <h3 class="f5 f4-ns mb0 black-90">
-          <%= item.title %>
-        </h3>
-
-        <h3 class="f6 f5 fw4 mt2 black-60">
-          <%= item.description.to_s.truncate(40) %>
-        </h3>
-      </a>
-    </article>
+    <%= render partial: 'lists/list_item_card', locals: {item: item} %>
   <% end %>
 </section>

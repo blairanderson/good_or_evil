@@ -1,0 +1,18 @@
+<%= content_for(:title, "Your Saved Items") %>
+
+<h1 class="tc ma2 pa0">Your Saved Items</h1>
+
+<div class="cf">
+  <div class="fl w-30">
+    <ul class="list ma0pa0">
+      <li>Put anything here you want</li>
+    </ul>
+  </div>
+  <div class="fl w-70">
+    <section class="cf w-100 pa2-ns">
+      <% @items.each do |item| %>
+        <%= render partial: 'lists/list_item_card', locals: {item: item} %>
+      <% end %>
+    </section>
+  </div>
+</div>

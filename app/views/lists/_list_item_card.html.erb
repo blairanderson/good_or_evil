@@ -2,17 +2,37 @@
 
 <article id="item-<%= item.asin %>" data-asin="<%= item.asin %>" class="fl w-100 w-50-ns pa2">
   <div class="br2 ba dark-gray b--black-10 hide-child z-4 relative">
-    <div class="child cf w-100 h-20 absolute z-5 tc white f3">
-      <div class="fl w-third near-black pt3">
-        Save <img src="https://icon.now.sh/bookmark_border" alt="bookmark save item"/>
+    <div class="child cf w-100 h-20 absolute z-5 tc bg-near-white f3">
+      <div class="fl w-third near-black">
+        <% if current_user && current_user.saved_item_ids.include?(item.id) %>
+          <%= link_to(saved_item_path(item.id), method: :delete, class: "link no-underline") do %>
+            <img src="https://icon.now.sh/bookmark" alt="bookmark save item"/><br/>
+            Remove
+          <% end %>
+        <% else %>
+          <%= link_to(saved_items_path(item: item.as_json(only: [:id, :asin])), method: :post, class: "link no-underline") do %>
+            <img src="https://icon.now.sh/bookmark_border" alt="bookmark save item"/><br/>
+            Save
+          <% end %>
+        <% end %>
       </div>
       <% if in_cart?(item.asin) %>
         <% quantity = current_cart[item.asin].to_i %>
         <div class="fl w-two-thirds bl b--black-10">
           <div class="cf w-100">
-            <div class="fl w-third"><%= link_to("<img style='vertical-align: top;' class='svg' src='//icon.now.sh/minus/28/ffffff' alt='decrease cart quantity to #{quantity - 1}' />".html_safe, cart_item_path(item.asin, quantity: quantity - 1), method: :patch, class: "db bg-blue b--blue ba pa2 near-white f2 tracked hover-blue hover-bg-pink") %></div>
-            <div class="fl w-third"><span class="db bg-blue b--blue ba pa2 near-white f2 tracked ttu hover-blue hover-bg-white"><%= quantity %></span></div>
-            <div class="fl w-third"><%= link_to("<img style='vertical-align: top;' class='svg' src='//icon.now.sh/plus/28/ffffff' alt='increment cart quantity to #{quantity + 1}' />".html_safe, cart_item_path(item.asin, quantity: quantity + 1), method: :patch, class: "db bg-blue b--blue ba pa2 near-white f2 tracked hover-blue hover-bg-near-black") %></div>
+            <div class="fl w-third">
+              <%= link_to(cart_item_path(item.asin, quantity: quantity - 1), method: :patch, class: "db bg-blue b--blue ba pa2 near-white f2 tracked hover-blue hover-bg-pink") do %>
+                <img style='vertical-align: top;' class='svg' src='//icon.now.sh/minus/28/ffffff' alt='decrease cart quantity to <%= quantity - 1 %>'/>
+              <% end %>
+            </div>
+            <div class="fl w-third">
+              <span class="db bg-blue b--blue ba pa2 near-white f2 tracked ttu hover-blue hover-bg-white"><%= quantity %></span>
+            </div>
+            <div class="fl w-third">
+              <%= link_to(cart_item_path(item.asin, quantity: quantity + 1), method: :patch, class: "db bg-blue b--blue ba pa2 near-white f2 tracked hover-blue hover-bg-near-black") do %>
+                <img style='vertical-align: top;' class='svg' src='//icon.now.sh/plus/28/ffffff' alt='increment cart quantity to <%= quantity + 1 %>'/>
+              <% end %>
+            </div>
           </div>
         </div>
       <% else %>

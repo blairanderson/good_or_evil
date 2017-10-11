@@ -5,5 +5,9 @@ class User < ActiveRecord::Base
          :recoverable, :rememberable, :trackable, :validatable
 
   has_many :lists
+  has_many :saved_items
 
+  def saved_item_ids
+    @saved_item_ids ||= saved_items.pluck(:item_id)
+  end
 end

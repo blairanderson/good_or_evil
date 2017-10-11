@@ -2,6 +2,7 @@ Rails.application.routes.draw do
 
   devise_for :users
   resources :items
+  resources :saved_items
   resources :boost_lists
   resources :lists do
     scope module: :lists do
