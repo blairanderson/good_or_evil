@@ -1,4 +1,5 @@
 class SavedItemsController < ApplicationController
+  before_action :authenticate_user!
   def index
     @items = Item.where(id: current_user.saved_items.pluck(:item_id))
   end
@@ -15,11 +16,5 @@ class SavedItemsController < ApplicationController
     current_user.saved_items.where(item_id: params[:id]).destroy_all
     flash[:notice] = "Removed from your <a href='#{saved_items_path}'>Saved Items</a>.".html_safe
     redirect_to :back
-  end
-
-  private
-
-  def saved_item_params
-    params.require(:saved_item).permit(:item_id)
   end
 end
