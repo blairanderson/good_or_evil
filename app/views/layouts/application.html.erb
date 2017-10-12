@@ -2,7 +2,6 @@
 <html>
 <head>
   <title><%= content_for?(:title) ? "#{content_for(:title)} - #{nav_title}" : nav_title %></title>
-  <%= stylesheet_link_tag("https://unpkg.com/tachyons@4.8.1/css/tachyons.min.css") %>
   <%= stylesheet_link_tag "application" %>
   <%= javascript_include_tag "application" %>
   <%= csrf_meta_tags %>
@@ -10,7 +9,7 @@
 <body>
 
   <%= render partial: 'layouts/navigation' %>
-  <div class="<%= container_class_name %>">
+  <div class="sans-serif <%= container_class_name %>">
     <% if notice %>
       <p class="alert alert-info measure center tc"><%= notice %></p>
     <% end %>
@@ -18,7 +17,9 @@
       <p class="alert alert-danger measure center tc"><%= alert %></p>
     <% end %>
     <%= yield %>
+    <%= render "layouts/footer" %>
   </div>
+
   <%= yield :javascripts %>
 </body>
 </html>

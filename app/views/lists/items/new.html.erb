@@ -9,7 +9,7 @@
 
 <div class="row">
   <div class="col-xs-12">
-    <small class="label label-info" style="display: block; text-align: center;"><%= @list.status %></small>
+    <small class="label label-info center db tc mw5"><%= @list.status %></small>
     <div style="height: 64px;font-size: 34px;text-align: center;">
       <%= @list.name %>
     </div>
@@ -18,19 +18,34 @@
 </div>
 
 <% if @search_items.length > 0 %>
-  <form action="<%= url_for(params.slice(:controller,:action)) %>" class="bg-light-blue pa3 mw7 center br2-ns ba b--black-10">
+  <form action="<%= url_for(params.slice(:controller, :action)) %>" class="bg-light-blue pa3 mw7 center br2-ns ba b--black-10">
     <div class="cf">
-      <input class="f6 f5-l input-reset bn fl black-80 bg-white pa3 lh-solid w-100 w-75-m w-80-l br2-ns br--left-ns"  type="search" name="query" value="<%= params[:query] %>" id="query">
+      <input class="f6 f5-l input-reset bn fl black-80 bg-white pa3 lh-solid w-100 w-75-m w-80-l br2-ns br--left-ns" type="search" name="query" value="<%= params[:query] %>" id="query">
       <input class="f6 f5-l button-reset fl pv3 tc bn bg-animate bg-black-70 hover-bg-black white pointer w-100 w-25-m w-20-l br2-ns br--right-ns" type="submit" value="Search">
     </div>
   </form>
-  <ul>
+  <div class="cf mw9 center">
     <% @search_items.each do |item| %>
-      <li><%= item.inspect %></li>
+      <article class="fl w-20 pa1 hover-bg-black-10">
+        <%= link_to("#0", title: "ADD #{item.dig("asin")} to #{@list.name}", class: "link db cf w-100 dim blue ba b--black-10") do %>
+          <div class="fl w-40">
+            <div class="aspect-ratio aspect-ratio--1x1">
+              <img src="<%= item.dig("images", "LargeImage", "URL") %>" class="aspect-ratio--object cover"/>
+            </div>
+          </div>
+          <div class="fl w-60 v-top pl2">
+            <h1 class="f6 f5-ns fw6 lh-title black mv0"><%= item.dig("title").truncate(60) %></h1>
+            <% desc = strip_tags(CGI.unescapeHTML(item.dig("description"))) %>
+            <h2 title="<%= desc %>" class="f6 fw4 mt2 mb0 black-60 truncate"><%= desc.truncate(90) %></h2>
+            <dl class="mt2 f6">
+              <dt class="clip">Price</dt>
+              <dd class="ml0"><%= item.dig("buy_box", "winning", "FormattedPrice") %></dd>
+            </dl>
+          </div>
+        <% end %>
+      </article>
     <% end %>
-  </ul>
-
-  <hr/>
+  </div>
 <% end %>
 <hr/>
 

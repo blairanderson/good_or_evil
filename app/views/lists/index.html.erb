@@ -1,5 +1,5 @@
 <%= render partial: "layouts/about_us" %>
-<div class="cf">
+<div class="cf mw8 center">
   <div class="fl w-100 w-70-ns">
     <ul class="list ma0 pa0">
       <% @lists.each do |list| %>
@@ -22,15 +22,6 @@
     <%= will_paginate(@lists) %>
   </div>
   <div class="fl w-100 w-30-ns">
-    <ul>
-      <% @items.each do |item| %>
-      <li><%= link_to(item.title, list_path(item.list_items.first.list_id)) %></li>
-      <% end %>
-    </ul>
-    <div class="mw8 center">
-      <% @brands.each do |brand| %>
-        <%= link_to(brand.name, brand, class: "bg-blue near-white dib br3 ph3 mr3 mv3 pv2 tracked ttu") %>
-      <% end %>
-    </div>
+    <%= render "layouts/sidebar_items" %>
   </div>
 </div>

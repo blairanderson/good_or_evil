@@ -36,6 +36,7 @@ class AmazonFetch
       "winning" => item.get_hash("OfferSummary/LowestNewPrice"),
       "offer" => item.get_hash("Offers/Offer/OfferListing/Price")
     }
+    # data["price_cents"] = data.dig("buy_box", "winning", "Amount").to_i
     images = item.get_element("ImageSets/ImageSet")
     data["images"] = images ? images.get_hash.keys.each_with_object({}) do |name, image_sets|
       image_sets[name] = item.get_hash("ImageSets/ImageSet/#{name}")

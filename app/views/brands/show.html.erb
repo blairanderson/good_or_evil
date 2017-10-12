@@ -1,12 +1,7 @@
 <%= content_for(:title, "#{@brand.name} Gift Ideas") %>
 <div class="cf">
   <div class="fl w-20">
-    <h2 class="cf w-100 tc">Top Brands</h2>
-    <ul class="list ma0pa0">
-      <% @brands.each do |brand| %>
-        <li><%= link_to([brand.items_count,brand.name].join(" - "), brand) %></li>
-      <% end %>
-    </ul>
+    <%= render "layouts/sidebar_items" %>
   </div>
   <div class="fl w-80">
     <h1 class="cf w-100 tc"><%= @brand.name %></h1>

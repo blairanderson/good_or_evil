@@ -10,14 +10,7 @@
 
 <div class="cf">
   <div class="fl w-30">
-    <ul class="list ma0pa0">
-      <% @lists.each do |list| %>
-        <li><%= link_to(list.name.html_safe, list_path(list)) %></li>
-      <% end %>
-      <% @brands.each do |brand| %>
-        <li><%= link_to([brand.items_count, brand.name].join(" - "), brand) %></li>
-      <% end %>
-    </ul>
+    <%= render "layouts/sidebar_items" %>
   </div>
   <div class="fl w-70">
     <section class="cf w-100 pa2-ns">

@@ -1,12 +1,24 @@
-<div class="container">
-  <ul class="nav nav-pills">
-    <% if user_signed_in? %>
-      <li><%= link_to('Logout', destroy_user_session_path, method: :delete) %></li>
-      <li><%= link_to('Edit profile', edit_user_registration_path) %></li>
-    <% else %>
-      <li><%= link_to('Login', new_user_session_path) %></li>
-      <li><%= link_to('Register', new_user_registration_path) %></li>
-    <% end %>
-    <li><%= link_to('New Listing', new_list_path, {style: 'color:red'}) %></li>
-  </ul>
-</div>
+<footer class="bg-near-white black-50 mt5 pv5 pv6-l ph4 cf">
+  <div class="fl w-third">
+    <h3 class="tc">Gift Ideas from Top Brands</h3>
+    <ul>
+      <% Brand.top_list.limit(10).select(:id, :name, :slug).each do |brand| %>
+        <li><%= link_to("Gifts from #{brand.name}", brand_path(brand), class: "tracked ttu") %></li>
+      <% end %>
+    </ul>
+  </div>
+
+  <div class="fl w-third">
+    <h2 class="tc"><%= nav_title %></h2>
+    <%= render "layouts/about_us" %>
+  </div>
+
+  <div class="fl w-third">
+    <h3 class="tc">Our Most Popular Gift Lists</h3>
+    <ul>
+      <% sidebar_items.first(10).each do |item| %>
+        <li class="truncate"><%= link_to(item.name, item.path, class: "tracked ttu") %></li>
+      <% end %>
+    </ul>
+  </div>
+</footer>

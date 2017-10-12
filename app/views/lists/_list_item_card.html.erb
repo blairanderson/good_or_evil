@@ -7,12 +7,12 @@
         <% if current_user && current_user.saved_item_ids.include?(item.id) %>
           <%= link_to(saved_item_path(item.id), method: :delete, class: "link no-underline") do %>
             <img src="https://icon.now.sh/bookmark" alt="bookmark save item"/><br/>
-            Remove
+            <small class="db tc f6">remove from saved list</small>
           <% end %>
         <% else %>
-          <%= link_to(saved_items_path(item: item.as_json(only: [:id, :asin])), method: :post, class: "link no-underline") do %>
+          <%= link_to(saved_items_path(item: {id: item.id, asin: item.asin}), method: :post, class: "link no-underline") do %>
             <img src="https://icon.now.sh/bookmark_border" alt="bookmark save item"/><br/>
-            Save
+            <small class="db tc f6">Save for later</small>
           <% end %>
         <% end %>
       </div>
@@ -22,15 +22,20 @@
           <div class="cf w-100">
             <div class="fl w-third">
               <%= link_to(cart_item_path(item.asin, quantity: quantity - 1), method: :patch, class: "db bg-blue b--blue ba pa2 near-white f2 tracked hover-blue hover-bg-pink") do %>
-                <img style='vertical-align: top;' class='svg' src='//icon.now.sh/minus/28/ffffff' alt='decrease cart quantity to <%= quantity - 1 %>'/>
+                <img src='//icon.now.sh/minus/28/ffffff' alt='decrease cart quantity to <%= quantity - 1 %>'/>
+                <small class="db tc f6">remove</small>
               <% end %>
             </div>
             <div class="fl w-third">
-              <span class="db bg-blue b--blue ba pa2 near-white f2 tracked ttu hover-blue hover-bg-white"><%= quantity %></span>
+              <span class="db bg-blue b--blue ba pa2 near-white f2 tracked ttu hover-blue hover-bg-white">
+                <%= quantity %>
+                <small class="db tc f6">in cart</small>
+              </span>
             </div>
             <div class="fl w-third">
               <%= link_to(cart_item_path(item.asin, quantity: quantity + 1), method: :patch, class: "db bg-blue b--blue ba pa2 near-white f2 tracked hover-blue hover-bg-near-black") do %>
-                <img style='vertical-align: top;' class='svg' src='//icon.now.sh/plus/28/ffffff' alt='increment cart quantity to <%= quantity + 1 %>'/>
+                <img src='//icon.now.sh/plus/28/ffffff' alt='increment cart quantity to <%= quantity + 1 %>'/>
+                <small class="db tc f6">add</small>
               <% end %>
             </div>
           </div>

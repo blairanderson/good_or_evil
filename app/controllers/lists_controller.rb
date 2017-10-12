@@ -5,15 +5,13 @@ class ListsController < ApplicationController
   def index
     @lists = List.visible.includes(items: :brand).where("items.title IS NOT NULL").references(:items).paginate(page: params[:page], per_page: 25)
     @items = Item.order("page_views DESC").limit(25).includes(:list_items)
-    @brands = Brand.top_list
   end
 
   def show
-    @brands = Brand.top_list
     @list = List.visible.find(params[:id])
-    @lists = List.visible.select(:id, :name).where.not(id: @list.id).joins(:items).where("items.title IS NOT NULL").references(:items).limit(10)
+
     if @list
-      @list_items = @list.list_items.order("sort ASC").includes(:item)
+      @list_items = @list.list_items.order("items.title IS NOT NULL DESC, sort ASC").includes(:item)
     else
       raise(ActiveRecord::RecordNotFound)
     end
