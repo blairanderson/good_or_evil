@@ -2,17 +2,17 @@
 
 <article id="item-<%= item.asin %>" data-asin="<%= item.asin %>" class="fl w-100 w-50-ns pa2">
   <div class="br2 ba dark-gray b--black-10 hide-child z-4 relative">
-    <div class="child cf w-100 h-20 absolute z-5 tc bg-near-white f3">
-      <div class="fl w-third near-black">
+    <div class="child cf w-100 absolute z-5 tc bg-near-white f3">
+      <div class="fl w-third near-black pt2">
         <% if current_user && current_user.saved_item_ids.include?(item.id) %>
           <%= link_to(saved_item_path(item.id), method: :delete, class: "link no-underline") do %>
-            <img src="https://icon.now.sh/bookmark" alt="bookmark save item"/><br/>
-            <small class="db tc f6">remove from saved list</small>
+            <img src="https://icon.now.sh/bookmark/28/111111" alt="bookmark save item"/><br/>
+            <small class="db tc f6 blue">remove from saved list</small>
           <% end %>
         <% else %>
           <%= link_to(saved_items_path(item: {id: item.id, asin: item.asin}), method: :post, class: "link no-underline") do %>
-            <img src="https://icon.now.sh/bookmark_border" alt="bookmark save item"/><br/>
-            <small class="db tc f6">Save for later</small>
+            <img src="https://icon.now.sh/bookmark_border/28/357edd" alt="bookmark save item"/><br/>
+            <small class="db tc f6 blue">Save for later</small>
           <% end %>
         <% end %>
       </div>
@@ -47,6 +47,13 @@
           <%= link_to("Whats This <img src='https://icon.now.sh/info_outline'/>".html_safe, page_path("about_cart")) %>
         </div>
       <% end %>
+      <div class="fl w-100">
+        <% if list_item && list_item.details %>
+          <h2 class="f4 fw4 lh-copy ma0 pv2 ph4">
+            <%= list_item.details %>
+          </h2>
+        <% end %>
+      </div>
     </div>
     <div class="aspect-ratio aspect-ratio--6x4 z-3">
       <div class="aspect-ratio--object cover" style="background:url(<%= item.images.dig("LargeImage", "URL") %>) center;">
@@ -55,9 +62,6 @@
     </div>
     <div class="pv2 ph3">
       <h1 class="f2 fw3 ma0 truncate"><%= item.title %></h1>
-      <% if list_item && list_item.details %>
-        <h2 class="f2 fw2 ma0 pa0 truncate"><%= list_item.details %></h2>
-      <% end %>
       <a title="Last time we checked was <%= number_to_currency(item.price) %>"
          href="<%= item.buy_now %>"
          class="f2 link no-underline hover-white br2 ph3 pv2 mv3 db w-100 tc white bg-blue">
