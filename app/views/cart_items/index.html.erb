@@ -1,4 +1,12 @@
-<h1 class="tc">Items in your Cart!</h1>
+<h1 class="tc">
+  <% if @items.length > 0 %>
+    <%= "#{@items.size} #{'Item'.pluralize(@items.size)} in your Cart!" %>
+  <% else %>
+  Sad Empty Cart :(
+    <br/>
+    <%= link_to("Go Find Some Things!", root_path) %>
+  <% end %>
+</h1>
 
 <section class="cf w-100 mw8 center">
   <% @items.each do |item| %>
