@@ -6,13 +6,13 @@ module Lists
     before_filter :set_item, only: [:fetch, :update, :destroy]
 
     def new
-      @list_item = @list.list_items.build
-
-      @list_items = @list.list_items.includes(:item, item: :brand)
-
+      @list_item = current_list.list_items.build
+      @list_items = current_list.list_items.includes(:item, item: :brand)
       if missing_item = @list_items.find { |list_item| list_item.item.blank? }
         redirect_to fetch_list_item_path(current_list, missing_item) and return
       end
+      params[:query] ||= current_list.name
+      @search_items = can_bootstrap? ? AmazonFetch.query(params[:query]) : []
     end
 
     def fetch
@@ -55,7 +55,7 @@ module Lists
         # verify an item exists for this list_item
         flash[:notice] = "Great Job! Now tell us why its a great gift?"
       else
-        flash[:error] = [@item,@list_item].map(&:errors).flatten.map(&:full_messages).flatten.join(", ")
+        flash[:error] = [@item, @list_item].map(&:errors).flatten.map(&:full_messages).flatten.join(", ")
       end
 
       redirect_to new_list_item_path(current_list)
@@ -73,8 +73,12 @@ module Lists
 
     private
 
+    def can_bootstrap?
+      is_admin? || is_robot?
+    end
+
     def current_list
-      @list ||= current_user.lists.find(params[:list_id])
+      @list ||= (can_bootstrap? ? List : current_user.lists).find(params[:list_id])
     end
 
     def set_item

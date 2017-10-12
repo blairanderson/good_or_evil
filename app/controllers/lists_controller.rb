@@ -39,7 +39,7 @@ class ListsController < ApplicationController
     end
     @count = List.count
 
-    @bootstrap = List.bootstrap.sorted
+    @bootstrap = (is_admin? || is_robot?) ? List.bootstrap.amazon.sorted : []
   end
 
   def create

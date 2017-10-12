@@ -4,7 +4,7 @@ class List < ActiveRecord::Base
   has_many :list_items
   has_many :items, through: :list_items
   enum status: {draft: 0, published: 1, archived: 2, hidden: 3}
-  enum display_theme: {list: 0, carousel: 1}
+  enum display_theme: {grid: 0, story: 1}
   scope :sorted, -> { order("#{SORT_SOURCE} ASC, item_count DESC, sort ASC, page_views DESC") }
   scope :popular, -> { order("page_views DESC") }
   scope :visible, -> { where("item_count > 0").where("user_id = :bootstrap_user_id OR status = :published", bootstrap_user_id: BOOTSTRAP_USER_ID, published: List.statuses["published"]) }

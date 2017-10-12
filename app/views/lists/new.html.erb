@@ -1,4 +1,4 @@
-<h2 class="tc">count <%= @count %></h2>
+<h2 class="tc">Create a New List</h2>
 <div class="row">
   <div class="col-sm-8">
     <%= render 'form' %>
@@ -21,5 +21,15 @@
         <% end %>
       </ul>
     <% end %>
+
+    <% if @bootstrap.present? %>
+      <h2>Update These!</h2>
+      <ul style="">
+        <% @bootstrap.each do |list| %>
+          <li><%= link_to list.name, new_list_item_path(list) %></li>
+        <% end %>
+      </ul>
+    <% end %>
+
   </div>
 </div>

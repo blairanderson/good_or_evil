@@ -41,15 +41,14 @@ accountants
     @list_items = @list.list_items.order("LENGTH(details) DESC").includes(:item, item: :brand)
   end
 
+  # THIS IS FOR UPDATING LIST_ITEM.DETAILS FOR A GIVEN LIST
   def update
     list_item_id = Base64.decode64(params[:secure_key].strip)
     unless list_item_id == params[:list_item_id] && list_item_id == params.dig(:list_item, :id)
       flash[:alert] = "GTFO"
       redirect_to root_path and return
     end
-
     list_item = @list.list_items.find(list_item_id)
-
     if list_item.update!(list_item_params.slice(:details))
       flash[:notice] = "Updated!"
     else

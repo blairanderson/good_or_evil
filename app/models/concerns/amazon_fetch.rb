@@ -1,6 +1,17 @@
 # AmazonFetch.item_lookup(asin: asin, amazon_only: true)
 class AmazonFetch
 
+  def self.query(query=nil)
+    return [] if query.blank?
+    Amazon::Ecs.item_search(query, {
+        search_index: "All",
+        response_group: "OfferFull,Offers,Medium,Images",
+        condition: "New"
+      }).items.map do |i|
+      parse_response(i)
+    end
+  end
+
   def self.fetch(asin)
     resp = item_lookup(asin: asin)
     puts "FETCH:#{asin}"

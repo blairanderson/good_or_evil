@@ -28,7 +28,7 @@
             </div>
             <%= simple_form_for list_item, url: boost_list_path(@list, list_item_id: list_item.id) do |f| %>
               <%= f.input :id, as: :hidden %>
-              <%= hidden_field_tag(:secure_key, Base64.encode64(list_item.id.to_s)) %>
+              <%= hidden_field_tag(:secure_key, Base64.encode64(list_item.id.to_s)) if current_admin %>
               <%= f.input :details, label: "Why is this item on the list?" %>
               <%= f.button(:submit) %>
             <% end %>

@@ -22,7 +22,12 @@
   <div class="fl w-70">
     <section class="cf w-100 pa2-ns">
       <% @list_items.each do |list_item| %>
-        <%= render partial: 'lists/list_item_card', locals: {list_item: list_item, item: list_item.item} %>
+        <% if @list.display_theme.to_sym == :grid %>
+          <%= render partial: 'lists/list_item_card', locals: {list_item: list_item, item: list_item.item} %>
+        <% else %>
+          STORY
+          <%= render partial: 'lists/list_item_card', locals: {list_item: list_item, item: list_item.item} %>
+        <% end %>
       <% end %>
     </section>
   </div>

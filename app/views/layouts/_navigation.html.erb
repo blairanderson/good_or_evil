@@ -10,6 +10,11 @@
         <li><%= link_to('Register', new_user_registration_path) %></li>
       <% end %>
       <li><%= link_to('New List', new_list_path, {style: 'color:red'}) %></li>
+      <% if is_admin? %>
+        <li><a href="javascript: alert('yolo')">Hello Admin!</a></li>
+      <% elsif is_robot? %>
+        <li><a href="javascript: alert('yolo')">Hello Robot!</a></li>
+      <% end %>
     </ul>
   </div>
 </nav>

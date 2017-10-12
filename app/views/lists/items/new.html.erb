@@ -17,6 +17,21 @@
   </div>
 </div>
 
+<% if @search_items.length > 0 %>
+  <form action="<%= url_for(params.slice(:controller,:action)) %>" class="bg-light-blue pa3 mw7 center br2-ns ba b--black-10">
+    <div class="cf">
+      <input class="f6 f5-l input-reset bn fl black-80 bg-white pa3 lh-solid w-100 w-75-m w-80-l br2-ns br--left-ns"  type="search" name="query" value="<%= params[:query] %>" id="query">
+      <input class="f6 f5-l button-reset fl pv3 tc bn bg-animate bg-black-70 hover-bg-black white pointer w-100 w-25-m w-20-l br2-ns br--right-ns" type="submit" value="Search">
+    </div>
+  </form>
+  <ul>
+    <% @search_items.each do |item| %>
+      <li><%= item.inspect %></li>
+    <% end %>
+  </ul>
+
+  <hr/>
+<% end %>
 <hr/>
 
 <div class="row">
@@ -34,6 +49,3 @@
     <% end %>
   </div>
 </div>
-
-<script src="https://cdn.rawgit.com/basecamp/trix/e34a0db3c9e0ca303488227fceb6cd9b33cfdd09/dist/trix.js" charset="utf-8"></script>
-<link rel="stylesheet" href="https://cdn.rawgit.com/basecamp/trix/e34a0db3c9e0ca303488227fceb6cd9b33cfdd09/dist/trix.css" media="screen" title="no title" charset="utf-8">
