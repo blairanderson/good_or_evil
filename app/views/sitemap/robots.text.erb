@@ -1,0 +1,12 @@
+<% if Rails.env.production? %>
+  # See http://www.robotstxt.org/robotstxt.html for documentation on how to use the robots.txt file
+  #
+  # To ban all spiders from the entire site uncomment the next two lines:
+  User-Agent: *
+  Allow: /
+  Disallow: /admin
+  Sitemap: http://www.giftideaninja.com/sitemap.xml.gz
+<% else %>
+  User-Agent: *
+  Disallow: /
+<% end %>

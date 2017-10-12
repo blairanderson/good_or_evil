@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  get '/robots.:format' => 'sitemap#robots'
+  get '/sitemap.xml.gz' => 'sitemap#sitemap', format: :xml
 
   devise_for :users
   resources :items
