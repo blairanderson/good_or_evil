@@ -59,9 +59,24 @@ class ApplicationController < ActionController::Base
 
   helper_method :checkout_on_amazon
 
+  def current_history
+    @current_history ||= begin
+      list_scope = List.visible.for_sidebar.where(id: Array(session[:historical_list_ids]))
+      list_scope = list_scope.where.not(id: @list.id) if @list
+      list_scope.limit(10).map do |list|
+        OpenStruct.new(
+          name: "#{list.name.gsub("Best ", "").gsub("Gift ", "").pluralize(list.item_count).html_safe} - #{list.item_count} #{'item'.pluralize(list.item_count)}",
+          path: list_path(list)
+        )
+      end
+    end
+  end
+
+  helper_method :current_history
+
   def sidebar_items
     @sidebar_items ||= begin
-      list_scope = List.visible.distinct.select("lists.id, lists.name, lists.item_count").joins(:items).where("items.title IS NOT NULL").references(:items)
+      list_scope = List.visible.for_sidebar
       list_scope = list_scope.where.not(id: @list.id) if @list
       lists = list_scope.limit(25).map do |list|
         OpenStruct.new(

@@ -9,12 +9,8 @@ class ListsController < ApplicationController
 
   def show
     @list = List.visible.find(params[:id])
-
-    if @list
-      @list_items = @list.list_items.order("items.title IS NOT NULL DESC, sort ASC").includes(:item)
-    else
-      raise(ActiveRecord::RecordNotFound)
-    end
+    @list_items = @list.list_items.order("items.title IS NOT NULL DESC, sort ASC").includes(:item)
+    session[:historical_list_ids] = (Array(session[:historical_list_ids]).unshift(@list.id)).flatten.uniq.slice(0,10)
   end
 
   def preview

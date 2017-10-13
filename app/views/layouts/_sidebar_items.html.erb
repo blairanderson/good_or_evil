@@ -1,5 +1,14 @@
 <div class="pa3">
   <div class="br b--black-10 bt ph2">
+    <% if current_history.length > 0 %>
+      <h4 class="tc">Recently Viewed</h4>
+      <ul>
+        <% current_history.each do |item| %>
+          <li title="<%= item.name %>" class="truncate"><%= link_to(item.name, item.path, class: "link ttu") %></li>
+        <% end %>
+      </ul>
+      <hr/>
+    <% end %>
     <h4 class="tc">Top Lists and Brands</h4>
     <ul>
       <% sidebar_items.each do |item| %>

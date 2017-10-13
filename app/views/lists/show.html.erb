@@ -4,6 +4,9 @@
   <p><%= link_to @list.category.name, category_path(@list.category_id) %></p>
 <% end %>
 <h1 class="tc ma2 pa0"><%= @list.name %></h1>
+<% if is_admin? || is_robot? %>
+  <small class="db tc"><%= link_to("edit", edit_list_path(@list.id)) %></small>
+<% end %>
 <% if @list.body %>
   <p class="measure center br3 bg-near-white ph4 pv3"><%= @list.body.try(:html_safe) %></p>
 <% end %>

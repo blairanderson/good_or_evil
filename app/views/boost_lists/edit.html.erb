@@ -1,41 +1,54 @@
-<h1><%= @list.name %></h1>
-<p class="alert alert-info">
-  Please Help fill out our list of <em><%= @list.name.pluralize %></em>. (<%= link_to("preview", list_path(@list)) %>)
-</p>
+<div class="center mw8">
+  <div class="tc">
+    <h1><%= @list.name %></h1>
+
+    <p class="bg-black-10 br3 pa4">
+      Please Help fill out our list of <em><%= @list.name.pluralize %></em>.
+      (<%= link_to("preview", list_path(@list)) %>)
+    </p>
+  </div>
 
 
-<fieldset>
-  <legend for="directions">Directions</legend>
-    <h1>Open <%= link_to(@list.source, @list.source, target: "_blank", rel: "noopener noreferrer") %> in another tab.</h1>
+  <fieldset>
+    <legend for="directions">Directions</legend>
+    <h1>Open <%= link_to(@list.source, @list.source, target: "_blank", rel: "noopener noreferrer") %> in another
+      tab.</h1>
+
     <h2>Please help figure out why each item is on the list.</h2>
-</fieldset>
+  </fieldset>
 
-<fieldset>
-  <ul>
-    <% @list_items.each_with_index do |list_item, index| %>
-      <% item = list_item.item %>
-      <li style="display: block; border: 1px solid grey; border-radius: 4px; padding: 15px; margin-bottom: 10px;">
-        <div class="row">
-          <div class="col-sm-2">
-            <%= image_tag(item.images.dig("MediumImage", "URL"), class: "img-responsive img-rounded") %>
-          </div>
-          <div class="col-sm-10">
-            <div>
-              <%= link_to(item.title, item.buy_now, target: "_blank") %>
+  <fieldset>
+    <legend>Items</legend>
+    <ul>
+      <% @list_items.each_with_index do |list_item, index| %>
+        <% item = list_item.item %>
+        <li style="display: block; border: 1px solid grey; border-radius: 4px; padding: 15px; margin-bottom: 10px;">
+          <div class="row">
+            <div class="col-sm-2">
+              <%= image_tag(item.images.dig("MediumImage", "URL"), class: "img-responsive img-rounded") %>
             </div>
-            <div>
-              <small>(Last time we checked this was <%= number_to_currency(item.price) %>)</small>
+            <div class="col-sm-10">
+              <div>
+                <%= link_to(item.title, item.buy_now, target: "_blank") %>
+              </div>
+              <div>
+                <small>(Last time we checked this was <%= number_to_currency(item.price) %>)</small>
+              </div>
+              <%= simple_form_for list_item, url: boost_list_path(@list, list_item_id: list_item.id) do |f| %>
+                <%= f.input :id, as: :hidden %>
+                <%= hidden_field_tag(:secure_key, Base64.encode64(list_item.id.to_s)) if (is_admin? || is_robot?) %>
+                <%= f.input :details, label: "Why is this item on the list?", input_html: {class: "db border-box hover-black w-100 measure ba b--black-20 pa2 br2 mb2"} %>
+                <small class="f6 black-60">
+                  Helper text for a form control. Can use this text to <a href="#" class="link underline black-80 hover-blue">link to more info.</a>
+                </small>
+                <%= f.button(:submit) %>
+              <% end %>
             </div>
-            <%= simple_form_for list_item, url: boost_list_path(@list, list_item_id: list_item.id) do |f| %>
-              <%= f.input :id, as: :hidden %>
-              <%= hidden_field_tag(:secure_key, Base64.encode64(list_item.id.to_s)) if current_admin %>
-              <%= f.input :details, label: "Why is this item on the list?" %>
-              <%= f.button(:submit) %>
-            <% end %>
           </div>
-        </div>
-      </li>
-    <% end %>
-  </ul>
+        </li>
+      <% end %>
+    </ul>
 
-</fieldset>
+  </fieldset>
+
+</div>
