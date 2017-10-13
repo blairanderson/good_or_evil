@@ -85,7 +85,7 @@ class ApplicationController < ActionController::Base
       list_scope = list_scope.where.not(id: @list.id) if @list
       lists = list_scope.limit(25).map do |list|
         OpenStruct.new(
-          name: "#{list.name.html_safe} - #{list.item_count} #{'item'.pluralize(list.item_count)}",
+          name: "#{list.name.gsub("Best ", "").gsub("Gift ", "").pluralize(list.item_count).html_safe} - #{list.item_count} #{'item'.pluralize(list.item_count)}",
           path: list_path(list)
         )
       end
