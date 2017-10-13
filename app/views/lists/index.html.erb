@@ -9,9 +9,14 @@
               <div><%= list.name.html_safe %></div>
             </div>
             <ul>
-              <% list.items.each do |item| %>
-                <li>
-                  <small><%= item.title || item.asin %></small>
+              <% list.items.each_with_index do |item, index| %>
+                <li class="dt w-100 bb b--black-05 pb2 mt2">
+                  <div class="dtc w2 v-mid">
+                    <%= image_tag(item.images.dig("ThumbnailImage", "URL"), alt: item.title, class: "ba b--black-10 db br2 w2 h2") rescue nil %>
+                  </div>
+                  <div class="dtc v-mid pl3">
+                    <h2 class="f6 fw6 lh-title black mv0"><%= item.title || item.asin %></h2>
+                  </div>
                 </li>
               <% end %>
             </ul>
