@@ -1,8 +1,8 @@
 module Lists
   class ItemsController < ApplicationController
-    before_action :authenticate_user!
+    include SetList
     helper_method :current_list
-    before_filter :current_list
+    before_action :authenticate_user!
     before_filter :set_item, only: [:fetch, :update, :destroy]
 
     def new
@@ -75,14 +75,6 @@ module Lists
     end
 
     private
-
-    def can_bootstrap?
-      is_admin? || is_robot?
-    end
-
-    def current_list
-      @list ||= (can_bootstrap? ? List : current_user.lists).find(params[:list_id])
-    end
 
     def set_item
       @list_item = current_list.list_items.find(params[:id])

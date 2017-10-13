@@ -2,6 +2,7 @@
   <a class="db dtc-l v-mid mid-gray link dim w-100 w-25-l tc tl-l mb2 mb0-l" href="<%= root_path %>" title="Home">
     <%= nav_title %>
   </a>
+
   <div class="db dtc-l v-mid w-100 w-75-l tc tr-l">
     <%= link_to('New List', new_list_path, class: "link dim dark-gray f6 f5-l dib mr3 mr4-l") %>
     <% if user_signed_in? %>
@@ -20,20 +21,24 @@
 </nav>
 
 <% if can_checkout_on_amazon? %>
-  <div class="tc">
-    <%= link_to("View Cart", cart_items_path) %>
-  </div>
-  <form method="GET" target="_blank" class="tc" id="cart" action="https://www.amazon.com/gp/aws/cart/add.html">
-    <%= hidden_field_tag("AWSAccessKeyId", ENV.fetch("AWS_AFFILIATES_ACCESS_KEY_ID")) %>
-    <%= hidden_field_tag("AssociateTag", ENV.fetch("AWS_AFFILIATES_ASSOCIATE_TAG")) %>
-    <% current_cart.to_a.each_with_index do |item, index| %>
-      <% i = index+1 %>
-      <%= hidden_field_tag("ASIN.#{i}", item[0]) %>
-      <%= hidden_field_tag("Quantity.#{i}", item[1]) %>
-    <% end %>
-    <input type="submit" name="add" value="Checkout Now" class="f6 link dim br1 ba ph3 pv2 mb2 dib dark-blue btn-default"/>
-  </form>
-  <%= image_tag("powered-by-amazon.png", style: "display: block; margin: 10px auto; cursor: pointer;", onclick: "$('form#cart').submit()") %>
+  <% button_class_names = "f4 fw4 link br2 ba b--green ph4 pv2 mv2 mw6 center bg-green near-white hover-green hover-bg-white sans-serif" %>
+  <% if current_page?(cart_items_path) %>
+    <form method="GET" target="_blank" class="tc" id="cart" action="https://www.amazon.com/gp/aws/cart/add.html">
+      <%= hidden_field_tag("AWSAccessKeyId", ENV.fetch("AWS_AFFILIATES_ACCESS_KEY_ID")) %>
+      <%= hidden_field_tag("AssociateTag", ENV.fetch("AWS_AFFILIATES_ASSOCIATE_TAG")) %>
+      <% current_cart.to_a.each_with_index do |item, index| %>
+        <% i = index+1 %>
+        <%= hidden_field_tag("ASIN.#{i}", item[0]) %>
+        <%= hidden_field_tag("Quantity.#{i}", item[1]) %>
+      <% end %>
+      <input type="submit" name="add" value="Proceed to Checkout on Amazon" class="<%= button_class_names %>"/>
+    </form>
+    <%= image_tag("powered-by-amazon.png", style: "display: block; margin: 10px auto; cursor: pointer;", onclick: "$('form#cart').submit()") %>
+  <% else %>
+    <div class="tc">
+      <%= link_to("Review #{pluralize(cart_items_count, "Item", "Items")} in Cart", cart_items_path, class: button_class_names) %>
+    </div>
+  <% end %>
 <% elsif current_user %>
   <div class="tc">
     <%= link_to("Cart is Empty", "#", class: "f6 link dim br1 ba ph3 pv2 mb2 dib dark-blue btn-default disabled") %>

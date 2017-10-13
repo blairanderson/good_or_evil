@@ -3,13 +3,29 @@
 <% if @list.category %>
   <p><%= link_to @list.category.name, category_path(@list.category_id) %></p>
 <% end %>
-<h1 class="tc ma2 pa0"><%= @list.name %></h1>
 <% if is_admin? || is_robot? %>
   <small class="db tc"><%= link_to("edit", edit_list_path(@list.id)) %></small>
 <% end %>
-<% if @list.body %>
-  <p class="measure center br3 bg-near-white ph4 pv3"><%= @list.body.try(:html_safe) %></p>
-<% end %>
+<div class="bg-blue near-white pv2 pv4-ns">
+  <h1 class="tc mt2 mb0 pa0"><%= @list.name %></h1>
+  <div class="cf w-50 center">
+    <div class="fl w-100 w-50-ns">
+      <blockquote class="measure-narrow center pa4 tl f4 fw1 bl bw3 b--near-black">
+        List Created By:
+        <% if @list.user_id == List::BOOTSTRAP_USER_ID %>
+          <%= link_to(nav_title, root_path, class: "white fw6 b") %>
+        <% else %>
+          <%= link_to("User #{@list.user_id}", lists_path(user_id: @list.user_id) , class: "white fw6 b") %>
+        <% end %>
+      </blockquote>
+    </div>
+    <div class="fl w-100 w-50-ns">
+      <% if @list.body %>
+        <p class="ph4 pv3"><%= @list.body.try(:html_safe) %></p>
+      <% end %>
+    </div>
+  </div>
+</div>
 
 <div class="cf">
   <div class="fl w-30">

@@ -4,9 +4,9 @@
   # To ban all spiders from the entire site uncomment the next two lines:
   User-Agent: *
   Allow: /
-  Disallow: /admin
-  Sitemap: http://www.giftideaninja.com/sitemap.xml.gz
+  Sitemap: <%= root_url %>sitemap.xml.gz
 <% else %>
+  Sitemap: <%= root_url %>sitemap.xml.gz
   User-Agent: *
   Disallow: /
 <% end %>

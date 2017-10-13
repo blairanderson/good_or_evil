@@ -1,10 +1,21 @@
 <%= simple_form_for @list do |f| %>
-  <%= f.input :name, label: 'List Title', required: true, placeholder: "Gifts for Awesome Grandmas", input_html: {style: "height: 64px;font-size: 34px;text-align: center;"} %>
+  <%= f.input :name, label: 'List Title', required: true, placeholder: "Gifts for Awesome Grandmas", input_html: {class: "tc", style: "height: 64px;font-size: 34px;"} %>
+  <% if @can_change_display_theme %>
+    <div class="tc pa4">
+      <%= f.input :display_theme, as: :select, collection: List.display_themes.keys.to_a %>
+      <small class="db tl f6 fw1 mv2">
+        Great Job! All your listings have descriptions. <br/>
+        If you want you can change the layout of your list to be a longer "story" listing which shows each one at a
+        time.
+        You can also ignore this and keep the "grid"
+      </small>
+    </div>
+  <% end %>
   <!-- the trix editor goes here: https://github.com/basecamp/trix -->
   <%= f.input :body, as: :hidden %>
   <trix-editor input="list_body" placeholder="Add a super cool description to help people find this list!"></trix-editor>
   <br>
   <div class="pull-right">
-    <%= f.button 'submit', 'Save Changes' %>
+    <%= f.button :submit, 'Save Changes' %>
   </div>
 <% end %>

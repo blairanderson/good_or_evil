@@ -34,8 +34,13 @@ class ApplicationController < ActionController::Base
 
   helper_method :current_cart
 
+  def cart_items_count
+    @cart_items_count ||= current_cart.values.map(&:to_i).sum
+  end
+  helper_method :cart_items_count
+
   def can_checkout_on_amazon?
-    current_cart.values.map(&:to_i).sum > 0
+    cart_items_count > 0
   end
 
   helper_method :can_checkout_on_amazon?

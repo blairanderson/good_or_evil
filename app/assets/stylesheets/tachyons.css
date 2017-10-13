@@ -1165,6 +1165,7 @@ code, .code { font-family: Consolas, monaco, monospace; }
 .light-green { color: #9eebcf; }
 .navy { color: #001b44; }
 .dark-blue { color: #00449e; }
+.link-blue { color: #0000eb; }
 .blue { color: #357edd; }
 .light-blue { color: #96ccff; }
 .lightest-blue { color: #cdecff; }

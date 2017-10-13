@@ -8,7 +8,7 @@ class List < ActiveRecord::Base
   scope :sorted, -> { order("#{SORT_SOURCE} ASC, item_count DESC, sort ASC, page_views DESC") }
   scope :popular, -> { order("page_views DESC") }
   scope :visible, -> { where("item_count > 0").where("user_id = :bootstrap_user_id OR status = :published", bootstrap_user_id: BOOTSTRAP_USER_ID, published: List.statuses["published"]) }
-  scope :for_sidebar, -> { distinct.select("lists.id, lists.name, lists.item_count").joins(:items).where("items.title IS NOT NULL").references(:items) }
+  scope :for_sidebar, -> { distinct.select("lists.id, lists.name, lists.item_count").where("lists.item_count > 0") }
   scope :bootstrap, -> { where(user_id: BOOTSTRAP_USER_ID).sorted }
   scope :amazon, -> { where("source LIKE '%amazon.com%'") }
   scope :wirecutter, -> { where("source LIKE '%wirecutter.com%'") }
