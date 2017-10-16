@@ -6,9 +6,10 @@ class ListsController < ApplicationController
   def index
     list_scope = List.visible.includes(items: :brand).where("items.title IS NOT NULL").references(:items)
     if params[:user_id] && user = User.find_by_id(params[:user_id])
-      list_scope = list_scope.where(user_id: user.id)
+      list_scope = list_scope.where("lists.user_id = ? OR list_items.user_id = ?", user.id, user.id)
     end
     @lists = list_scope.paginate(page: params[:page], per_page: 25)
+
     @items = Item.order("page_views DESC").limit(25).includes(:list_items)
   end
 

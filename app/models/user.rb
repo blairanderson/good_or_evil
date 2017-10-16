@@ -5,6 +5,7 @@ class User < ActiveRecord::Base
          :recoverable, :rememberable, :trackable, :validatable
 
   has_many :lists
+  has_many :list_items
   has_many :saved_items
 
   def saved_item_ids

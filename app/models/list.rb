@@ -1,4 +1,5 @@
 class List < ActiveRecord::Base
+  BOOTSTRAP_USER_ID = 0
   belongs_to :category
   belongs_to :user
   has_many :list_items
@@ -7,7 +8,7 @@ class List < ActiveRecord::Base
   enum display_theme: {grid: 0, story: 1}
   scope :sorted, -> { order("#{SORT_SOURCE} ASC, item_count DESC, sort ASC, page_views DESC") }
   scope :popular, -> { order("page_views DESC") }
-  scope :visible, -> { where("item_count > 0").where("user_id = :bootstrap_user_id OR status = :published", bootstrap_user_id: BOOTSTRAP_USER_ID, published: List.statuses["published"]) }
+  scope :visible, -> { where("item_count > 0").where("lists.user_id = :user_id OR status = :published", user_id: BOOTSTRAP_USER_ID, published: List.statuses["published"]) }
   scope :for_sidebar, -> { distinct.select("lists.id, lists.name, lists.item_count").where("lists.item_count > 0") }
   scope :bootstrap, -> { where(user_id: BOOTSTRAP_USER_ID).sorted }
   scope :amazon, -> { where("source LIKE '%amazon.com%'") }
@@ -19,7 +20,6 @@ class List < ActiveRecord::Base
   end"
 
 
-  BOOTSTRAP_USER_ID = 0
 
   def to_param
     [
