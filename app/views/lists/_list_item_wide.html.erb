@@ -1,0 +1,46 @@
+<% list_item ||= OpenStruct.new(details: false) %>
+
+<div id="item-<%= item.asin %>" data-asin="<%= item.asin %>" class="cf w-100 mw7 center pv3 bb b--black-05">
+  <div class="fl w-20">
+    <div class="aspect-ratio aspect-ratio--6x4">
+      <div class="aspect-ratio--object cover" style="background:url(<%= item.images.dig("LargeImage", "URL") %>) center;">
+        <span class="clip"><%= item.title %></span>
+      </div>
+    </div>
+  </div>
+  <div class="fl w-60">
+    <div class="pv2 ph4">
+      <%= link_to(item.buy_now, class: "link no-underline") do %>
+        <h1 class="f3 fw3 lh-title link no-underline bg-white br3"><%= item.title %></h1>
+      <% end %>
+      <% if list_item && list_item.details %>
+        <h2 class="f5 fw3 lh-copy bg-white br3">
+          <%= list_item.details %>
+        </h2>
+      <% end %>
+      <span class="near-black"><img src="https://icon.now.sh/amazon/14" alt="on Amazon.com"/> Amazon.com</span>
+    </div>
+  </div>
+  <div class="fl w-20">
+    <% if current_user && current_user.saved_item_ids.include?(item.id) %>
+      <%= link_to(saved_item_path(item.id), method: :delete, class: "link bg-white blue dim no-underline") do %>
+        <img src="https://icon.now.sh/bookmark/14/111111" alt="bookmark save item"/>
+        <small class="f6 blue">remove from saved list</small>
+      <% end %>
+    <% else %>
+      <%= link_to(saved_items_path(item: {id: item.id, asin: item.asin}), method: :post, class: "link bg-white blue dim no-underline") do %>
+        <img src="https://icon.now.sh/bookmark_border/14/357edd" alt="bookmark save item"/>
+        <small class="f6 blue">Save for later</small>
+      <% end %>
+    <% end %>
+
+    <div title="Last time we checked was <%= number_to_currency(item.price) %>" class="mv2 f3 fw6 green"><%= number_to_currency(item.price) %></div>
+    <a
+    href="<%= item.buy_now %>"
+    class="f4 db link no-underline dim mv2 br2 ph2 pv1 tc white bg-blue">Buy This Item</a>
+
+    <div class="fw1 mv2 f6 green">Free Shipping</div>
+  </div>
+</div>
+
+

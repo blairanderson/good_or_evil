@@ -19,29 +19,24 @@
         <% end %>
       </blockquote>
     </div>
-    <div class="fl w-100 w-50-ns">
-      <% if @list.body %>
-        <p class="ph4 pv3"><%= @list.body.try(:html_safe) %></p>
-      <% end %>
-    </div>
   </div>
 </div>
 
+<div class="fl w-100 w-50-ns">
+  <% if @list.body %>
+    <p class="ph4 pv3"><%= @list.body.try(:html_safe) %></p>
+  <% end %>
+</div>
 <div class="cf">
+  <div class="fl w-70 mw8">
+    <div class="cf">
+      <% @list_items.each do |list_item| %>
+        <%= render partial: 'lists/list_item_wide', locals: {list_item: list_item, item: list_item.item} %>
+      <% end %>
+    </div>
+  </div>
   <div class="fl w-30">
     <%= render "layouts/sidebar_items" %>
-  </div>
-  <div class="fl w-70">
-    <section class="cf w-100 pa2-ns">
-      <% @list_items.each do |list_item| %>
-        <% if @list.display_theme.to_sym == :grid %>
-          <%= render partial: 'lists/list_item_card', locals: {list_item: list_item, item: list_item.item} %>
-        <% else %>
-          STORY
-          <%= render partial: 'lists/list_item_card', locals: {list_item: list_item, item: list_item.item} %>
-        <% end %>
-      <% end %>
-    </section>
   </div>
 </div>
 
