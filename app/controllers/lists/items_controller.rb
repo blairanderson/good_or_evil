@@ -11,7 +11,7 @@ module Lists
       if missing_item = @list_items.find { |list_item| list_item.item.blank? }
         redirect_to fetch_list_item_path(current_list, missing_item) and return
       end
-      asins = @list_items.map { |li| li.i.asin }
+      asins = @list_items.map { |li| li.item.asin }
       params[:query] ||= current_list.name
       @search_items = (can_bootstrap? ? AmazonFetch.query(params[:query]) : []).reject do |i|
         i.dig("asin").in?(asins)
