@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title><%= content_for?(:title) ? "#{content_for(:title)} - #{current_site.nav_title}" : current_site.nav_title %></title>
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <% if current_site.google_tag_manager.present? %>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=<%= current_site.google_tag_manager %>"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+      gtag('js', new Date());
+
+      gtag('config', '<%= current_site.google_tag_manager %>');
+    </script>
+  <% end %>
+
+  <%= stylesheet_link_tag "application" %>
+  <%= javascript_include_tag "application" %>
+</head>
+<body>
+
+<%= render partial: 'layouts/site/nav' %>
+<div class="<%= site_container_class_name %>">
+  <%= yield %>
+</div>
+<%= render "layouts/site/footer" %>
+<%= yield :javascripts %>
+</body>
+</html>

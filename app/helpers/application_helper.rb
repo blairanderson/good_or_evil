@@ -1,6 +1,6 @@
 module ApplicationHelper
   def nav_title
-    ENV.fetch("NAV_TITLE")
+    "GetRichSlow"
   end
 
   def url_domain(uri)

@@ -1,0 +1,16 @@
+<div class="cf">
+  <div class="fl w-50">
+    <h3 class="tc"><%= link_to("View: #{@account.name}", site_root_url(subdomain: @account.slug), target: "_blank") %></h3>
+    <%= simple_form_for(@account) do |f| %>
+      <h1>
+        <%= f.input :name, label: "Website Name", :autofocus => true, required: true %>
+      </h1>
+
+      <%= f.button :submit, "Get Started!" %>
+    <% end %>
+  </div>
+  <div class="fl w-50">
+    <%= link_to("Lists", ) %>
+
+  </div>
+</div>

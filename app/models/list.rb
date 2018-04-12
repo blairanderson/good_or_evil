@@ -1,6 +1,7 @@
 class List < ActiveRecord::Base
   BOOTSTRAP_USER_ID = 0
   belongs_to :category
+  belongs_to :account
   belongs_to :user
   has_many :list_items
   has_many :items, through: :list_items

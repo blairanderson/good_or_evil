@@ -1,11 +1,27 @@
 <h2 class="tc">Sign up</h2>
 
-<%= simple_form_for(resource, :as => resource_name, :url => registration_path(resource_name)) do |f| %>
-  <%= devise_error_messages! %>
-  <%= f.input :email, :autofocus => true %>
-  <%= f.input :password %>
-  <%= f.input :password_confirmation %>
-  <%= f.button :submit, "Sign up" %>
-<% end %>
+<div class="cf mw8 center nl2 nr2">
+  <div class="fl w-30 ph2">
+    <%= simple_form_for(resource, :as => resource_name, :url => registration_path(resource_name)) do |f| %>
+      <%= devise_error_messages! %>
+      <%= f.input :email, :autofocus => true %>
+      <%= f.input :password %>
+      <%= f.input :password_confirmation %>
+      <%= f.button :submit, "Sign up" %>
+    <% end %>
+  </div>
+  <div class="fl w-70 ph2">
+    <div class="mw7 center">
+      <h1>Create your Own Affiliate Site!</h1>
+      <h2>Build Content, Build Traffic, Get Clicks, Make Money!</h2>
+      <h2>Work from Home!</h2>
+      <h3>Create your own Business!</h3>
+      <h4>BootStrap your 4-hour work week!</h4>
+    </div>
+  </div>
+
+
+</div>
+
 
 <%= render "devise/shared/links" %>

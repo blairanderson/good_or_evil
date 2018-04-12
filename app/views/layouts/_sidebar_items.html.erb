@@ -9,11 +9,5 @@
       </ul>
       <hr/>
     <% end %>
-    <h4 class="tc">Top Lists and Brands</h4>
-    <ul>
-      <% sidebar_items.each do |item| %>
-        <li title="<%= item.name %>" class="truncate"><%= link_to(item.name, item.path, class: "link ttu") %></li>
-      <% end %>
-    </ul>
   </div>
 </div>

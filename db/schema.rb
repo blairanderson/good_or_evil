@@ -11,11 +11,20 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171016155226) do
+ActiveRecord::Schema.define(version: 20180412044242) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
   enable_extension "citext"
+
+  create_table "accounts", force: :cascade do |t|
+    t.string   "name"
+    t.string   "slug"
+    t.datetime "created_at",    null: false
+    t.datetime "updated_at",    null: false
+    t.string   "lazy_logo_url"
+    t.integer  "user_id",       null: false
+  end
 
   create_table "brands", force: :cascade do |t|
     t.citext   "name"
@@ -96,6 +105,7 @@ ActiveRecord::Schema.define(version: 20171016155226) do
     t.integer  "sort",          default: 0
     t.integer  "page_views",    default: 0
     t.string   "source"
+    t.integer  "account_id",                null: false
   end
 
   add_index "lists", ["category_id"], name: "index_lists_on_category_id", using: :btree

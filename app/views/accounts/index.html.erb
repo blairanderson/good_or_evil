@@ -1,0 +1,12 @@
+<div class="mw5 center">
+  <h1>Select Account</h1>
+  <ul class="mw5 center">
+    <% current_accounts.each do |account| %>
+      <li>
+        <%= link_to(account.name, edit_account_path(account)) %>
+      </li>
+    <% end %>
+  </ul>
+
+  <%= link_to("Create another Affiliate", new_account_path) %>
+</div>
