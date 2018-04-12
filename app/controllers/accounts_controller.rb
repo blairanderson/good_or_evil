@@ -35,7 +35,7 @@ class AccountsController < UserController
 
   private
   def valid_params
-    params.require(:account).permit(:name)
+    params.require(:account).permit(:name, :host)
   end
 
 end

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180412164214) do
+ActiveRecord::Schema.define(version: 20180412192447) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -20,11 +20,15 @@ ActiveRecord::Schema.define(version: 20180412164214) do
   create_table "accounts", force: :cascade do |t|
     t.string   "name"
     t.string   "slug"
-    t.datetime "created_at",    null: false
-    t.datetime "updated_at",    null: false
+    t.datetime "created_at",                null: false
+    t.datetime "updated_at",                null: false
     t.string   "lazy_logo_url"
-    t.integer  "user_id",       null: false
+    t.integer  "user_id",                   null: false
+    t.string   "host"
+    t.integer  "page_views",    default: 0, null: false
   end
+
+  add_index "accounts", ["host"], name: "index_accounts_on_host", unique: true, using: :btree
 
   create_table "brands", force: :cascade do |t|
     t.citext   "name"
