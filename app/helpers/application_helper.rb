@@ -1,6 +1,6 @@
 module ApplicationHelper
   def nav_title
-    "GetRichSlow"
+    "Awesome Affiliate Website Builder"
   end
 
   def url_domain(uri)
