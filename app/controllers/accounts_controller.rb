@@ -33,6 +33,17 @@ class AccountsController < UserController
   end
 
 
+  def update
+    if current_account.update(valid_params)
+      flash[:notice] = "Good Job!"
+    else
+      flash[:alert] = current_account.errors.full_messages.join(", ")
+    end
+    
+    redirect_to account_path(current_account)
+  end
+
+
   private
   def valid_params
     params.require(:account).permit(:name, :host)
