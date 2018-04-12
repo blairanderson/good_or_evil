@@ -8,7 +8,8 @@ class AccountsController < UserController
   end
 
   def edit
-    @account = Account.friendly.find(params[:id])
+    @lists = current_account.lists.published
+    @drafts = current_account.lists.drafts
   end
 
   def show

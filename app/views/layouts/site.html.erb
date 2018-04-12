@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title><%= content_for?(:title) ? "#{content_for(:title)} - #{current_site.nav_title}" : current_site.nav_title %></title>
+  <title><%= content_for?(:title) ? "#{content_for(:title)} - #{current_account.nav_title}" : current_account.nav_title %></title>
   <!-- Global site tag (gtag.js) - Google Analytics -->
-  <% if current_site.google_tag_manager.present? %>
-    <script async src="https://www.googletagmanager.com/gtag/js?id=<%= current_site.google_tag_manager %>"></script>
+  <% if current_account.google_tag_manager.present? %>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=<%= current_account.google_tag_manager %>"></script>
     <script>
       window.dataLayer = window.dataLayer || [];
       function gtag() {
@@ -12,7 +12,7 @@
       }
       gtag('js', new Date());
 
-      gtag('config', '<%= current_site.google_tag_manager %>');
+      gtag('config', '<%= current_account.google_tag_manager %>');
     </script>
   <% end %>
 

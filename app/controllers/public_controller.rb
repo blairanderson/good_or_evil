@@ -8,9 +8,9 @@ class PublicController < ApplicationController
     redirect_to root_path and return unless @site
   end
 
-  def current_site
+  def current_account
     @site ||= Account.friendly.find(request.subdomain)
   end
 
-  helper_method :current_site
+  helper_method :current_account
 end

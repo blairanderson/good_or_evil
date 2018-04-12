@@ -5,8 +5,8 @@ Rails.application.routes.draw do
   get '/sitemap.xml.gz' => 'sitemap#sitemap', format: :xml
 
   constraints(SubdomainBlockList) do
-    resources :sites
-    get '/' => 'sites#show', as: :site_root
+    get '/' => 'sites#index', as: :site_root
+    get '/:id' => 'sites#show', as: :site_list
   end
 
   constraints subdomain: 'www' do
@@ -36,10 +36,9 @@ Rails.application.routes.draw do
     root to: 'accounts#index'
   end
 
+  # if there is no subdomain, just redirect to WWW
   constraints(subdomain: '') do
-    # binding.pry
-    get '/*path' => redirect { |params, request|
-        URI.parse(request.url).tap { |uri| uri.host = "www.#{uri.host}" }.to_s
-      }
+    get '/*path' => redirect { |params, request|  URI.parse(request.url).tap { |uri| uri.host = "www.#{uri.host}" }.to_s }
+    get '/' => redirect { |params, request|  URI.parse(request.url).tap { |uri| uri.host = "www.#{uri.host}" }.to_s }
   end
 end

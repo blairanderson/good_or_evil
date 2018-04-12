@@ -1,16 +1,34 @@
 <div class="cf">
   <div class="fl w-50">
-    <h3 class="tc"><%= link_to("View: #{@account.name}", site_root_url(subdomain: @account.slug), target: "_blank") %></h3>
-    <%= simple_form_for(@account) do |f| %>
+    <h3 class="tc"><%= link_to("View: #{current_account.name}", site_root_url(subdomain: current_account.slug), target: "_blank") %></h3>
+    <%= simple_form_for(current_account) do |f| %>
       <h1>
         <%= f.input :name, label: "Website Name", :autofocus => true, required: true %>
       </h1>
-
-      <%= f.button :submit, "Get Started!" %>
+      <%= f.button :submit %>
     <% end %>
   </div>
   <div class="fl w-50">
-    <%= link_to("Lists", ) %>
+    <%= link_to("New List", new_account_list_path(current_account, )) %>
+    <% if @lists.any? %>
+      <h3>Published Lists</h3>
+      <ul>
+        <% @lists.each do |list| %>
+          <li><%= list %></li>
+        <% end %>
+      </ul>
+    <% end %>
+    <% if @drafts.any? %>
+      <% if @lists.any? %>
+        <hr/>
+      <% end %>
 
+      <h3>Drafted Lists</h3>
+      <ul>
+        <% @drafts.each do |list| %>
+          <li><%= list %></li>
+        <% end %>
+      </ul>
+    <% end %>
   </div>
 </div>

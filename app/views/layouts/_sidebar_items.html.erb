@@ -1,13 +1,17 @@
-<div class="pa3">
-  <div class="br b--black-10 bt ph2">
-    <% if current_history.length > 0 %>
-      <h4 class="tc">Recently Viewed</h4>
-      <ul>
-        <% current_history.each do |item| %>
-          <li title="<%= item.name %>" class="truncate"><%= link_to(item.name, item.path, class: "link ttu") %></li>
-        <% end %>
-      </ul>
-      <hr/>
-    <% end %>
+<form class="pt0 pb4 black-80">
+  <div class="measure">
+    <input id="search" placeholder="Search the Site..." class="input-reset ba b--black-20 pa3 mb2 db w-100" type="search" name="q" aria-describedby="name-desc">
   </div>
-</div>
+</form>
+
+
+<% if current_history.length > 0 %>
+  <hr/>
+  <h4 class="tc">Recently Viewed</h4>
+  <ul>
+    <% current_history.each do |item| %>
+      <li title="<%= item.name %>" class="truncate"><%= link_to(item.name, item.path, class: "link ttu") %></li>
+    <% end %>
+  </ul>
+  <hr/>
+<% end %>

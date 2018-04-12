@@ -1,32 +1,29 @@
 class List < ActiveRecord::Base
+  extend FriendlyId
+  friendly_id :name, use: :scoped, scope: [:account]
   BOOTSTRAP_USER_ID = 0
   belongs_to :category
   belongs_to :account
   belongs_to :user
   has_many :list_items
   has_many :items, through: :list_items
-  enum status: {draft: 0, published: 1, archived: 2, hidden: 3}
+  enum status: {drafts: 0, published: 1, archived: 2, hidden: 3}
   enum display_theme: {grid: 0, story: 1}
   scope :sorted, -> { order("#{SORT_SOURCE} ASC, item_count DESC, sort ASC, page_views DESC") }
   scope :popular, -> { order("page_views DESC") }
-  scope :visible, -> { where("item_count > 0").where("lists.user_id = :user_id OR status = :published", user_id: BOOTSTRAP_USER_ID, published: List.statuses["published"]) }
+  scope :visible, -> { where("status = :published", published: List.statuses["published"]) }
   scope :for_sidebar, -> { distinct.select("lists.id, lists.name, lists.item_count").where("lists.item_count > 0") }
   scope :bootstrap, -> { where(user_id: BOOTSTRAP_USER_ID).sorted }
   scope :amazon, -> { where("source LIKE '%amazon.com%'") }
   scope :wirecutter, -> { where("source LIKE '%wirecutter.com%'") }
-  SORT_SOURCE = "case
-    when source LIKE '%wirecutter.com%' THEN 1
-    when source LIKE '%amazon.com%' THEN 2
-    else 9999
-  end"
+  SORT_SOURCE = "CASE
+    WHEN source LIKE '%wirecutter.com%' THEN 1
+    WHEN source LIKE '%amazon.com%' THEN 2
+    ELSE 9999
+  END"
 
-
-
-  def to_param
-    [
-      id,
-      (name.truncate(40) if name)
-    ].compact.join("-").parameterize
+  def image
+    "//mrmrs.github.io/photos/cpu.jpg"
   end
 
   validates :name, length: {minimum: 5}, allow_blank: true

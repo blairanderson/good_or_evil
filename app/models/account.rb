@@ -5,8 +5,14 @@ class Account < ActiveRecord::Base
   extend FriendlyId
   friendly_id :name, use: :scoped, scope: [:user]
 
+
+  # PUBLIC STUFF!
   def google_tag_manager
     nil
+  end
+
+  def lists_per_page
+    25
   end
 
   def links
