@@ -10,7 +10,7 @@ class UserController < ApplicationController
 
   def find_accounts
     @account_count ||= current_user.accounts.count
-    @accounts ||= current_user.accounts
+    @accounts ||= current_user.accounts.order(page_views: :desc)
   end
 
   def current_account
