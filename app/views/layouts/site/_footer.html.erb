@@ -1,21 +1,23 @@
 <footer class="bg-near-white black-50 mt5 pv5 pv6-l ph4 cf">
-  <div class="fl w-third">
-    <h2 class="tc site.nav_title"><%= current_account.nav_title %></h2>
+  <div class="cf">
+    <div class="fl w-third">
+      <h2 class="tc site.nav_title"><%= current_account.nav_title %></h2>
+    </div>
+
+    <div class="fl w-third">
+      <h3 class="tc"></h3>
+    </div>
   </div>
-
-  <div class="fl w-third">
-    <h3 class="tc"></h3>
-
+  <div class="tc">
+    <p>
+      Copyright © <%= Date.today.year %>
+      by <%=
+        p = current_account.host ? current_account.host : root_url(subdomain: current_account.slug)
+        link_to(p, p)
+    %>
+      is a participant in the Amazon Services LLC Associates Program, an affiliate advertising program designed to
+      provide a means for sites to earn advertising fees by advertising and linking to Amazon.com. Amazon, the Amazon
+      logo, AmazonSupply, and the AmazonSupply logo are trademarks of Amazon.com, Inc. or its affiliates.
+    </p>
   </div>
-
-  <p>
-    Copyright © <%= Date.today.year %>
-    by <%=
-      p = current_account.host ? current_account.host : root_url(subdomain: current_account.slug)
-      link_to(p, p)
-  %>
-    is a participant in the Amazon Services LLC Associates Program, an affiliate advertising program designed to
-    provide a means for sites to earn advertising fees by advertising and linking to Amazon.com. Amazon, the Amazon
-    logo, AmazonSupply, and the AmazonSupply logo are trademarks of Amazon.com, Inc. or its affiliates.
-  </p>
 </footer>

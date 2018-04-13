@@ -6,6 +6,7 @@
       <% if controller.respond_to?(:current_accounts) && current_accounts.size > 1 %>
         <%= select_tag(:account_id, options_from_collection_for_select(current_accounts, :slug, :name, current_account.try(:slug)), prompt: "Change Account") %>
       <% end %>
+      <%= link_to('Create Another Website!', new_account_path, class: "link dim dark-gray f6 f5-l dib mr3 mr4-l") %>
       <%= link_to('Logout', destroy_user_session_path, :method => :delete, class: "link dim dark-gray f6 f5-l dib mr3 mr4-l") %>
       <%= link_to('Edit profile', edit_user_registration_path, class: "link dim dark-gray f6 f5-l dib") %>
     <% else %>
