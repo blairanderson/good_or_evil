@@ -4,9 +4,18 @@
   </div>
 
   <div class="fl w-third">
-    <h3 class="tc">sitefooter</h3>
-    <ul>
-        <li></li>
-    </ul>
+    <h3 class="tc"></h3>
+
   </div>
+
+  <p>
+    Copyright © <%= Date.today.year %>
+    by <%=
+      p = current_site.host ? current_site.host : root_url(subdomain: current_account.slug)
+      link_to(p, p)
+  %>
+    is a participant in the Amazon Services LLC Associates Program, an affiliate advertising program designed to
+    provide a means for sites to earn advertising fees by advertising and linking to Amazon.com. Amazon, the Amazon
+    logo, AmazonSupply, and the AmazonSupply logo are trademarks of Amazon.com, Inc. or its affiliates.
+  </p>
 </footer>

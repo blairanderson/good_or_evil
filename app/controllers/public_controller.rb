@@ -11,9 +11,6 @@ class PublicController < ApplicationController
   OUR_DOMAINS = %w(aawbuilder.com lvh.me).freeze
 
   def current_account
-    Rails.logger.info("current_account-HOST: #{request.host}")
-    Rails.logger.info("current_account-SUBDOMAIN: #{request.subdomain}")
-
     @site ||= if OUR_DOMAINS.any? { |d| request.host.to_s.include?(d) }
                 Account.friendly.find(request.subdomain) rescue nil
               else

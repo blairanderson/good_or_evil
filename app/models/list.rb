@@ -26,6 +26,10 @@ class List < ActiveRecord::Base
     "//mrmrs.github.io/photos/cpu.jpg"
   end
 
+  def word_count
+    ActionController::Base.helpers.strip_tags(body).to_s.scan(/[\w-]+/).size
+  end
+
   validates :name, length: {minimum: 5}, allow_blank: true
   validates :body, length: {minimum: 30}, allow_blank: true
 

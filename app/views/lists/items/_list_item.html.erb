@@ -6,12 +6,8 @@
       <%= image_tag(item.images.dig("MediumImage", "URL"), class: "img-responsive img-rounded") %>
     </div>
     <div class="col-sm-10">
-      <%= link_to "(remove)", list_item_path(current_list, list_item), class: 'pull-right', method: :delete, data: {confirm: 'are you sure?'} %>
-      <div>
-        <%= link_to(item.brand.name, item.brand) if item.brand %><%= item.title %> <br/>
-        <small>(Last time we checked this was <%= number_to_currency(item.price) %>)</small>
-      </div>
-      <%= simple_form_for list_item, url: list_item_path(current_list, list_item) do |f| %>
+      <%= link_to "(remove)", account_list_item_path(current_account, current_list, list_item), class: 'pull-right', method: :delete, data: {confirm: 'are you sure?'} %>
+      <%= simple_form_for(list_item, url: account_list_item_path(current_account, current_list, list_item)) do |f| %>
         <%= f.input :details, label: "Why is this item ##{list_item_counter+1} on the list?" %>
         <%= f.button(:submit) %>
       <% end %>

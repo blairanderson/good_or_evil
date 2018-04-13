@@ -22,4 +22,8 @@ class Account < ActiveRecord::Base
   def nav_title
     name
   end
+
+  def header_subtitle
+    nil
+  end
 end

@@ -12,12 +12,12 @@
     <% end %>
   </div>
   <div class="fl w-50">
-    <%= link_to("New List", new_account_list_path(current_account, )) %>
+    <%= link_to("New List", new_account_list_path(current_account)) %>
     <% if @lists.any? %>
       <h3>Published Lists</h3>
-      <ul>
+      <ul class="list ma0 pa0">
         <% @lists.each do |list| %>
-          <li><%= list %></li>
+          <%= render partial: "accounts/list_element", locals: {list: list} %>
         <% end %>
       </ul>
     <% end %>
@@ -27,9 +27,9 @@
       <% end %>
 
       <h3>Drafted Lists</h3>
-      <ul>
+      <ul class="list ma0 pa0">
         <% @drafts.each do |list| %>
-          <li><%= list %></li>
+          <%= render partial: "accounts/list_element", locals: {list: list} %>
         <% end %>
       </ul>
     <% end %>

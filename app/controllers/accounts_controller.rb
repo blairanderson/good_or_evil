@@ -39,7 +39,7 @@ class AccountsController < UserController
     else
       flash[:alert] = current_account.errors.full_messages.join(", ")
     end
-    
+
     redirect_to account_path(current_account)
   end
 

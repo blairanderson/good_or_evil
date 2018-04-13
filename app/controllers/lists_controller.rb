@@ -1,4 +1,4 @@
-class ListsController < ApplicationController
+class ListsController < UserController
   before_action :authenticate_user!, except: [:index, :show]
   include SetList
   helper_method :current_list
@@ -15,26 +15,15 @@ class ListsController < ApplicationController
   end
 
   def preview
-    @list = current_user.lists.includes(:category, :user).find(params[:id])
+    @list = current_user.lists.includes(:category, :user).friendly.find(params[:id])
     @list_items = @list.list_items.order("sort ASC").includes(:item)
+    render layout: "site_preview", template: "sites/show"
   end
 
   def new
-    @list = false
-    @drafts = []
-    @published = []
-    if current_user
-      @list = current_user.lists.draft.where(name: nil).first_or_create
-      @drafts = current_user.lists.draft.where.not(name: nil)
-      @published = current_user.lists.published
-    else
-      @list = if session[:list_id]
-                List.bootstrap.find(session[:list_id])
-              end
-    end
-    @count = List.count
-
-    @bootstrap = (is_admin? || is_robot?) ? List.bootstrap.amazon.sorted : []
+    @list = current_user.lists.draft.where(name: nil).first_or_create
+    @drafts = current_user.lists.draft.where.not(name: nil)
+    @published = current_user.lists.published
   end
 
   def create
@@ -47,8 +36,7 @@ class ListsController < ApplicationController
   end
 
   def edit
-    @list_items = current_list.list_items.includes(:item, item: :brand)
-    @can_change_display_theme = @list_items.length > 0 && @list_items.none? { |li| li.details.blank? }
+    @list_items = current_list.list_items
   end
 
   def update
@@ -57,8 +45,8 @@ class ListsController < ApplicationController
     else
       flash[:alert] = current_list.errors.full_messages.join(", ")
     end
-    current_list.reload
-    redirect_to(current_list.published? ? list_path(current_list) : new_list_item_path(current_list))
+
+    redirect_to edit_account_list_path(current_account, current_list)
   end
 
   def destroy

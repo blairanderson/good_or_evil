@@ -1,23 +1,18 @@
-<%= simple_form_for Item.new, url: list_items_path(@list) do |f| %>
-  <%=
-      f.input(
-        :url, # params are stripped and sent to source
-        as: :url,
-        label: false,
-        placeholder: "link to item! amazon.com/dp/blahblahblah",
-        input_html: {
-          onchange: "preview(this)",
-          onpaste: "preview(this)",
-          onblur: "preview(this)",
-          style: "height: 44px; font-size: 24px; text-align: center;"
-        }
-      )
-  %>
-  <%= f.button(:submit, class: "disabled") %>
-<% end %>
+<%
+   simple_form_url = if list_item.persisted?
+                       account_list_item_path(current_account, current_list, list_item)
+                     else
+                       account_list_items_path(current_account, current_list)
+                     end
 
-<script type="text/javascript">
-  var preview = function(target) {
-    $(target.form).find("input[type=submit]").removeClass("disabled")
-  };
-</script>
+%>
+
+<%= simple_form_for(list_item, url: simple_form_url) do |f| %>
+  <%= f.input :title, as: :string, placeholder: "Some Awesome Product title here!" %>
+  <%= f.input :affiliate_link, as: :string, placeholder: "your amazon Affiliate link to this product" %>
+  <% if list_item.persisted? %>
+    <%= f.input :body, as: :hidden %>
+    <trix-editor input="list_item_body" placeholder="Add a super cool description to help people find this list!"></trix-editor>
+  <% end %>
+  <%= f.button :submit %>
+<% end %>

@@ -2,25 +2,13 @@
 <html>
 <head>
   <title><%= content_for?(:title) ? "#{content_for(:title)} - #{current_account.nav_title}" : current_account.nav_title %></title>
-  <!-- Global site tag (gtag.js) - Google Analytics -->
-  <% if current_account.google_tag_manager.present? %>
-    <script async src="https://www.googletagmanager.com/gtag/js?id=<%= current_account.google_tag_manager %>"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag() {
-        dataLayer.push(arguments);
-      }
-      gtag('js', new Date());
-
-      gtag('config', '<%= current_account.google_tag_manager %>');
-    </script>
-  <% end %>
-
   <%= stylesheet_link_tag "application" %>
   <%= javascript_include_tag "application" %>
 </head>
 <body>
-
+<p class="bg-gold mt0 pv4 tc system-sans-serif ttu">
+  <strong>Heads Up!</strong> You're in preview mode! - Go back and <%= link_to("edit this post", edit_account_list_path(current_account, current_list)) %>.
+</p>
 <%= render partial: 'layouts/site/nav' %>
 <%= render partial: 'layouts/site/header' %>
 <div class="<%= site_container_class_name %>">

@@ -1,0 +1,27 @@
+<li class="bb b--black-10 cf db w-100">
+  <div class="fl w-40"><h3 class="ma0 pa0"><%= list.name %></h3></div>
+  <div class="fl w-60">
+    <table>
+      <thead>
+      <tr>
+        <th>WordCount</th>
+        <th>PageViews</th>
+        <th>Items</th>
+        <th>Actions</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr>
+
+        <td><%= list.word_count %></td>
+        <td><%= list.page_views %></td>
+        <td><%= list.item_count %></td>
+        <td><h4 class="di"><%= link_to('edit', edit_account_list_path(current_account, list.id)) %></h4>
+          <% if list.slug %>
+            <h4 class="di"><%= link_to('view', site_list_url(list.slug, subdomain: current_account.slug), target: "_blank") %></h4>
+          <% end %></td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+</li>

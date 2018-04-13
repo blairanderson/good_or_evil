@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180412192447) do
+ActiveRecord::Schema.define(version: 20180413040417) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -60,39 +60,19 @@ ActiveRecord::Schema.define(version: 20180412192447) do
   add_index "friendly_id_slugs", ["sluggable_id"], name: "index_friendly_id_slugs_on_sluggable_id", using: :btree
   add_index "friendly_id_slugs", ["sluggable_type"], name: "index_friendly_id_slugs_on_sluggable_type", using: :btree
 
-  create_table "items", force: :cascade do |t|
-    t.string   "title"
-    t.string   "asin"
-    t.integer  "brand_id"
-    t.text     "description"
-    t.integer  "price_cents",        default: 0
-    t.text     "buy_now"
-    t.integer  "total_offers",       default: 0
-    t.integer  "sales_rank"
-    t.integer  "page_views",         default: 0
-    t.text     "dimensions"
-    t.text     "package_dimensions"
-    t.text     "buy_box"
-    t.text     "images"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.text     "source"
-  end
-
-  add_index "items", ["brand_id"], name: "index_items_on_brand_id", using: :btree
-
   create_table "list_items", force: :cascade do |t|
-    t.integer  "list_id",                null: false
-    t.integer  "item_id"
-    t.text     "details"
-    t.integer  "sort",       default: 0
-    t.datetime "created_at",             null: false
-    t.datetime "updated_at",             null: false
-    t.integer  "user_id",    default: 0
+    t.integer  "list_id",                    null: false
+    t.integer  "sort",           default: 0, null: false
+    t.datetime "created_at",                 null: false
+    t.datetime "updated_at",                 null: false
+    t.integer  "user_id",        default: 0
+    t.text     "title"
+    t.text     "body"
+    t.text     "affiliate_link"
+    t.integer  "click_count",    default: 0
+    t.string   "asin"
   end
 
-  add_index "list_items", ["item_id"], name: "index_list_items_on_item_id", using: :btree
-  add_index "list_items", ["list_id", "item_id"], name: "index_list_items_on_list_id_and_item_id", unique: true, using: :btree
   add_index "list_items", ["list_id"], name: "index_list_items_on_list_id", using: :btree
 
   create_table "lists", force: :cascade do |t|

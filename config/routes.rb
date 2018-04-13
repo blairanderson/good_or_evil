@@ -15,11 +15,7 @@ Rails.application.routes.draw do
     resources :accounts do
       resources :lists do
         scope module: :lists do
-          resources :items do
-            member do
-              get :fetch
-            end
-          end
+          resources :items
         end
         member do
           get :preview
@@ -27,7 +23,6 @@ Rails.application.routes.draw do
       end
       resources :items
       resources :saved_items
-      resources :boost_lists
       resources :cart_items
       resources :categories, path: 'leaderboard', only: [:show]
       resources :brands

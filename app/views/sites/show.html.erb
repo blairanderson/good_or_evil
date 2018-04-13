@@ -1,5 +1,66 @@
-<h1>YOLO</h1>
+<div class="cf mv4">
+  <section class="avenir fl-ns w-70-ns">
+    <article class="baskerville pb5">
+      <header class="avenir tc-l ph3 ph4-ns pt0">
+        <h1 class="f2 f1-l measure lh-title fw1 mv0"><%= link_to(@list.name, params, class: "link near-black") %></h1>
+        <p>
+          Published
+          <time class="f5 f4-l fw1 baskerville mb4"><%= @list.updated_at.to_date.to_formatted_s(:long) %></time>
+          by <%= @list.user.public_name %>
+          <% if @list.page_views > 10 %>
+            <span>, </span>
+            <small class="black-50"><%= @list.page_views %> page views</small>
+          <% end %>
+          <span>, </span>
+          <small class="black-50"><%= @list.item_count %> products reviewed</small>
+          - 3 Comments
+        </p>
 
-<h2><%= current_account.name %></h2>
-<h3><%= @list.name %></h3>
+        <img class="w-100 dib measure f3" src="<%= @list.image %>" alt="<%= @list.name %>"/>
 
+        <p class="f6 measure-wide center">
+          <small>
+            <strong><%= current_account.name %></strong> participates in affiliate programs. We may receive commissions
+            if you purchase an item via links on this page to affiliate partner sites.
+            Buying products through these links helps us grow and write better content in the
+            future. <%= link_to('Read more about what we do.', '#') %>
+          </small>
+        </p>
+      </header>
+
+      <div class="cf">
+        <details class="f4 mb4 center measure lh-copy pointer">
+          <summary>
+            <h3 class="di">Table of Contents
+              <small class="blue">[show]</small>
+            </h3>
+          </summary>
+          <ol class="ma0 pb2 mt0">
+            <% @list.items.each_with_index do |item, index| %>
+              <li class="">
+                <%= link_to({anchor: item.id}, class: "db link near-black dim") do %>
+                  <%= image_tag(item.images.dig("ThumbnailImage", "URL"), alt: item.title, class: "ba b--black-10 br2 v-mid w2 h2") rescue nil %>
+                  <span class="di truncate"><%= item.title.truncate(30) %></span>
+                <% end %>
+              </li>
+            <% end %>
+          </ol>
+        </details>
+      </div>
+      <div class="ph3 ph4-m ph5-l">
+        <div class="f4 mb4 center measure lh-copy">
+          <%= @list.body.html_safe %>
+        </div>
+        <hr class="mw5 center mv4"/>
+        <% @list.list_items.each do |list_item| %>
+          <p><%= list_item.details %></p>
+        <% end %>
+      </div>
+    </article>
+  </section>
+  <aside class="dn db-ns fl-ns w-30-ns">
+    <div class="pv4 ph3">
+      <%= render "layouts/sidebar_items" %>
+    </div>
+  </aside>
+</div>

@@ -7,7 +7,7 @@ class SitesController < PublicController
   end
 
   def show
-    @list = current_account.lists.published.find(params[:id])
+    @list = current_account.lists.published.friendly.find(params[:id])
     @list.update_column(:page_views, @list.page_views+1)
   end
 end

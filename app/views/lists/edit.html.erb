@@ -1,17 +1,39 @@
-<div class="measure-wide center">
-  <h3>List/Review</h3>
-  <%= render partial: "lists/actions" %>
-</div>
-
-<div class="cf measure-wide center">
-  <hr/>
-  <%= render 'lists/form' %>
-  <hr/>
-</div>
-
-<div class="measure center">
-  <h4 class="tc">List Items</h4>
-  <%= link_to("Add Items To This List!", new_list_item_path(@list), class: "#{SimpleForm.button_class} w-100 db tc link b--blue hover-white hover-bg-blue") %>
+<div class="cf">
+  <div class="fl w-50">
+    <div class="tc"><%= render partial: 'lists/actions' %></div>
+    <div class="measure center">
+      <details>
+        <summary><h4 class="di">Publishing Checklist</h4></summary>
+        <ul class="list ma0 pa0">
+          <li><%= check_box_tag(:title, "1", current_list.name.present?, readonly: "readonly", disabled: "disabled") %>
+            Title
+          </li>
+          <li><%= check_box_tag(:image, "1", current_list.image, readonly: "readonly", disabled: "disabled") %>Header
+            Image
+          </li>
+          <li><%= check_box_tag(:body, "1", current_list.body.to_s.length > 50, readonly: "readonly", disabled: "disabled") %>
+            Basic Page Description
+          </li>
+          <li><%= check_box_tag(:item_count, "1", current_list.item_count > 0, readonly: "readonly", disabled: "disabled") %>
+            at least 1 List item
+          </li>
+        </ul>
+      </details>
+    </div>
+    <%= render 'lists/form' %>
+  </div>
+  <div class="fl w-50">
+    <h4 class="tc">List Items</h4>
+    <details <%= 'open' if current_list.item_count < 2 %>>
+      <summary class="tc"><h3 class="di">New Item</h3></summary>
+      <%= render partial: 'lists/items/form', locals: {list_item: current_list.list_items.build} %>
+      <hr/>
+    </details>
+    <% current_list.list_items.where.not(id: nil).each do |list_item| %>
+      <%= render partial: 'lists/items/form', locals: {list_item: list_item} %>
+      <hr/>
+    <% end %>
+  </div>
 </div>
 
 <script src="https://cdn.rawgit.com/basecamp/trix/e34a0db3c9e0ca303488227fceb6cd9b33cfdd09/dist/trix.js" charset="utf-8"></script>
