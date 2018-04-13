@@ -2,10 +2,10 @@
   <a class="db dtc-l v-mid mid-gray link dim w-100 w-25-l tc tl-l mb2 mb0-l" href="<%= root_path %>" title="Home"><%= nav_title %></a>
 
   <div class="db dtc-l v-mid w-100 w-75-l tc tr-l">
-    <%# link_to('New List', new_list_path, class: "link dim dark-gray f6 f5-l dib mr3 mr4-l") %>
     <% if user_signed_in? %>
-      <!--options_from_collection_for_select(collection, value_method, text_method, selected = nil)-->
-      <%= select_tag(:account_id, options_from_collection_for_select(current_accounts, :slug, :name, current_account.try(:slug)), prompt: "Change Account") %>
+      <% if controller.respond_to?(:current_accounts) && current_accounts.size > 1 %>
+        <%= select_tag(:account_id, options_from_collection_for_select(current_accounts, :slug, :name, current_account.try(:slug)), prompt: "Change Account") %>
+      <% end %>
       <%= link_to('Logout', destroy_user_session_path, :method => :delete, class: "link dim dark-gray f6 f5-l dib mr3 mr4-l") %>
       <%= link_to('Edit profile', edit_user_registration_path, class: "link dim dark-gray f6 f5-l dib") %>
     <% else %>

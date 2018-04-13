@@ -8,8 +8,8 @@ class AccountsController < UserController
   end
 
   def edit
-    @lists = current_account.lists.published
-    @drafts = current_account.lists.drafts
+    @lists = current_account.lists.published.paginate(per_page: 25, page: params[:list_page])
+    @drafts = current_account.lists.drafts.paginate(per_page: 25, page: params[:draft_page])
   end
 
   def show
@@ -46,7 +46,7 @@ class AccountsController < UserController
 
   private
   def valid_params
-    params.require(:account).permit(:name, :host)
+    params.require(:account).permit(:name, :host, :header_image)
   end
 
 end

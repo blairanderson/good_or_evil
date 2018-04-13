@@ -13,4 +13,16 @@ module ApplicationHelper
     "container"
   end
 
+  def feature(name)
+    feature_cb(name, true)
+  end
+
+  def todo(name)
+    feature_cb(name, false)
+  end
+
+  def feature_cb(name, checked)
+    content_tag(:span, "#{check_box_tag(name.parameterize, 1, checked, readonly: "readonly", disabled: "disabled")} #{name}".html_safe)
+  end
+
 end

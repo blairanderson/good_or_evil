@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180413044028) do
+ActiveRecord::Schema.define(version: 20180413183007) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -20,12 +20,16 @@ ActiveRecord::Schema.define(version: 20180413044028) do
   create_table "accounts", force: :cascade do |t|
     t.string   "name"
     t.string   "slug"
-    t.datetime "created_at",                null: false
-    t.datetime "updated_at",                null: false
+    t.datetime "created_at",                            null: false
+    t.datetime "updated_at",                            null: false
     t.string   "lazy_logo_url"
-    t.integer  "user_id",                   null: false
+    t.integer  "user_id",                               null: false
     t.string   "host"
-    t.integer  "page_views",    default: 0, null: false
+    t.integer  "page_views",                default: 0, null: false
+    t.string   "header_image_id"
+    t.string   "header_image_filename"
+    t.string   "header_image_content_size"
+    t.string   "header_image_content_type"
   end
 
   add_index "accounts", ["host"], name: "index_accounts_on_host", unique: true, using: :btree

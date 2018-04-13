@@ -1,5 +1,5 @@
 source 'https://rubygems.org'
-ruby "2.3.1"
+ruby '2.3.1'
 
 gem 'rails', '4.2.5'
 gem 'pg'
@@ -7,6 +7,7 @@ gem 'amazon-ecs'
 gem 'devise'
 gem 'high_voltage', '~> 3.0.0'
 gem 'refile', require: 'refile/rails'
+gem 'refile-postgres', '~> 1.4.0'
 gem 'refile-mini_magick'
 gem 'simple_form'
 gem 'sitemap_generator'

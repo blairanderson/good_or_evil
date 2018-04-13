@@ -4,7 +4,7 @@ class Account < ActiveRecord::Base
   validates_uniqueness_of :name, scope: [:user_id]
   extend FriendlyId
   friendly_id :name, use: :scoped, scope: [:user]
-
+  attachment :header_image
 
   # PUBLIC STUFF!
   def google_tag_manager

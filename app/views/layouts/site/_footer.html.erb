@@ -11,7 +11,7 @@
   <p>
     Copyright © <%= Date.today.year %>
     by <%=
-      p = current_site.host ? current_site.host : root_url(subdomain: current_account.slug)
+      p = current_account.host ? current_account.host : root_url(subdomain: current_account.slug)
       link_to(p, p)
   %>
     is a participant in the Amazon Services LLC Associates Program, an affiliate advertising program designed to
