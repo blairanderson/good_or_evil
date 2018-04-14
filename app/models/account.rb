@@ -17,6 +17,10 @@ class Account < ActiveRecord::Base
     Account.where.not(host: nil).pluck(:host, :id).to_h
   end
 
+  def self.slugs
+    Account.pluck(:slug, :id).to_h
+  end
+
   def confirm_domain
 
   end
