@@ -13,3 +13,11 @@
  */
 
 @import "tachyons";
+
+code {
+  @extend .white;
+  @extend .bg-near-black;
+  @extend .br3;
+  @extend .pv0;
+  @extend .ph1;
+}

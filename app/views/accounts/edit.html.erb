@@ -9,9 +9,29 @@
         <%= f.input :name, label: "Website Name", :autofocus => true, required: true %>
       </h1>
 
+      <p class="bg-light-blue pa4 br3">
+        GO TO WHEREVER YOU BOUGHT YOUR DOMAIN... <br/>
+        add a <code>cname</code> record to <br/>
+        <code><%= URI(site_root_url(subdomain: current_account.slug)).host %>.</code>
+      </p>
+
+      <label for="rules">Domain Rules!</label>
+      <ul>
+        <li>must include a subdomain! most typically <code>www</code>. Example
+          <highlight>www.yoursite.com</highlight>
+        </li>
+        <li>Cannot be a naked domain (anyways, did you know the SEO is better on WWW that it is without?)</li>
+        <% if current_account.host.to_s.length > 1 %>
+          <% current_account.fetch_domain_info.each do |k,v| %>
+          <li><strong><%= k %></strong>: <%= v.inspect %></li>
+          <% end %>
+        <% end %>
+      </ul>
       <h2>
         <%= f.input :host, label: "Your Full Custom Domain" %>
       </h2>
+
+
       <%= f.button :submit %>
     <% end %>
   </div>

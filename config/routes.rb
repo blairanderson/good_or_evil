@@ -1,10 +1,10 @@
-require 'constraints/subdomain_block_list'
+require 'constraints/subdomain_white_list'
 
 Rails.application.routes.draw do
   get '/robots.:format' => 'sitemap#robots'
   get '/sitemap.xml.gz' => 'sitemap#sitemap', format: :xml
 
-  constraints(SubdomainBlockList) do
+  constraints(SubdomainWhiteList) do
     get '/' => 'sites#index', as: :site_root
     get '/:id' => 'sites#show', as: :site_list
   end

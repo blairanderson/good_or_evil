@@ -60,7 +60,11 @@ CREATE TABLE accounts (
     header_image_id character varying,
     header_image_filename character varying,
     header_image_content_size character varying,
-    header_image_content_type character varying
+    header_image_content_type character varying,
+    domain_info json DEFAULT '{}'::json,
+    host_status integer,
+    host_added_at timestamp without time zone,
+    host_confirmed_at timestamp without time zone
 );
 
 
@@ -682,4 +686,6 @@ INSERT INTO schema_migrations (version) VALUES ('20180413044028');
 INSERT INTO schema_migrations (version) VALUES ('20180413183007');
 
 INSERT INTO schema_migrations (version) VALUES ('20180413183943');
+
+INSERT INTO schema_migrations (version) VALUES ('20180413221027');
 
