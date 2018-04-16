@@ -1,6 +1,9 @@
 class Account < ActiveRecord::Base
   belongs_to :user
   has_many :lists
+  has_many :account_invitations
+  has_many :memberships
+  has_many :members, through: :memberships, source: :user
   validates_uniqueness_of :name, scope: [:user_id]
 
   attachment :header_image

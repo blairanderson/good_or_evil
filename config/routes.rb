@@ -12,7 +12,9 @@ Rails.application.routes.draw do
   constraints subdomain: 'www' do
     devise_for :users, controllers: {registrations: "registrations"}
 
+    resources :account_invitations, only: [:index, :create, :destroy]
     resources :accounts do
+
       resources :lists do
         scope module: :lists do
           resources :items
@@ -33,7 +35,7 @@ Rails.application.routes.draw do
 
   # if there is no subdomain, just redirect to WWW
   constraints(subdomain: '') do
-    get '/*path' => redirect { |params, request|  URI.parse(request.url).tap { |uri| uri.host = "www.#{uri.host}" }.to_s }
-    get '/' => redirect { |params, request|  URI.parse(request.url).tap { |uri| uri.host = "www.#{uri.host}" }.to_s }
+    get '/*path' => redirect { |params, request| URI.parse(request.url).tap { |uri| uri.host = "www.#{uri.host}" }.to_s }
+    get '/' => redirect { |params, request| URI.parse(request.url).tap { |uri| uri.host = "www.#{uri.host}" }.to_s }
   end
 end

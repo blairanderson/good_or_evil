@@ -20,10 +20,10 @@
   <%= render partial: 'layouts/nav' %>
   <div class="sans-serif <%= container_class_name %>">
     <% if notice %>
-      <p class="alert alert-info measure center tc"><%= notice %></p>
+      <p class="bg-light-blue pa4 tc"><%= notice %></p>
     <% end %>
     <% if alert %>
-      <p class="alert alert-danger measure center tc"><%= alert %></p>
+      <p class="bg-light-red pa4 tc"><%= alert %></p>
     <% end %>
     <%= yield %>
     <%= render "layouts/footer" %>

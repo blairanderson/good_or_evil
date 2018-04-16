@@ -1,18 +1,34 @@
 <%
+   #this FORM is shared for BOTH
    simple_form_url = if list_item.persisted?
                        account_list_item_path(current_account, current_list, list_item)
                      else
                        account_list_items_path(current_account, current_list)
                      end
-
 %>
 
 <%= simple_form_for(list_item, url: simple_form_url) do |f| %>
-  <%= f.input :title, as: :string, placeholder: "Some Awesome Product title here!" %>
-  <%= f.input :affiliate_link, as: :string, placeholder: "your amazon Affiliate link to this product" %>
   <% if list_item.persisted? %>
+    <div class="tr">
+      <%= link_to("Remove Me", simple_form_url, method: :delete, data: {confirm: "Are You Sure?"}) %>
+    </div>
+    <div class="cf">
+      <div class="fl w-50">
+        <%= f.attachment_field :image %>
+        <%= image_tag(attachment_url(list_item, :image, format: "png")) %>
+      </div>
+      <div class="fl w-50">
+        <%= f.input :title, as: :string, placeholder: "Some Awesome Product title here!" %>
+        <%= f.input :affiliate_link, as: :string, placeholder: "your amazon Affiliate link to this product" %>
+      </div>
+    </div>
+
     <%= f.input :body, as: :hidden %>
-    <trix-editor input="list_item_body" placeholder="Add a super cool description to help people find this list!"></trix-editor>
+    <trix-editor input="list_item_body" placeholder="Add a super cool description about why this thing is worth looking at!"></trix-editor>
+
+  <% else %>
+    <%= f.input :title, as: :string, placeholder: "Some Awesome Product title here!" %>
+    <%= f.input :affiliate_link, as: :string, placeholder: "your amazon Affiliate link to this product" %>
   <% end %>
   <%= f.button :submit %>
 <% end %>

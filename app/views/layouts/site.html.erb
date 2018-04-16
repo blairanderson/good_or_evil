@@ -1,7 +1,10 @@
 <!DOCTYPE html>
 <html>
 <head>
+  <meta charset="utf-8">
   <title><%= content_for?(:title) ? "#{content_for(:title)} - #{current_account.nav_title}" : current_account.nav_title %></title>
+  <%= tag(:link, rel: "canonical", href: request.fullpath) %>
+  <meta name="viewport" content="width=device-width,minimum-scale=1,initial-scale=1">
   <!-- Global site tag (gtag.js) - Google Analytics -->
   <% if current_account.google_tag_manager.present? %>
     <script async src="https://www.googletagmanager.com/gtag/js?id=<%= current_account.google_tag_manager %>"></script>

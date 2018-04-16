@@ -44,6 +44,40 @@ SET default_tablespace = '';
 SET default_with_oids = false;
 
 --
+-- Name: account_invitations; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE account_invitations (
+    id integer NOT NULL,
+    user_id integer NOT NULL,
+    account_id integer NOT NULL,
+    email character varying NOT NULL,
+    invitation_accepted_at timestamp without time zone,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: account_invitations_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE account_invitations_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: account_invitations_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE account_invitations_id_seq OWNED BY account_invitations.id;
+
+
+--
 -- Name: accounts; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -200,7 +234,11 @@ CREATE TABLE list_items (
     body text,
     affiliate_link text,
     click_count integer DEFAULT 0,
-    asin character varying
+    asin character varying,
+    image_id character varying,
+    image_filename character varying,
+    image_content_size character varying,
+    image_content_type character varying
 );
 
 
@@ -263,6 +301,38 @@ CREATE SEQUENCE lists_id_seq
 --
 
 ALTER SEQUENCE lists_id_seq OWNED BY lists.id;
+
+
+--
+-- Name: memberships; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE memberships (
+    id integer NOT NULL,
+    user_id integer,
+    account_id integer,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: memberships_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE memberships_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: memberships_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE memberships_id_seq OWNED BY memberships.id;
 
 
 --
@@ -384,6 +454,13 @@ ALTER SEQUENCE users_id_seq OWNED BY users.id;
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
+ALTER TABLE ONLY account_invitations ALTER COLUMN id SET DEFAULT nextval('account_invitations_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
 ALTER TABLE ONLY accounts ALTER COLUMN id SET DEFAULT nextval('accounts_id_seq'::regclass);
 
 
@@ -426,6 +503,13 @@ ALTER TABLE ONLY lists ALTER COLUMN id SET DEFAULT nextval('lists_id_seq'::regcl
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
+ALTER TABLE ONLY memberships ALTER COLUMN id SET DEFAULT nextval('memberships_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
 ALTER TABLE ONLY refile_attachments ALTER COLUMN id SET DEFAULT nextval('refile_attachments_id_seq'::regclass);
 
 
@@ -441,6 +525,14 @@ ALTER TABLE ONLY saved_items ALTER COLUMN id SET DEFAULT nextval('saved_items_id
 --
 
 ALTER TABLE ONLY users ALTER COLUMN id SET DEFAULT nextval('users_id_seq'::regclass);
+
+
+--
+-- Name: account_invitations_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY account_invitations
+    ADD CONSTRAINT account_invitations_pkey PRIMARY KEY (id);
 
 
 --
@@ -492,6 +584,14 @@ ALTER TABLE ONLY lists
 
 
 --
+-- Name: memberships_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY memberships
+    ADD CONSTRAINT memberships_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: refile_attachments_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -513,6 +613,27 @@ ALTER TABLE ONLY saved_items
 
 ALTER TABLE ONLY users
     ADD CONSTRAINT users_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: index_account_invitations_on_account_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_account_invitations_on_account_id ON account_invitations USING btree (account_id);
+
+
+--
+-- Name: index_account_invitations_on_account_id_and_email; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE UNIQUE INDEX index_account_invitations_on_account_id_and_email ON account_invitations USING btree (account_id, email);
+
+
+--
+-- Name: index_account_invitations_on_user_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_account_invitations_on_user_id ON account_invitations USING btree (user_id);
 
 
 --
@@ -586,6 +707,27 @@ CREATE INDEX index_lists_on_user_id ON lists USING btree (user_id);
 
 
 --
+-- Name: index_memberships_on_account_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_memberships_on_account_id ON memberships USING btree (account_id);
+
+
+--
+-- Name: index_memberships_on_user_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_memberships_on_user_id ON memberships USING btree (user_id);
+
+
+--
+-- Name: index_memberships_on_user_id_and_account_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE UNIQUE INDEX index_memberships_on_user_id_and_account_id ON memberships USING btree (user_id, account_id);
+
+
+--
 -- Name: index_refile_attachments_on_namespace; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -625,6 +767,38 @@ CREATE UNIQUE INDEX index_users_on_reset_password_token ON users USING btree (re
 --
 
 CREATE UNIQUE INDEX unique_schema_migrations ON schema_migrations USING btree (version);
+
+
+--
+-- Name: fk_rails_13d898ae60; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY account_invitations
+    ADD CONSTRAINT fk_rails_13d898ae60 FOREIGN KEY (user_id) REFERENCES users(id);
+
+
+--
+-- Name: fk_rails_7a9e106543; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY account_invitations
+    ADD CONSTRAINT fk_rails_7a9e106543 FOREIGN KEY (account_id) REFERENCES accounts(id);
+
+
+--
+-- Name: fk_rails_99326fb65d; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY memberships
+    ADD CONSTRAINT fk_rails_99326fb65d FOREIGN KEY (user_id) REFERENCES users(id);
+
+
+--
+-- Name: fk_rails_edbc202c67; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY memberships
+    ADD CONSTRAINT fk_rails_edbc202c67 FOREIGN KEY (account_id) REFERENCES accounts(id);
 
 
 --
@@ -688,4 +862,10 @@ INSERT INTO schema_migrations (version) VALUES ('20180413183007');
 INSERT INTO schema_migrations (version) VALUES ('20180413183943');
 
 INSERT INTO schema_migrations (version) VALUES ('20180413221027');
+
+INSERT INTO schema_migrations (version) VALUES ('20180416025327');
+
+INSERT INTO schema_migrations (version) VALUES ('20180416030905');
+
+INSERT INTO schema_migrations (version) VALUES ('20180416054448');
 

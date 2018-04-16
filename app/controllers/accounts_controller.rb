@@ -1,8 +1,12 @@
 class AccountsController < UserController
   def index
-    if account_count == 0
+    if AccountInvitation.where(email: current_user.email, invitation_accepted_at: nil).count > 0
+      redirect_to(account_invitations_path) and return
+    end
+
+    if accounts_count == 0
       redirect_to new_account_path
-    elsif account_count == 1
+    elsif accounts_count == 1
       redirect_to account_path(current_accounts.first)
     end
   end

@@ -8,8 +8,7 @@ class User < ActiveRecord::Base
   has_many :lists
   has_many :list_items
   has_many :saved_items
-
-  def saved_item_ids
-    @saved_item_ids ||= saved_items.pluck(:item_id)
-  end
+  has_many :account_invitations
+  has_many :memberships
+  has_many :joined_accounts, through: :memberships, source: :account
 end

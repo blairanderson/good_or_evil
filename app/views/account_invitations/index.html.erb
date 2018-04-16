@@ -1,0 +1,10 @@
+<h2>Someone Invited you to join their website!</h2>
+<ul>
+  <% @invitations.each do |invitation| %>
+    <li>
+      Invitation from <strong><%= "#{invitation.user.email}" %></strong><br/>
+      To Edit <strong><%= invitation.account.name %></strong><br/>
+      <%= link_to('Accept', '#') %> | <%= link_to('Deny', account_invitation_path(invitation), method: :delete, data: {confirm: "Are you sure? #{invitation.user.email} will have to send another invitation for you to edit."}) %>
+    </li>
+  <% end %>
+</ul>
