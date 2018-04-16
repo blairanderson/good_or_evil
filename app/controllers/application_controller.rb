@@ -10,6 +10,10 @@ class ApplicationController < ActionController::Base
     redirect_to root_path and return
   end
 
+  def after_sign_in_path_for(resource)
+    request.env['omniauth.origin'] || stored_location_for(resource) || accounts_path
+  end
+
   def is_admin?
     current_user && current_user.admin?
   end

@@ -18,6 +18,59 @@
   <%= csrf_meta_tags %>
 </head>
 <body>
+
+
+<header class="sans-serif cf">
+  <div class="set-height" style="height: 700px;">
+    <div class="dt w-100  set-height center pv0" style="background-color: #2a2a72; background-image: linear-gradient(315deg, #2a2a72 0%, #009ffd 74%); height: 700px;">
+      <div class="bg-near-white bb b--dark-blue absolute w-100">
+        <nav id="nav" class="dt w-100 mw8 center border-box pa2 ph5-ns">
+          <a class="dtc v-mid mid-gray link dim fw9 w-20" href="/"><strong><%= nav_title %></strong></a>
+
+          <div class="dtc v-mid w-80 tr">
+            <div class="dn">
+              <!--HIDE THESE LINKS UNTIL WE HAVE LAUNCHED BOTH-->
+              <a class="link v-mid dim tc dark-gray f6 f5-ns dib mr2 mr4-ns" href="/vendor">
+                <span class="db di-ns">Amazon</span>
+                <span class="db di-ns">Edition</span>
+              </a> <a class="link v-mid dim tc dark-gray f6 f5-ns dib mr2 mr4-ns" href="/seller">
+              <span class="db di-ns">Ebay</span>
+              <span class="db di-ns">Edition</span>
+            </a>
+            </div>
+
+            <a class="f6 dib bg-animate white bg-blue hover-bg-dark-blue hover-near-white no-underline pv2 ph4 br-pill ba  v-mid b--light-blue" href="/accounts">
+              Sign In
+            </a>
+          </div>
+        </nav>
+      </div>
+      <div class="tc-l dtc v-mid white mw8 center ma0 ph3" style="padding-top: 80px;">
+        <style>
+          .text-shadow {
+            text-shadow: 0px 0px 10px #fff;
+          }
+        </style>
+
+        <%= content_for(:landing_header) || "DUDE ADD SOME content_for(:landing_header)" %>
+      </div>
+    </div>
+  </div>
+</header>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 <%= yield %>
 <%= render "layouts/footer" %>
 <%= yield :javascripts %>

@@ -1,0 +1,13 @@
+<% content_for(:landing_header) do %>
+
+  <h1 class="f2 f1-ns fw1 mt0 pt0 mb4 mb4-ns mw7 center lh-title">
+    WOO HOO! you're ON your WAY!
+  </h1>
+
+  <% if params[:email] %>
+    <h2 class="fw3 f3 f2-ns tc mv4 mv5-ns lh-copy">
+      We sent an email to <%= mail_to(params[:email], params[:email], class: "white-50") %>.<br/>Please check your inbox
+      to <span class="underline">confirm your account</span>!
+    </h2>
+  <% end %>
+<% end %>

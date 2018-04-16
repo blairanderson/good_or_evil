@@ -1,0 +1,18 @@
+<div class="mw6 center">
+  <h1 class="tc">You're almost done!</h1>
+  <div class="tl f6 fw1">
+    Hi <%= resource.email %>, your account is just over this small hill!
+  </div>
+
+  <h2 class="tc f4 fw4 bg-light-yellow pa3 br3">Create a password to secure access to your account.</h2>
+  <%= simple_form_for(resource, :as => resource_name, :url => confirm_path, method: :patch) do |f| %>
+    <%= devise_error_messages! %>
+    <h1>
+      <%= f.input :password, input_html: {autofocus: true} %>
+      <%= f.input :password_confirmation %>
+    </h1>
+    <%= f.input :confirmation_token, as: :hidden %>
+    <%= f.button :submit, label: 'Confirm Account' %>
+  <% end %>
+
+</div>

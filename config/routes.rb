@@ -13,7 +13,10 @@ Rails.application.routes.draw do
   # NEXT MAKE SURE USER IS VISITING OUR WWW AND NOT ANYTHING ELSE
 
   constraints subdomain: 'www' do
-    devise_for :users, controllers: {registrations: "registrations"}
+    devise_for :users, controllers: {registrations: 'registrations', confirmations: 'confirmations'}
+    devise_scope :user do
+      patch '/confirm' => 'confirmations#confirm'
+    end
 
     resources :account_invitations, only: [:index, :create, :destroy]
     resources :accounts do
@@ -32,7 +35,7 @@ Rails.application.routes.draw do
       resources :categories, path: 'leaderboard', only: [:show]
       resources :brands
     end
-
+    get :started, to: "landing#started", as: :get_started
     root to: 'landing#index'
   end
 

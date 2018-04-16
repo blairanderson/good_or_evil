@@ -3,6 +3,8 @@
 # no authentication at all
 class LandingController < ApplicationController
   def index
+  end
 
+  def started
   end
 end

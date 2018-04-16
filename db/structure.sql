@@ -427,7 +427,13 @@ CREATE TABLE users (
     updated_at timestamp without time zone,
     admin boolean DEFAULT false,
     robot boolean DEFAULT false,
-    public_name character varying
+    public_name character varying,
+    confirmation_token character varying,
+    confirmed_at timestamp without time zone,
+    confirmation_sent_at timestamp without time zone,
+    failed_attempts integer DEFAULT 0 NOT NULL,
+    unlock_token character varying,
+    locked_at timestamp without time zone
 );
 
 
@@ -868,4 +874,6 @@ INSERT INTO schema_migrations (version) VALUES ('20180416025327');
 INSERT INTO schema_migrations (version) VALUES ('20180416030905');
 
 INSERT INTO schema_migrations (version) VALUES ('20180416054448');
+
+INSERT INTO schema_migrations (version) VALUES ('20180416190039');
 
