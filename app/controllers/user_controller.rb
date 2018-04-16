@@ -6,6 +6,7 @@ class UserController < ApplicationController
 
   def require_user
     redirect_to new_user_registration_path and return unless current_user
+
     if current_account && !current_account.id.in?(current_accounts.map(&:id))
       flash[:alert] = "YOU DO NOT HAVE ACCESS TO THIS SITE..."
       redirect_to root_path and return

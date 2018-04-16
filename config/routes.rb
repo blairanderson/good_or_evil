@@ -4,10 +4,13 @@ Rails.application.routes.draw do
   get '/robots.:format' => 'sitemap#robots'
   get '/sitemap.xml.gz' => 'sitemap#sitemap', format: :xml
 
+  # FIRST CHECK FOR CLIENT SITES. SHOULD BE FASTEST
   constraints(SubdomainWhiteList) do
     get '/' => 'sites#index', as: :site_root
     get '/:id' => 'sites#show', as: :site_list
   end
+
+  # NEXT MAKE SURE USER IS VISITING OUR WWW AND NOT ANYTHING ELSE
 
   constraints subdomain: 'www' do
     devise_for :users, controllers: {registrations: "registrations"}
@@ -30,10 +33,10 @@ Rails.application.routes.draw do
       resources :brands
     end
 
-    root to: 'accounts#index'
+    root to: 'landing#index'
   end
 
-  # if there is no subdomain, just redirect to WWW
+  # if there is no subdomain, just redirect to WWW - essentially casting the URL
   constraints(subdomain: '') do
     get '/*path' => redirect { |params, request| URI.parse(request.url).tap { |uri| uri.host = "www.#{uri.host}" }.to_s }
     get '/' => redirect { |params, request| URI.parse(request.url).tap { |uri| uri.host = "www.#{uri.host}" }.to_s }

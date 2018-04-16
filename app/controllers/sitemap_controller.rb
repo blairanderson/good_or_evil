@@ -32,13 +32,8 @@ class SitemapController < ActionController::Base
       cache_hit = false
 
       open_lists = find_open_lists
-      open_brands = find_open_brands
 
       SitemapGenerator::Sitemap.create(default_host: default_host, verbose: false, adapter: adapter) do
-        open_brands.each do |record|
-          add(record[:path], lastmod: record[:lastmod])
-        end
-
         open_lists.each do |record|
           add(record[:path], lastmod: record[:lastmod])
         end

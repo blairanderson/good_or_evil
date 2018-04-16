@@ -1,6 +1,6 @@
 module ApplicationHelper
   def nav_title
-    "Awesome Affiliate Website Builder"
+    "An Awesome Website Builder"
   end
 
   def url_domain(uri)
