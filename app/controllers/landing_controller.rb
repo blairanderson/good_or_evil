@@ -7,4 +7,8 @@ class LandingController < ApplicationController
 
   def started
   end
+
+  def pricing
+
+  end
 end

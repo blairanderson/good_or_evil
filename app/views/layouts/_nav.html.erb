@@ -1,5 +1,9 @@
 <nav class="db dt-l w-100 border-box pa3 ph5-l system-sans-serif ttu">
-  <a class="db dtc-l v-mid mid-gray link dim w-100 w-25-l tc tl-l mb2 mb0-l" href="<%= root_path %>" title="Home"><%= nav_title %></a>
+  <% if user_signed_in? %>
+    <%= link_to(nav_title, accounts_path, class: 'db dtc-l v-mid mid-gray link dim w-100 w-25-l tc tl-l mb2 mb0-l') %>
+  <% else %>
+    <%= link_to(nav_title, root_path, class: 'db dtc-l v-mid mid-gray link dim w-100 w-25-l tc tl-l mb2 mb0-l') %>
+  <% end %>
 
   <div class="db dtc-l v-mid w-100 w-75-l tc tr-l">
     <% if user_signed_in? %>

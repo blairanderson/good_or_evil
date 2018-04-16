@@ -8,9 +8,11 @@
 <% if current_history.length > 0 %>
   <hr/>
   <h4 class="tc">Recently Viewed</h4>
-  <ul>
+  <ul class="list ma0 pa0">
     <% current_history.each do |item| %>
-      <li title="<%= item.name %>" class="truncate"><%= link_to(item.name, item.path, class: "link ttu") %></li>
+      <li title="<%= item.name %>" class="tc truncate">
+        <%= link_to(item.name, item.path, class: "link ttu") %>
+      </li>
     <% end %>
   </ul>
   <hr/>

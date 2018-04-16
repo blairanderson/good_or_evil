@@ -34,13 +34,16 @@
   <div class="fl w-40">
     <h3 class="tc"><%= link_to("View: #{current_account.name}", site_root_url(subdomain: current_account.slug), target: "_blank") %></h3>
     <%= image_tag attachment_url(current_account, :header_image, format: "png") %>
-
     <%= simple_form_for(current_account) do |f| %>
-
       <%= f.attachment_field :header_image %>
+
       <h1>
         <%= f.input :name, label: "Website Name", :autofocus => true, required: true %>
       </h1>
+
+      <h2>
+        <%= f.input :header_subtitle %>
+      </h2>
 
       <p class="bg-light-blue pa4 br3">
         GO TO WHEREVER YOU BOUGHT YOUR DOMAIN... <br/>

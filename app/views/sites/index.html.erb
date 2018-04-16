@@ -9,9 +9,9 @@
             </div>
             <div class="w-100 w-60-ns pl3-ns dim">
               <ul class="pa0 ma0 list pb2 mt0 fr">
-                <% list.items.each_with_index do |item, index| %>
+                <% list.list_items.each_with_index do |item, index| %>
                   <li class="dib h2 w2 ml3 v-mid">
-                    <%= image_tag(item.images.dig("ThumbnailImage", "URL"), alt: item.title, class: "ba b--black-10 db br2 w2 h2") rescue nil %>
+                    <%= attachment_image_tag(item, :image, alt: item.title, class: "ba b--black-10 db br2 w2 h2") %>
                   </li>
                 <% end %>
               </ul>

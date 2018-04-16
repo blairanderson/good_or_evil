@@ -8,6 +8,7 @@ class SitesController < PublicController
 
   def show
     @list = current_account.lists.published.friendly.find(params[:id])
+    session[:historical_list_ids] = (Array(session[:historical_list_ids]).unshift(@list.id)).flatten.uniq.slice(0, 10)
     @list.update_column(:page_views, @list.page_views+1)
   end
 end

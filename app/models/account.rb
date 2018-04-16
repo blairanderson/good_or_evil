@@ -24,10 +24,6 @@ class Account < ActiveRecord::Base
     Account.pluck(:slug, :id).to_h
   end
 
-  def confirm_domain
-
-  end
-
   def update_domain_info
     update!(domain_info: fetch_domain_info)
   end
@@ -42,10 +38,6 @@ class Account < ActiveRecord::Base
   end
 
   # PUBLIC STUFF!
-  def google_tag_manager
-    nil
-  end
-
   def lists_per_page
     25
   end
@@ -58,7 +50,18 @@ class Account < ActiveRecord::Base
     name
   end
 
-  def header_subtitle
-    nil
+  def disclosure_template
+    list_affiliate_disclosure || <<-DEFAULT_DISCLOSURE_TEMPLATE
+      <strong>{{site_name}}</strong> participates in affiliate programs. We may receive commissions
+      if you purchase an item via links on this page to affiliate partner sites.
+      Buying products through these links helps us grow and write better content in the
+      future. <a href='/about'>Read more about what we do.</a>
+    DEFAULT_DISCLOSURE_TEMPLATE
+  end
+
+  def disclosure
+    @disclosure ||= Liquid::Template.parse(disclosure_template).render({
+        'site_name' => name
+      })
   end
 end

@@ -6,13 +6,12 @@ class List < ActiveRecord::Base
   belongs_to :account
   belongs_to :user
   has_many :list_items
-  has_many :items, through: :list_items
   enum status: {drafts: 0, published: 1, archived: 2, hidden: 3}
   enum display_theme: {grid: 0, story: 1}
   scope :sorted, -> { order("#{SORT_SOURCE} ASC, item_count DESC, sort ASC, page_views DESC") }
   scope :popular, -> { order("page_views DESC") }
   scope :visible, -> { where("status = :published", published: List.statuses["published"]) }
-  scope :for_sidebar, -> { distinct.select("lists.id, lists.name, lists.item_count").where("lists.item_count > 0") }
+  scope :for_sidebar, -> { distinct.select("lists.name, lists.slug") }
   scope :bootstrap, -> { where(user_id: BOOTSTRAP_USER_ID).sorted }
   scope :amazon, -> { where("source LIKE '%amazon.com%'") }
   scope :wirecutter, -> { where("source LIKE '%wirecutter.com%'") }

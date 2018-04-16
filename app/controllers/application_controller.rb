@@ -37,6 +37,7 @@ class ApplicationController < ActionController::Base
   def cart_items_count
     @cart_items_count ||= current_cart.values.map(&:to_i).sum
   end
+
   helper_method :cart_items_count
 
   def can_checkout_on_amazon?
@@ -52,7 +53,8 @@ class ApplicationController < ActionController::Base
   helper_method :in_cart?
 
   def checkout_on_amazon
-    parms = {"AssociateTag" => ENV.fetch("AWS_AFFILIATES_ASSOCIATE_TAG")}
+    parms = {"AssociateTag" => "AWS_AFFILIATES_ASSOCIATE_TAG"}
+    # parms = {"AssociateTag" => ENV.fetch("AWS_AFFILIATES_ASSOCIATE_TAG")}
     current_cart.to_a.each_with_index do |item, index|
       i = index+1
       parms["ASIN.#{i}"] = item[0]
@@ -66,12 +68,10 @@ class ApplicationController < ActionController::Base
 
   def current_history
     @current_history ||= begin
-      list_scope = List.visible.for_sidebar.where(id: Array(session[:historical_list_ids]))
-      list_scope = list_scope.where.not(id: @list.id) if @list
-      list_scope.limit(10).map do |list|
+      List.visible.for_sidebar.where(id: Array(session[:historical_list_ids])).limit(20).map do |list|
         OpenStruct.new(
-          name: "#{list.name.gsub("Best ", "").gsub("Gift ", "").pluralize(list.item_count).html_safe} - #{list.item_count} #{'item'.pluralize(list.item_count)}",
-          path: list_path(list)
+          name: list.name,
+          path: site_list_path(list)
         )
       end
     end
