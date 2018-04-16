@@ -6,6 +6,7 @@ module Lists
 
     def create
       current_list.list_items.where(user_id: current_user.id).first_or_create(item_params)
+      # AUTOMATICALLY FETCH AMAZON IMAGE IF THE LINK INCLUDES AN ASIN
       redirect_to edit_account_list_path(current_account, current_list)
     end
 
