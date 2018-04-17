@@ -13,6 +13,8 @@ gem 'geocoder'
 gem 'high_voltage', '~> 3.0.0'
 gem 'liquid'
 
+gem 'mailgun-ruby'
+gem 'mailgun_rails'
 gem 'mechanize'
 gem 'money-rails', '~>1'
 
