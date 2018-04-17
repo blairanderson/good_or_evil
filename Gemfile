@@ -25,6 +25,7 @@ gem 'refile', require: 'refile/rails'
 gem 'refile-postgres', '~> 1.4.0'
 gem 'refile-mini_magick'
 
+gem 'simple_enum'
 gem 'simple_form'
 gem 'sitemap_generator'
 gem 'safely_block'

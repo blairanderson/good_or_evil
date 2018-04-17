@@ -98,7 +98,14 @@ CREATE TABLE accounts (
     domain_info json DEFAULT '{}'::json,
     host_status integer,
     host_added_at timestamp without time zone,
-    host_confirmed_at timestamp without time zone
+    host_confirmed_at timestamp without time zone,
+    header_subtitle character varying,
+    google_tag_manager character varying,
+    about_page text,
+    header_font integer DEFAULT 0 NOT NULL,
+    header_subtitle_font integer DEFAULT 0 NOT NULL,
+    list_header_font integer DEFAULT 0 NOT NULL,
+    list_affiliate_disclosure text
 );
 
 
@@ -876,4 +883,6 @@ INSERT INTO schema_migrations (version) VALUES ('20180416030905');
 INSERT INTO schema_migrations (version) VALUES ('20180416054448');
 
 INSERT INTO schema_migrations (version) VALUES ('20180416190039');
+
+INSERT INTO schema_migrations (version) VALUES ('20180416231748');
 

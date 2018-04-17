@@ -28,19 +28,10 @@
           <a class="dtc v-mid mid-gray link dim fw9 w-20" href="/"><strong><%= nav_title %></strong></a>
 
           <div class="dtc v-mid w-80 tr">
-            <div class="dn">
-              <!--HIDE THESE LINKS UNTIL WE HAVE LAUNCHED BOTH-->
-              <a class="link v-mid dim tc dark-gray f6 f5-ns dib mr2 mr4-ns" href="/vendor">
-                <span class="db di-ns">Amazon</span>
-                <span class="db di-ns">Edition</span>
-              </a> <a class="link v-mid dim tc dark-gray f6 f5-ns dib mr2 mr4-ns" href="/seller">
-              <span class="db di-ns">Ebay</span>
-              <span class="db di-ns">Edition</span>
-            </a>
-            </div>
-
+            <%= link_to "Sign in", new_session_path(:user), class: "link v-mid dim tc dark-gray f6 f5-ns dib mr2 mr4-ns" %>
+            <%= link_to "Sign Up", new_registration_path(:user), class: "link v-mid dim tc dark-gray f6 f5-ns dib mr2 mr4-ns" %>
             <a class="f6 dib bg-animate white bg-blue hover-bg-dark-blue hover-near-white no-underline pv2 ph4 br-pill ba  v-mid b--light-blue" href="/accounts">
-              Sign In
+              Dashboard
             </a>
           </div>
         </nav>
@@ -57,16 +48,6 @@
     </div>
   </div>
 </header>
-
-
-
-
-
-
-
-
-
-
 
 
 

@@ -1,0 +1,31 @@
+<h4>Invite Users!</h4>
+<%= simple_form_for(current_account.account_invitations.build) do |f| %>
+  <%= f.input(:account_id, as: :hidden, value: current_account.id) %>
+  <%= f.input(:email, placeholder: "Invite your employees to the site") %>
+  <%= f.button(:submit) %>
+<% end %>
+<% if current_account.account_invitations.any? %>
+  <ul>
+    <% current_account.account_invitations.order("invitation_accepted_at DESC NULLS FIRST").each do |acinv| %>
+      <li>
+        <%= acinv.email %>
+        <% if acinv.invitation_accepted_at %>
+          - <%= acinv.invitation_accepted_at %>
+        <% else %>
+          Pending
+          - <%= link_to('Delete', account_invitation_path(acinv), method: :delete, data: {confirm: "Are you sure?"}) %>
+        <% end %>
+      </li>
+    <% end %>
+  </ul>
+<% end %>
+
+<% if current_account.members.any? %>
+  <hr/>
+  <h4>Account Members</h4>
+  <ul>
+    <% current_account.members.each do |member| %>
+      <li><%= member.email %> - <%= member.public_name %></li>
+    <% end %>
+  </ul>
+<% end %>

@@ -12,9 +12,29 @@ class Account < ActiveRecord::Base
 
   friendly_id :name, use: :scoped, scope: [:user]
 
-  enum({
-      host_status: {empty: 0, added: 1, confirmed: 2}
-    })
+  # THESE ARE ENUMS, CANNOT BE CHANGED
+  FONTS = {
+    system_sans_serif: 0,
+    sans_serif: 1,
+    serif: 2,
+    system_serif: 3,
+    code: 4,
+    courier: 5,
+    helvetica: 6,
+    avenir: 7,
+    athelas: 8,
+    georgia: 9,
+    times: 10,
+    bodoni: 11,
+    calisto: 12,
+    garamond: 13,
+    baskerville: 14,
+  }
+
+  enum host_status: {empty: 0, added: 1, confirmed: 2}
+  as_enum :header_font, FONTS, source: :header_font, prefix: true, with: []
+  as_enum :header_subtitle_font, FONTS, source: :header_subtitle_font, prefix: true
+  as_enum :list_header_font, FONTS, source: :list_header_font, prefix: true
 
   def self.hosts
     Account.where.not(host: nil).pluck(:host, :id).to_h

@@ -1,75 +1,10 @@
 <div class="cf">
   <div class="fl w-20">
-    <h4>Invite Users!</h4>
-    <%= simple_form_for(current_account.account_invitations.build) do |f| %>
-      <%= f.input(:account_id, as: :hidden, value: current_account.id) %>
-      <%= f.input(:email, placeholder: "Invite your employees to the site") %>
-      <%= f.button(:submit) %>
-    <% end %>
-    <% if current_account.account_invitations.any? %>
-      <ul>
-        <% current_account.account_invitations.order("invitation_accepted_at DESC NULLS FIRST").each do |acinv| %>
-          <li>
-            <%= acinv.email %>
-            <% if acinv.invitation_accepted_at %>
-              - <%= acinv.invitation_accepted_at %>
-            <% else %>
-            Pending - <%= link_to('Delete', account_invitation_path(acinv), method: :delete, data: {confirm: "Are you sure?"}) %>
-            <% end %>
-          </li>
-        <% end %>
-      </ul>
-    <% end %>
-
-    <% if current_account.members.any? %>
-      <hr/>
-      <h4>Account Members</h4>
-      <ul>
-        <% current_account.members.each do |member| %>
-          <li><%= member.email %> - <%= member.public_name %></li>
-        <% end %>
-      </ul>
-    <% end %>
+    <%= render partial: "invitations" %>
   </div>
-  <div class="fl w-40">
+  <div class="fl w-40 ph3">
     <h3 class="tc"><%= link_to("View: #{current_account.name}", site_root_url(subdomain: current_account.slug), target: "_blank") %></h3>
-    <%= image_tag attachment_url(current_account, :header_image, format: "png") %>
-    <%= simple_form_for(current_account) do |f| %>
-      <%= f.attachment_field :header_image %>
-
-      <h1>
-        <%= f.input :name, label: "Website Name", :autofocus => true, required: true %>
-      </h1>
-
-      <h2>
-        <%= f.input :header_subtitle %>
-      </h2>
-
-      <p class="bg-light-blue pa4 br3">
-        GO TO WHEREVER YOU BOUGHT YOUR DOMAIN... <br/>
-        add a <code>cname</code> record to <br/>
-        <code><%= URI(site_root_url(subdomain: current_account.slug)).host %>.</code>
-      </p>
-
-      <label for="rules">Domain Rules!</label>
-      <ul>
-        <li>must include a subdomain! most typically <code>www</code>. Example
-          <highlight>www.yoursite.com</highlight>
-        </li>
-        <li>Cannot be a naked domain (anyways, did you know the SEO is better on WWW that it is without?)</li>
-        <% if current_account.host.to_s.length > 1 %>
-          <% current_account.fetch_domain_info.each do |k, v| %>
-            <li><strong><%= k %></strong>: <%= v.inspect %></li>
-          <% end %>
-        <% end %>
-      </ul>
-      <h2>
-        <%= f.input :host, label: "Your Full Custom Domain" %>
-      </h2>
-      <%= f.button :submit %>
-    <% end %>
-
-
+    <%= render partial: "accounts/headers" %>
   </div>
   <div class="fl w-40">
     <%= link_to("New List", new_account_list_path(current_account)) %>
