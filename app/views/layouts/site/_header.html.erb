@@ -1,9 +1,9 @@
 <header class="tc ph4">
-  <h1 class="avenir measure lh-title fw1 mt0 f3 f2-m f1-l fw2 black-90 mv3">
+  <h1 class="<%= current_account.header_font.dasherize %> measure lh-title fw1 mt0 f3 f2-m f1-l fw2 black-90 mv3">
     <%= current_account.name %>
   </h1>
   <% if current_account.header_subtitle %>
-    <h2 class="f5 f4-m f3-l fw2 black-50 mt0 lh-copy">
+    <h2 class="<%= current_account.subtitle_font.dasherize %> f5 f4-m f3-l fw2 black-50 mt0 lh-copy">
       <%= current_account.header_subtitle %>
     </h2>
   <% end %>

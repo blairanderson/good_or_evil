@@ -1,5 +1,6 @@
 <details>
-  <summary><%= current_account.name %> Settings</summary>
+  <summary>Header Settings</summary>
+
   <%= simple_form_for(current_account) do |f| %>
     <%= image_tag attachment_url(current_account, :header_image, format: "png") %>
     <%= f.attachment_field :header_image %>
@@ -7,6 +8,7 @@
       <%= f.input :name, label: "Website Name", :autofocus => true, required: true %>
     </h1>
     <% font_class_names = 'db pa3 link black fw3 f2 bg-white near-black hover-near-white hover-bg-near-black' %>
+    <% unless current_account.header_image %>
     <details>
       <summary>Header Font</summary>
       <ul>
@@ -15,26 +17,30 @@
         <% end %>
       </ul>
     </details>
-    <%= f.button :submit %>
-  <% end %>
-
-
-  <%= simple_form_for(current_account) do |f| %>
-    <h2>
-      <%= f.input :header_subtitle, placeholder: "Making wonderful things..." %>
-    </h2>
-    <% if current_account.header_subtitle.to_s.length > 1 %>
-      <details>
-        <summary>Subtitle Header Font</summary>
-        <ul>
-          <% Account.header_subtitle_fonts.each do |name, id| %>
-            <li><%= link_to(current_account.header_subtitle, '#', class: "#{name.dasherize} #{font_class_names}") %></li>
-          <% end %>
-        </ul>
-      </details>
     <% end %>
     <%= f.button :submit %>
   <% end %>
+
+
+  <% unless current_account.header_image %>
+    <%= simple_form_for(current_account) do |f| %>
+      <h2>
+        <%= f.input :header_subtitle, placeholder: "Making wonderful things..." %>
+      </h2>
+      <% if current_account.header_subtitle.to_s.length > 1 %>
+        <details>
+          <summary>Subtitle Header Font</summary>
+          <ul>
+            <% Account.header_subtitle_fonts.each do |name, id| %>
+              <li><%= link_to(current_account.header_subtitle, '#', class: "#{name.dasherize} #{font_class_names}") %></li>
+            <% end %>
+          </ul>
+        </details>
+      <% end %>
+      <%= f.button :submit %>
+    <% end %>
+  <% end %>
+
 </details>
 
 <details>

@@ -1,15 +1,21 @@
-<div class="cf">
-  <div class="fl w-20">
-    <%= render partial: "invitations" %>
-  </div>
+<style>
+  summary {
+    font-size: 22px;
+  }
+</style>
+
+<div class="cf mw9 center">
   <div class="fl w-40 ph3">
     <h3 class="tc"><%= link_to("View: #{current_account.name}", site_root_url(subdomain: current_account.slug), target: "_blank") %></h3>
     <%= render partial: "accounts/headers" %>
+    <details>
+      <summary>User Invitations</summary>
+      <%= render partial: "invitations" %>
+    </details>
   </div>
-  <div class="fl w-40">
-    <%= link_to("New List", new_account_list_path(current_account)) %>
+  <div class="fl w-60">
     <% if @lists.any? %>
-      <h3>Published Lists</h3>
+      <h3 class="f2">Published</h3>
       <ul class="list ma0 pa0">
         <% @lists.each do |list| %>
           <%= render partial: "accounts/list_element", locals: {list: list} %>
@@ -22,7 +28,9 @@
         <hr/>
       <% end %>
 
-      <h3>Drafted Lists</h3>
+
+      <h3 class="f2">Drafts</h3>
+      <%= link_to("New List", new_account_list_path(current_account), class: "di f2") %>
       <ul class="list ma0 pa0">
         <% @drafts.each do |list| %>
           <%= render partial: "accounts/list_element", locals: {list: list} %>
