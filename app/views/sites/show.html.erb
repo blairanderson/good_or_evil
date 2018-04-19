@@ -2,18 +2,18 @@
   <section class="avenir fl-ns w-70-ns">
     <article class="baskerville pb5">
       <header class="avenir tc-l ph3 ph4-ns pt0">
-        <h1 class="f2 f1-l measure lh-title fw1 mv0"><%= link_to(@list.name, params, class: "link near-black") %></h1>
+        <h1 class="f2 f1-l measure lh-title fw1 mv0"><%= link_to(current_list.name, params, class: "link near-black") %></h1>
 
         <p>
           Published
-          <time class="f5 f4-l fw1 baskerville mb4"><%= @list.updated_at.to_date.to_formatted_s(:long) %></time>
-          by <%= @list.user.public_name %>
-          <% if @list.page_views %>
+          <time class="f5 f4-l fw1 baskerville mb4"><%= current_list.updated_at.to_date.to_formatted_s(:long) %></time>
+          by <%= current_list.user.public_name %>
+          <% if current_list.page_views %>
             <span>, </span>
-            <small class="black-50"><%= @list.page_views %> page views</small>
+            <small class="black-50"><%= current_list.page_views %> page views</small>
           <% end %>
           <span>, </span>
-          <small class="black-50"><%= @list.item_count %> products reviewed</small>
+          <small class="black-50"><%= current_list.item_count %> products reviewed</small>
           - 3 Comments
         </p>
 
@@ -39,7 +39,7 @@
             </h3>
           </summary>
           <ol class="ma0 pb2 mt0">
-            <% @list.list_items.each_with_index do |item, index| %>
+            <% current_list.list_items.each_with_index do |item, index| %>
               <li class="">
                 <%= link_to({anchor: item.id}, class: "db link near-black dim") do %>
                   <%= attachment_image_tag(item, :image, class: "ba b--black-10 db br2 w2 h2") %>
@@ -52,10 +52,10 @@
       </div>
       <div class="ph3 ph4-m ph5-l">
         <div class="f4 mb4 center measure lh-copy">
-          <%= @list.body.html_safe %>
+          <%= current_list.body.html_safe %>
         </div>
 
-        <% @list.list_items.each do |item| %>
+        <% current_list.list_items.each do |item| %>
           <hr/>
           <h3 class="f3 tc"><%= item.title %></h3>
           <hr/>
