@@ -1,28 +1,40 @@
 <div class="cf">
-  <div class="fl w-50">
+  <div class="fl w-two-thirds">
     <div class="tc"><%= render partial: 'lists/actions' %></div>
-    <div class="measure center">
-      <details>
-        <summary><h4 class="di">Publishing Checklist</h4></summary>
-        <ul class="list ma0 pa0">
-          <li><%= check_box_tag(:title, "1", current_list.name.present?, readonly: "readonly", disabled: "disabled") %>
-            Title
-          </li>
-          <li><%= check_box_tag(:image, "1", current_list.image, readonly: "readonly", disabled: "disabled") %>Header
-            Image
-          </li>
-          <li><%= check_box_tag(:body, "1", current_list.body.to_s.length > 50, readonly: "readonly", disabled: "disabled") %>
-            Basic Page Description
-          </li>
-          <li><%= check_box_tag(:item_count, "1", current_list.item_count > 0, readonly: "readonly", disabled: "disabled") %>
-            at least 1 List item
-          </li>
-        </ul>
-      </details>
+    <div class="cf">
+      <div class="fl w-25">
+        <details>
+          <summary><h4 class="di">Publishing Checklist</h4></summary>
+          <ul class="list ma0 pa0">
+            <li><%= check_box_tag(:title, "1", current_list.name.present?, readonly: "readonly", disabled: "disabled") %>
+              Title
+            </li>
+            <li title="Highly recommend taking a lifestyle shot from one of your products, and adding a the title overlapping."><%= check_box_tag(:image, "1", current_list.image, readonly: "readonly", disabled: "disabled") %>Header
+              Image
+            </li>
+            <li><%= check_box_tag(:body, "1", current_list.body.to_s.length > 50, readonly: "readonly", disabled: "disabled") %>
+              Page Description
+            </li>
+            <li><%= check_box_tag(:item_count, "1", current_list.item_count > 2, readonly: "readonly", disabled: "disabled") %>
+              at least 3 Items reviewed
+            </li>
+          </ul>
+        </details>
+        <%= simple_form_for([current_account, current_list]) do |f| %>
+          <%= image_tag attachment_url(current_list, :image) %>
+          <%= f.attachment_field :image %>
+          <div>
+            <%= f.button :submit, 'Save Changes' %>
+          </div>
+        <% end %>
+
+      </div>
+      <div class="fl w-75">
+        <%= render 'lists/form' %>
+      </div>
     </div>
-    <%= render 'lists/form' %>
   </div>
-  <div class="fl w-50">
+  <div class="fl w-third">
     <h4 class="tc">List Items</h4>
     <details <%= 'open' if current_list.item_count < 2 %>>
       <summary class="tc"><h3 class="di">New Item</h3></summary>

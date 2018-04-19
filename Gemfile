@@ -19,6 +19,7 @@ gem 'mechanize'
 gem 'money-rails', '~>1'
 
 gem 'platform-api'
+gem 'pg_search'
 gem 'public_suffix'
 
 gem 'quiet_assets'

@@ -12,8 +12,10 @@ class AccountsController < UserController
   end
 
   def edit
-    @lists = current_account.lists.published.paginate(per_page: 25, page: params[:list_page])
-    @drafts = current_account.lists.drafts.paginate(per_page: 25, page: params[:draft_page])
+    published = current_account.lists.where.not(id: nil)
+    @query = params[:q].to_s.strip
+    published = published.search_for(@query) if @query.length > 0
+    @lists = published.includes(:user).paginate(per_page: 25, page: params[:list_page])
   end
 
   def show
@@ -21,7 +23,7 @@ class AccountsController < UserController
   end
 
   def new
-    @account = Account.new(name: params.dig(:account,:name))
+    @account = Account.new(name: params.dig(:account, :name))
   end
 
 

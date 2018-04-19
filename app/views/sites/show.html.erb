@@ -8,7 +8,7 @@
           Published
           <time class="f5 f4-l fw1 baskerville mb4"><%= @list.updated_at.to_date.to_formatted_s(:long) %></time>
           by <%= @list.user.public_name %>
-          <% if @list.page_views > 10 %>
+          <% if @list.page_views %>
             <span>, </span>
             <small class="black-50"><%= @list.page_views %> page views</small>
           <% end %>
@@ -17,7 +17,9 @@
           - 3 Comments
         </p>
 
-        <img class="w-100 dib measure f3" src="<%= @list.image %>" alt="<%= @list.name %>"/>
+        <% if current_list.image %>
+          <%= image_tag(attachment_url(current_list, :image), class: 'w-100 dib measure f3') %>
+        <% end %>
 
         <p class="f6 measure-wide center">
           <small>
@@ -40,7 +42,7 @@
             <% @list.list_items.each_with_index do |item, index| %>
               <li class="">
                 <%= link_to({anchor: item.id}, class: "db link near-black dim") do %>
-                  <%= attachment_image_tag(item, :image, alt: item.title, class: "ba b--black-10 db br2 w2 h2") %>
+                  <%= attachment_image_tag(item, :image, class: "ba b--black-10 db br2 w2 h2") %>
                   <span class="di truncate"><%= item.title.truncate(30) %></span>
                 <% end %>
               </li>
@@ -57,9 +59,9 @@
           <hr/>
           <h3 class="f3 tc"><%= item.title %></h3>
           <hr/>
-          <% if item.image_id %>
-            <div>
-              <%= attachment_image_tag(item, :image, 500, 500, alt: item.title, class: "") %>
+          <% if item.image %>
+            <div class="tc">
+              <%= attachment_image_tag(item, :image) %>
             </div>
           <% end %>
           <div class="tc">
@@ -70,7 +72,6 @@
             <div class="tc pv3">
               <%= link_to(image_tag("amazon/buy2.gif"), item.affiliate_link) %>
             </div>
-
           <% end %>
         <% end %>
       </div>

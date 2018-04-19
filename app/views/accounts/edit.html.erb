@@ -5,38 +5,44 @@
 </style>
 
 <div class="cf mw9 center">
-  <div class="fl w-40 ph3">
-    <h3 class="tc"><%= link_to("View: #{current_account.name}", site_root_url(subdomain: current_account.slug), target: "_blank") %></h3>
+  <div class="fl w-third ph3">
     <%= render partial: "accounts/headers" %>
     <details>
       <summary>User Invitations</summary>
       <%= render partial: "invitations" %>
     </details>
   </div>
-  <div class="fl w-60">
-    <% if @lists.any? %>
-      <h3 class="f2">Published</h3>
+  <div class="fl w-two-thirds">
+    <%= link_to("New List", new_account_list_path(current_account), class: "di f5") %>
+
+    <% if @lists.any? || @query.length > 0 %>
+      <form>
+        <div class="cf mw6 ba">
+          <input class="f6 f5-l input-reset bn fl black-80 bg-white pa3 lh-solid w-100 w-75-m w-80-l br2-ns br--left-ns" placeholder="Search..." type="text" name="q" value="<%= params[:q] %>">
+          <input class="f6 f5-l button-reset fl pv3 tc bn bg-animate bg-black-70 hover-bg-black white pointer w-100 w-25-m w-20-l br2-ns br--right-ns" type="submit" value="Search">
+        </div>
+      </form>
+      <h3 class="f2 ma1 pa1">Lists</h3>
+      <% header = capture do %>
+        <div class="fl w-two-thirds ph3">
+          <div>Title</div>
+        </div>
+        <div class="fl w-third ph3">
+          <div class="cf">
+            <div class="fl w-third">Author</div>
+            <div class="fl w-third">Stats</div>
+            <div class="fl w-third">Date</div>
+          </div>
+        </div>
+      <% end %>
+      <div class="cf fw9 f6">
+        <%= header %>
+      </div>
+      <hr/>
       <ul class="list ma0 pa0">
-        <% @lists.each do |list| %>
-          <%= render partial: "accounts/list_element", locals: {list: list} %>
-        <% end %>
+        <%= render partial: "accounts/list", collection: @lists, locals: {header: header} %>
       </ul>
       <%= will_paginate(@lists, param_name: :list_page) %>
-    <% end %>
-    <% if @drafts.any? %>
-      <% if @lists.any? %>
-        <hr/>
-      <% end %>
-
-
-      <h3 class="f2">Drafts</h3>
-      <%= link_to("New List", new_account_list_path(current_account), class: "di f2") %>
-      <ul class="list ma0 pa0">
-        <% @drafts.each do |list| %>
-          <%= render partial: "accounts/list_element", locals: {list: list} %>
-        <% end %>
-      </ul>
-      <%= will_paginate(@drafts, param_name: :draft_page) %>
     <% end %>
   </div>
 </div>

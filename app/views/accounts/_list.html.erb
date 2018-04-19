@@ -1,0 +1,30 @@
+<li class="bb b--black-10 db w-100 hide-child">
+  <div class="cf child fw7">
+    <%= header %>
+  </div>
+  <div class="cf">
+    <div class="fl w-two-thirds pv2 ph3">
+      <h4 class="ma0 pb2 dib"><%= link_to(list.name, edit_account_list_path(current_account, list.id)) %></h4>
+      <table class="child">
+        <tbody>
+        <tr>
+          <td><%= link_to('view', site_list_url(list.id, subdomain: current_account.slug), target: "_blank") %></td>
+          <td><%= link_to('edit', edit_account_list_path(current_account, list.id)) %></td>
+
+        </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="fl w-third ph3">
+      <div class="cf pb3">
+        <div class="fl w-third"><%= list.user.public_name %></div>
+        <div class="fl w-third">
+          <div>Words: <%= list.word_count %></div>
+          <div>Items: <%= list.item_count %></div>
+          <div>Views: <%= list.page_views %></div>
+        </div>
+        <div class="fl w-third"><%= content_tag(:div, list.updated_at.to_date, title: list.updated_at) %></div>
+      </div>
+    </div>
+  </div>
+</li>

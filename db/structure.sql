@@ -287,7 +287,11 @@ CREATE TABLE lists (
     sort integer DEFAULT 0,
     page_views integer DEFAULT 0,
     source character varying,
-    account_id integer NOT NULL
+    account_id integer NOT NULL,
+    image_id character varying,
+    image_filename character varying,
+    image_content_size character varying,
+    image_content_type character varying
 );
 
 
@@ -885,4 +889,6 @@ INSERT INTO schema_migrations (version) VALUES ('20180416054448');
 INSERT INTO schema_migrations (version) VALUES ('20180416190039');
 
 INSERT INTO schema_migrations (version) VALUES ('20180416231748');
+
+INSERT INTO schema_migrations (version) VALUES ('20180419055056');
 

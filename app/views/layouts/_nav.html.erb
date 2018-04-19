@@ -7,10 +7,13 @@
 
   <div class="db dtc-l v-mid w-100 w-75-l tc tr-l">
     <% if user_signed_in? %>
+      <% if current_account %>
+        <%= link_to("Preview:", site_root_url(subdomain: current_account.slug), target: "_blank", class: 'link dim dark-gray f6 f5-l dib mr2', title: "Visit #{current_account.name}") %>
+      <% end %>
       <% if controller.respond_to?(:current_accounts) && current_accounts.size > 1 %>
         <%= select_tag(:account_id, options_from_collection_for_select(current_accounts, :slug, :name, current_account.try(:slug)), prompt: "Change Account", onchange: "window.location.href='/accounts/'+this.value+'/edit'") %>
       <% end %>
-      <%= link_to('Create Another Website!', new_account_path, class: "link dim dark-gray f6 f5-l dib mr3 mr4-l") %>
+
       <%= link_to('Logout', destroy_user_session_path, :method => :delete, class: "link dim dark-gray f6 f5-l dib mr3 mr4-l") %>
       <%= link_to('Edit profile', edit_user_registration_path, class: "link dim dark-gray f6 f5-l dib") %>
     <% else %>

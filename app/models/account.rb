@@ -6,7 +6,7 @@ class Account < ActiveRecord::Base
   has_many :members, through: :memberships, source: :user
   validates_uniqueness_of :name, scope: [:user_id]
 
-  attachment :header_image
+  attachment :header_image, type: :image
 
   extend FriendlyId
 

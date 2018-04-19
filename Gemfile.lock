@@ -145,6 +145,10 @@ GEM
     ntlm-http (0.1.1)
     orm_adapter (0.5.0)
     pg (0.18.4)
+    pg_search (2.1.1)
+      activerecord (>= 4.2)
+      activesupport (>= 4.2)
+      arel (>= 6)
     platform-api (2.1.0)
       heroics (~> 0.0.23)
       moneta (~> 0.8.1)
@@ -294,6 +298,7 @@ DEPENDENCIES
   mechanize
   money-rails (~> 1)
   pg
+  pg_search
   platform-api
   pry
   pry-rails

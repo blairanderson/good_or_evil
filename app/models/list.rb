@@ -1,4 +1,7 @@
 class List < ActiveRecord::Base
+  attachment :image, type: :image
+  include PgSearch
+  pg_search_scope :search_for, against: {name: 'A', slug: 'B', body: 'C'}, :using => {tsearch: {prefix: true}}
   extend FriendlyId
   friendly_id :name, use: :scoped, scope: [:account]
   BOOTSTRAP_USER_ID = 0
@@ -20,10 +23,6 @@ class List < ActiveRecord::Base
     WHEN source LIKE '%amazon.com%' THEN 2
     ELSE 9999
   END"
-
-  def image
-    "//mrmrs.github.io/photos/cpu.jpg"
-  end
 
   def word_count
     ActionController::Base.helpers.strip_tags(body).to_s.scan(/[\w-]+/).size
