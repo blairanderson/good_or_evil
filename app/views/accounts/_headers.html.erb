@@ -4,19 +4,20 @@
   <%= simple_form_for(current_account) do |f| %>
     <%= image_tag attachment_url(current_account, :header_image, format: "png") %>
     <%= f.attachment_field :header_image %>
+    <%= link_to("Remove Header", accounts_path(account: {header_image: nil}), method: :patch) %>
     <h1>
       <%= f.input :name, label: "Website Name", :autofocus => true, required: true %>
     </h1>
     <% font_class_names = 'db pa3 link black fw3 f2 bg-white near-black hover-near-white hover-bg-near-black' %>
     <% unless current_account.header_image %>
-    <details>
-      <summary>Header Font</summary>
-      <ul>
-        <% Account.header_fonts.each do |name, id| %>
-          <li><%= link_to(current_account.name, '#', class: "#{name.dasherize} #{font_class_names}") %></li>
-        <% end %>
-      </ul>
-    </details>
+      <details>
+        <summary>Header Font</summary>
+        <ul>
+          <% Account.header_fonts.each do |name, id| %>
+            <li><%= link_to(current_account.name, '#', class: "#{name.dasherize} #{font_class_names}") %></li>
+          <% end %>
+        </ul>
+      </details>
     <% end %>
     <%= f.button :submit %>
   <% end %>
@@ -40,53 +41,4 @@
       <%= f.button :submit %>
     <% end %>
   <% end %>
-
 </details>
-
-<details>
-  <summary>GoogleAnalytics</summary>
-  <%= simple_form_for(current_account) do |f| %>
-    <%= f.input :google_tag_manager, placeholder: "UA-1234567-1" %>
-    <%= f.button :submit %>
-  <% end %>
-</details>
-
-
-<details>
-  <summary>Your Affiliate Disclosure</summary>
-  <%= simple_form_for(current_account) do |f| %>
-    <%= f.input :list_affiliate_disclosure %>
-    <%= f.button :submit %>
-  <% end %>
-</details>
-
-<details>
-  <summary>Domain Settings</summary>
-  <p class="bg-light-blue pa4 br3">
-    GO TO WHEREVER YOU BOUGHT YOUR DOMAIN... <br/>
-    add a <code>cname</code> record to <br/>
-    <code><%= URI(site_root_url(subdomain: current_account.slug)).host %>.</code>
-  </p>
-
-  <label for="rules">Domain Rules!</label>
-  <ul>
-    <li>must include a subdomain! most typically <code>www</code>. Example
-      <highlight>www.yoursite.com</highlight>
-    </li>
-    <li>Cannot be a naked domain (anyways, did you know the SEO is better on WWW that it is without?)</li>
-    <% if current_account.host.to_s.length > 1 %>
-      <% current_account.fetch_domain_info.each do |k, v| %>
-        <li><strong><%= k %></strong>: <%= v.inspect %></li>
-      <% end %>
-    <% end %>
-  </ul>
-  <h2>
-    <%= simple_form_for(current_account) do |f| %>
-      <%= f.input :host, label: "Your Full Custom Domain" %>
-      <%= f.button :submit %>
-    <% end %>
-  </h2>
-</details>
-
-
-

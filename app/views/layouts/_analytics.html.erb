@@ -1,0 +1,12 @@
+<% if analytics_id.to_s.length > 7 %>
+  <%= javascript_include_tag("https://www.googletagmanager.com/gtag/js?id=#{analytics_id}", async: true) %>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() {
+      dataLayer.push(arguments);
+    }
+    gtag('js', new Date());
+
+    gtag('config', '<%= analytics_id %>');
+  </script>
+<% end %>

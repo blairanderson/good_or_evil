@@ -2,7 +2,7 @@ class UserController < ApplicationController
   before_filter :find_accounts
   before_filter :require_user
 
-  helper_method :current_account, :current_accounts, :accounts_count
+  helper_method :current_account, :current_accounts, :accounts_count, :account_route_params
 
   def require_user
     redirect_to new_user_registration_path and return unless current_user
@@ -23,6 +23,9 @@ class UserController < ApplicationController
     @account ||= Account.friendly.find(params[:account_id] || params[:id]) rescue nil
   end
 
+  def account_route_params
+    current_account.host ? {host: current_account.host} : {subdomain: current_account.slug}
+  end
 
   def current_accounts
     @accounts ||= [

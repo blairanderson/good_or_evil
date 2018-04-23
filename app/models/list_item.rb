@@ -3,6 +3,17 @@ class ListItem < ActiveRecord::Base
   belongs_to :user
   attachment :image, type: :image
 
+  # not smart enough to do this right now
+  SORT_ENABLED = false
+
+  def self.sorting_enabled?
+    SORT_ENABLED
+  end
+
+  def sorting_enabled?
+    SORT_ENABLED
+  end
+
   validates :affiliate_link, uniqueness: {scope: :list_id, message: "You already added this item!"}
   validates_presence_of(:title, :affiliate_link)
 

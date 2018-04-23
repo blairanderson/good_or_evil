@@ -71,11 +71,12 @@ class Account < ActiveRecord::Base
   end
 
   def disclosure_template
-    list_affiliate_disclosure || <<-DEFAULT_DISCLOSURE_TEMPLATE
-      <strong>{{site_name}}</strong> participates in affiliate programs. We may receive commissions
-      if you purchase an item via links on this page to affiliate partner sites.
-      Buying products through these links helps us grow and write better content in the
-      future. <a href='/about'>Read more about what we do.</a>
+    list_affiliate_disclosure || self.class.disclosure_template_default
+  end
+
+  def self.disclosure_template_default
+    foo = <<-DEFAULT_DISCLOSURE_TEMPLATE
+<strong>{{site_name}}</strong> participates in affiliate programs. We may receive commissions if you purchase an item via links on this page to affiliate partner sites. Buying products through these links helps us grow and write better content in the future. <a href='/about'>Read more about what we do.</a>
     DEFAULT_DISCLOSURE_TEMPLATE
   end
 

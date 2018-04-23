@@ -1,4 +1,4 @@
-<nav class="db dt-l w-100 border-box pa3 ph5-l system-sans-serif ttu">
+<nav class="db dt-l w-100 border-box bb b--black-50 bg-washed-blue pa3 ph5-l system-sans-serif ttu">
   <% if user_signed_in? %>
     <%= link_to(nav_title, accounts_path, class: 'db dtc-l v-mid mid-gray link dim w-100 w-25-l tc tl-l mb2 mb0-l') %>
   <% else %>
@@ -24,4 +24,13 @@
 </nav>
 
 
+<% if current_user && current_account %>
+  <nav class="dt w-100 border-box bg-dark-blue bb b--black-50 pa0 system-sans-serif">
+    <div class="dtc v-mid w-100 tc pv2">
+      <%= link_to('Site Settings', edit_account_path(current_account), class: "link dim near-white f5 dib ph3") %>
+      <%= link_to('All Posts', account_path(current_account), class: "link dim near-white f5 dib ph3") %>
+      <%= link_to('New Post', new_account_list_path(current_account), class: "link dim near-white f5 dib ph3") %>
+    </div>
+  </nav>
+<% end %>
 

@@ -12,14 +12,13 @@ class AccountsController < UserController
   end
 
   def edit
+  end
+
+  def show
     published = current_account.lists.where.not(id: nil)
     @query = params[:q].to_s.strip
     published = published.search_for(@query) if @query.length > 0
     @lists = published.includes(:user).paginate(per_page: 25, page: params[:list_page])
-  end
-
-  def show
-    redirect_to(edit_account_path(Account.friendly.find(params[:id])))
   end
 
   def new
@@ -31,7 +30,7 @@ class AccountsController < UserController
     @account = current_user.accounts.build(valid_params)
 
     if @account.save
-      redirect_to account_path(@account)
+      redirect_to edit_account_path(@account)
     else
       flash[:alert] = @account.errors.full_messages.join(", ")
       render :new
@@ -46,7 +45,7 @@ class AccountsController < UserController
       flash[:alert] = current_account.errors.full_messages.join(", ")
     end
 
-    redirect_to account_path(current_account)
+    redirect_to edit_account_path(current_account)
   end
 
 

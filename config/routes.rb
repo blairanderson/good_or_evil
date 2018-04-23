@@ -20,10 +20,13 @@ Rails.application.routes.draw do
 
     resources :account_invitations, only: [:index, :create, :destroy]
     resources :accounts do
-
       resources :lists do
         scope module: :lists do
-          resources :items
+          resources :items do
+            member do
+              post :sort
+            end
+          end
         end
         member do
           get :preview

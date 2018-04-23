@@ -1,10 +1,17 @@
-<%= simple_form_for([current_account, current_list]) do |f| %>
-  <%= f.input :name, label: 'Page Title', required: true, placeholder: "10 Gifts for Awesome Grandmas", input_html: {class: "tc", style: "height: 64px;font-size: 34px;"} %>
-  <!-- the trix editor goes here: https://github.com/basecamp/trix -->
-  <%= f.input :body, as: :hidden %>
-  <trix-editor input="list_body" placeholder="Add a super cool description to help people find this list!"></trix-editor>
-  <br>
-  <div class="pull-right">
+<%= content_tag(:details) do %>
+  <summary>Title: <span class="bg-light-blue br2"><%= current_list.name %></span></summary>
+  <%= simple_form_for([current_account, current_list]) do |f| %>
+    <%= f.input :name, label: 'Page Title', required: true, placeholder: "10 Gifts for Awesome Grandmas", input_html: {class: "tc"} %>
     <%= f.button :submit, 'Save Changes' %>
-  </div>
+  <% end %>
+<% end %>
+
+<%= content_tag(:details, open: current_list.word_count < 100) do %>
+  <summary>Page Content, Words: <%= current_list.word_count %></summary>
+  <%= simple_form_for([current_account, current_list]) do |f| %>
+    <!-- the trix editor goes here: https://github.com/basecamp/trix -->
+    <%= f.input :body, as: :hidden %>
+    <trix-editor input="list_body" placeholder="Add a super cool description to help people find this list!"></trix-editor>
+    <%= f.button :submit, 'Save Changes' %>
+  <% end %>
 <% end %>

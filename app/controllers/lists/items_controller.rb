@@ -2,10 +2,10 @@ module Lists
   class ItemsController < UserController
     include SetList
     helper_method :current_list
-    before_filter :set_item, only: [:update, :destroy]
+    before_filter :set_item, only: [:update, :sort, :destroy]
 
     def create
-      item = current_list.list_items.where(user_id: current_user.id).first_or_create(item_params)
+      item = current_list.list_items.where(user_id: current_user.id).where(item_params).first_or_create
       should_save = false
 
       if item.amazon? && item.fetch_asin != item.asin
@@ -26,6 +26,20 @@ module Lists
     def update
       @list_item.update!(item_params)
       redirect_to edit_account_list_path(current_account, current_list)
+    end
+
+    def sort
+      if params[:pos] == "inc"
+        ListItem.transaction do
+          current_list.list_items.order(sort: :asc).where("sort ").update_all("sort = sort - 1")
+        end
+      end
+      # if increment
+      # remove a number from the one that is found
+      # 2 -> 1
+
+
+      binding.pry
     end
 
     def destroy

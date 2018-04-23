@@ -1,48 +1,55 @@
-<style>
-  summary {
-    font-size: 22px;
-  }
-</style>
+<div class="mw7 center">
+  <%= render partial: "accounts/headers" %>
 
-<div class="cf mw9 center">
-  <div class="fl w-third ph3">
-    <%= render partial: "accounts/headers" %>
-    <details>
-      <summary>User Invitations</summary>
-      <%= render partial: "invitations" %>
-    </details>
-  </div>
-  <div class="fl w-two-thirds">
-    <%= link_to("New List", new_account_list_path(current_account), class: "di f5") %>
-
-    <% if @lists.any? || @query.length > 0 %>
-      <form>
-        <div class="cf mw6 ba">
-          <input class="f6 f5-l input-reset bn fl black-80 bg-white pa3 lh-solid w-100 w-75-m w-80-l br2-ns br--left-ns" placeholder="Search..." type="text" name="q" value="<%= params[:q] %>">
-          <input class="f6 f5-l button-reset fl pv3 tc bn bg-animate bg-black-70 hover-bg-black white pointer w-100 w-25-m w-20-l br2-ns br--right-ns" type="submit" value="Search">
-        </div>
-      </form>
-      <h3 class="f2 ma1 pa1">Lists</h3>
-      <% header = capture do %>
-        <div class="fl w-two-thirds ph3">
-          <div>Title</div>
-        </div>
-        <div class="fl w-third ph3">
-          <div class="cf">
-            <div class="fl w-third">Author</div>
-            <div class="fl w-third">Stats</div>
-            <div class="fl w-third">Date</div>
-          </div>
-        </div>
-      <% end %>
-      <div class="cf fw9 f6">
-        <%= header %>
-      </div>
-      <hr/>
-      <ul class="list ma0 pa0">
-        <%= render partial: "accounts/list", collection: @lists, locals: {header: header} %>
-      </ul>
-      <%= will_paginate(@lists, param_name: :list_page) %>
+  <%= content_tag(:details, open: current_account.google_tag_manager.blank?) do %>
+    <summary>GoogleAnalytics</summary>
+    <%= simple_form_for(current_account) do |f| %>
+      <%= small_info("Its really important that you start tracking your website data early.") %>
+      <%= f.input :google_tag_manager, placeholder: "UA-1234567-1" %>
+      <%= f.button :submit %>
     <% end %>
-  </div>
+  <% end %>
+
+  <%= content_tag(:details, open: current_account.list_affiliate_disclosure.blank?) do %>
+    <% current_account.list_affiliate_disclosure ||= Account.disclosure_template_default %>
+    <summary>Your Affiliate Disclosure</summary>
+    <%= simple_form_for(current_account) do |f| %>
+      <%= small_info("Most people just use our default...") %>
+      <%= f.input :list_affiliate_disclosure %>
+      <%= f.button :submit %>
+    <% end %>
+  <% end %>
+
+  <details>
+    <summary>Domain Settings</summary>
+    <p class="bg-light-blue pa4 br3">
+      GO TO WHEREVER YOU BOUGHT YOUR DOMAIN... <br/>
+      add a <code>cname</code> record to <br/>
+      <code><%= URI(site_root_url(subdomain: current_account.slug)).host %>.</code>
+    </p>
+
+    <label for="rules">Domain Rules!</label>
+    <ul>
+      <li>must include a subdomain! most typically <code>www</code>. Example
+        <highlight>www.yoursite.com</highlight>
+      </li>
+      <li>Cannot be a naked domain (anyways, did you know the SEO is better on WWW that it is without?)</li>
+      <% if current_account.host.to_s.length > 1 %>
+        <% current_account.fetch_domain_info.each do |k, v| %>
+          <li><strong><%= k %></strong>: <%= v.inspect %></li>
+        <% end %>
+      <% end %>
+    </ul>
+    <h2>
+      <%= simple_form_for(current_account) do |f| %>
+        <%= f.input :host, label: "Your Full Custom Domain" %>
+        <%= f.button :submit %>
+      <% end %>
+    </h2>
+  </details>
+
+  <details>
+    <summary>User Invitations</summary>
+    <%= render partial: "invitations" %>
+  </details>
 </div>

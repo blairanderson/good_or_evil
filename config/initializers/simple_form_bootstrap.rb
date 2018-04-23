@@ -3,7 +3,7 @@ SimpleForm.setup do |config|
   config.error_notification_class = help_block
   config.button_class = 'b mv3 ph3 pv2 input-reset ba b--black bg-transparent grow pointer f6 dib'
   config.boolean_label_class = 'pa0 ma0 lh-copy f6 pointer'
-  config.default_form_class = 'measure center'
+  config.default_form_class = 'measure-wide center'
 
   config.wrappers :vertical_form, tag: 'div', class: 'form-group', error_class: 'has-error' do |b|
     b.use :html5
@@ -14,7 +14,7 @@ SimpleForm.setup do |config|
     b.optional :readonly
     b.use :label, class: 'db fw6 lh-copy f6'
 
-    b.use :input, class: 'pa2 input-reset ba bg-transparent w-100 measure'
+    b.use :input, class: 'pa2 input-reset ba bg-transparent w-100 measure-wide'
     b.use :error, wrap_with: { tag: 'div', class: help_block }
     b.use :hint,  wrap_with: { tag: 'div', class: help_block }
   end

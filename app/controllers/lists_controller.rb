@@ -20,8 +20,8 @@ class ListsController < UserController
   end
 
   def new
-    @list = current_user.lists.draft.where(name: nil).first_or_create
-    @drafts = current_user.lists.draft.where.not(name: nil)
+    @list = current_user.lists.drafts.where(name: nil).first_or_create
+    @drafts = current_user.lists.drafts.where.not(name: nil)
     @published = current_user.lists.published
   end
 

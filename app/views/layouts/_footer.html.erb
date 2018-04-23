@@ -1,12 +1,15 @@
 <footer class="bt b--white">
   <div class="bg-black system-sans-serif">
-    <nav class="w-100 ph0 pv3 bb b--white-50 bg-black-80 tc">
-      <%= link_to "Sign in", new_session_path(:user), class: "ttu link white-60 bg-transparent hover-white inline-flex items-center ma2 tc br2 pa2 f6" %>
-      <%= link_to "Sign Up", new_registration_path(:user), class: "ttu link white-60 bg-transparent hover-white inline-flex items-center ma2 tc br2 pa2 f6" %>
-    </nav>
+    <% unless user_signed_in? %>
+      <nav class="w-100 ph0 pv3 bb b--white-50 bg-black-80 tc">
+        <%= link_to "Sign in", new_session_path(:user), class: "ttu link white-60 bg-transparent hover-white inline-flex items-center ma2 tc br2 pa2 f6" %>
+        <%= link_to "Sign Up", new_registration_path(:user), class: "ttu link white-60 bg-transparent hover-white inline-flex items-center ma2 tc br2 pa2 f6" %>
+      </nav>
+    <% end %>
     <nav class="mw7 center w-100 cf pv4  bg-black-80">
       <div class="fl w-50">
         <h3 class="tl ma0 pa0"><%= link_to(nav_title, root_url, class: "near-white lh-title f3") %></h3>
+
         <p class="near-white lh-copy tl">
           <%= render partial: "layouts/about_us" %>
         </p>

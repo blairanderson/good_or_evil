@@ -3,7 +3,7 @@
   <ul>
     <% current_accounts.each do |account| %>
       <li>
-        <%= link_to(account.name, edit_account_path(account)) %>
+        <%= link_to(account.name, account_path(account)) %>
       </li>
     <% end %>
   </ul>

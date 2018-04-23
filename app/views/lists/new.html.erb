@@ -8,7 +8,7 @@
       <h2>drafts</h2>
       <ul style="">
         <% @drafts.each do |list| %>
-          <li><%= link_to list.name, new_list_item_path(list) %> - <%= link_to "(edit)", edit_list_path(list) %></li>
+          <li><%= link_to list.name, new_account_list_item_path(current_account, list) %> - <%= link_to "(edit)", edit_account_list_path(current_account, list) %></li>
         <% end %>
       </ul>
     <% end %>
@@ -17,7 +17,7 @@
       <h3>published</h3>
       <ul>
         <% @published.each do |list| %>
-          <li><%= link_to list.name, edit_list_path(list.id) %></li>
+          <li><%= link_to list.name, edit_account_list_path(current_account, list.id) %></li>
         <% end %>
       </ul>
     <% end %>

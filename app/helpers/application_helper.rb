@@ -25,4 +25,8 @@ module ApplicationHelper
     content_tag(:span, "#{check_box_tag(name.parameterize, 1, checked, readonly: "readonly", disabled: "disabled")} #{name}".html_safe)
   end
 
+  def small_info(text)
+    content_tag(:small, text.html_safe, class: "db pa3 bg-washed-blue br3 ba b--blue tc")
+  end
+
 end

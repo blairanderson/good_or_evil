@@ -22,13 +22,16 @@
         <%= f.input :affiliate_link, as: :string, placeholder: "your amazon Affiliate link to this product" %>
       </div>
     </div>
-
-    <%= f.input :body, as: :hidden %>
-    <trix-editor input="list_item_body" placeholder="Add a super cool description about why this thing is worth looking at!"></trix-editor>
-
+    <%= f.input :body, as: :hidden, input_html: {id: "list_item_body_#{list_item.id}"} %>
+    <trix-editor input="<%= "list_item_body_#{list_item.id}" %>" placeholder="Add a super cool description about why this thing is worth looking at!"></trix-editor>
+    <% if list_item.sorting_enabled? %>
+      <%= link_to("#{up_arrow}move up#{up_arrow}".html_safe, sort_account_list_item_path(current_account.id, current_list.id, list_item.id, pos: :inc), method: :post) %>
+      <%= link_to("#{down_arrow}move down#{down_arrow}".html_safe, sort_account_list_item_path(current_account.id, current_list.id, list_item.id, pos: :dec), method: :post) %>
+    <% end %>
   <% else %>
     <%= f.input :title, as: :string, placeholder: "Some Awesome Product title here!" %>
     <%= f.input :affiliate_link, as: :string, placeholder: "your amazon Affiliate link to this product" %>
   <% end %>
+
   <%= f.button :submit %>
 <% end %>
