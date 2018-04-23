@@ -4,7 +4,7 @@
   <p><%= link_to @list.category.name, category_path(@list.category_id) %></p>
 <% end %>
 <% if is_admin? || is_robot? %>
-  <small class="db tc"><%= link_to("edit", edit_list_path(@list.id)) %></small>
+  <small class="db tc"><%= link_to("edit", edit_list_path(@list.slug)) %></small>
 <% end %>
 <div class="bg-blue near-white pv2 pv4-ns">
   <h1 class="tc mt2 mb0 pa0"><%= @list.name %></h1>
