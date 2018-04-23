@@ -51,7 +51,7 @@ class AccountsController < UserController
 
   private
   def valid_params
-    params.require(:account).permit(:name, :host, :header_image)
+    params.require(:account).permit(:name, :host, :header_image, :google_tag_manager, :list_affiliate_disclosure)
   end
 
 end
