@@ -43,5 +43,10 @@
         <% end %>
       </small>
     <% end %>
+  <% else %>
+    <h1>You Got This!</h1>
+    <%= link_to(new_account_list_path(current_account), class: "link glow ph3") do %>
+      <h2>Create your FIRST post!</h2>
+    <% end %>
   <% end %>
 </div>
