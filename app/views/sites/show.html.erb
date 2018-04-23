@@ -8,48 +8,56 @@
           Published
           <time class="f5 f4-l fw1 baskerville mb4"><%= current_list.updated_at.to_date.to_formatted_s(:long) %></time>
           by <%= current_list.user.public_name %>
-          <% if current_list.page_views %>
+          <% if current_list.page_views > 10 %>
             <span>, </span>
             <small class="black-50"><%= current_list.page_views %> page views</small>
           <% end %>
           <span>, </span>
-          <small class="black-50"><%= current_list.item_count %> products reviewed</small>
-          - 3 Comments
+          <% if current_list.item_count > 1 %>
+            <small class="black-50"><%= current_list.item_count %> products reviewed</small>
+          <% end %>
+          <% if false %>
+            - 3 Comments
+          <% end %>
         </p>
 
         <% if current_list.image %>
           <%= image_tag(attachment_url(current_list, :image), class: 'w-100 dib measure f3') %>
         <% end %>
 
-        <p class="f6 measure-wide center">
-          <small>
-            <strong><%= current_account.name %></strong> participates in affiliate programs. We may receive commissions
-            if you purchase an item via links on this page to affiliate partner sites.
-            Buying products through these links helps us grow and write better content in the
-            future. <%= link_to('Read more about what we do.', '/about') %>
-          </small>
-        </p>
+        <% if current_list.item_count > 0 %>
+          <p class="f6 measure-wide center">
+            <small>
+              <strong><%= current_account.name %></strong> participates in affiliate programs. We may receive
+              commissions
+              if you purchase an item via links on this page to affiliate partner sites.
+              Buying products through these links helps us grow and write better content in the
+              future. <%= link_to('Read more about what we do.', '/about') %>
+            </small>
+          </p>
+        <% end %>
       </header>
-
-      <div class="cf">
-        <details class="f4 mb4 center measure lh-copy pointer">
-          <summary>
-            <h3 class="di">Table of Contents
-              <small class="blue">[show]</small>
-            </h3>
-          </summary>
-          <ol class="ma0 pb2 mt0">
-            <% current_list.list_items.each_with_index do |item, index| %>
-              <li class="">
-                <%= link_to({anchor: item.id}, class: "db link near-black dim") do %>
-                  <%= attachment_image_tag(item, :image, class: "ba b--black-10 db br2 w2 h2") %>
-                  <span class="di truncate"><%= item.title.truncate(30) %></span>
-                <% end %>
-              </li>
-            <% end %>
-          </ol>
-        </details>
-      </div>
+      <% if current_list.item_count > 0 %>
+        <div class="cf">
+          <details class="f4 mb4 center measure lh-copy pointer">
+            <summary>
+              <h3 class="di">Table of Contents
+                <small class="blue">[show]</small>
+              </h3>
+            </summary>
+            <ol class="ma0 pb2 mt0">
+              <% current_list.list_items.each_with_index do |item, index| %>
+                <li class="">
+                  <%= link_to({anchor: item.id}, class: "db link near-black dim") do %>
+                    <%= attachment_image_tag(item, :image, class: "ba b--black-10 db br2 w2 h2") %>
+                    <span class="di truncate"><%= item.title.truncate(30) %></span>
+                  <% end %>
+                </li>
+              <% end %>
+            </ol>
+          </details>
+        </div>
+      <% end %>
       <div class="ph3 ph4-m ph5-l">
         <div class="f4 mb4 center measure lh-copy">
           <%= current_list.body.html_safe %>

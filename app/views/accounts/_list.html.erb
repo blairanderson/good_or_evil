@@ -5,12 +5,17 @@
   <div class="cf">
     <div class="fl w-two-thirds pv2-ns ph3-ns">
       <h4 class="ma0 pa0 dib"><%= link_to(list.name, edit_account_list_path(current_account, list.id)) %></h4>
+
       <div class="fr <%= status_to_class_name(list.status) %> pv1 ph2 br2"><%= list.status.to_s.titleize %></div>
       <table class="">
         <tbody>
         <tr>
           <td><%= link_to('view', site_list_url(list.id, subdomain: current_account.slug), target: "_blank") %></td>
           <td><%= link_to('edit', edit_account_list_path(current_account, list.id)) %></td>
+          <% if list.published? %>
+            <td><%= link_to('draft?', account_list_path(current_account, list, list: {status: 'draft'}), method: :patch, data: {confirm: 'are you sure?'}) %></td>
+          <% end %>
+
         </tr>
         </tbody>
       </table>

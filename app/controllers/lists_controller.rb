@@ -14,19 +14,19 @@ class ListsController < UserController
   end
 
   def preview
-    @list = current_user.lists.includes(:category, :user).friendly.find(params[:id])
+    @list = current_account.lists.includes(:category, :user).friendly.find(params[:id])
     @list_items = @list.list_items.order("sort ASC").includes(:item)
     render layout: "site_preview", template: "sites/show"
   end
 
   def new
-    @list = current_user.lists.draft.where(name: nil).first_or_create
-    @drafts = current_user.lists.draft.where.not(name: nil)
-    @published = current_user.lists.published
+    @list = current_account.lists.draft.for_user(current_user).where(name: nil).first_or_create
+    @drafts = current_account.lists.draft.for_user(current_user).where.not(name: nil)
+    @published = current_account.lists.published
   end
 
   def create
-    @list = current_user.lists.build(list_params)
+    @list = current_account.lists.build(list_params)
     if @list.save
       redirect_to new_list_item_path(@list)
     else

@@ -11,6 +11,7 @@ class List < ActiveRecord::Base
   has_many :list_items, -> { order("sort ASC") }, dependent: :destroy
   enum status: {draft: 0, published: 1, archived: 2, hidden: 3}
   enum display_theme: {grid: 0, story: 1}
+  scope :for_user, -> (user) { where(user_id: user.id) }
   scope :sorted, -> { order("#{SORT_SOURCE} ASC, item_count DESC, sort ASC, page_views DESC") }
   scope :popular, -> { order("page_views DESC") }
   scope :visible, -> { where("status = :published", published: List.statuses["published"]) }
