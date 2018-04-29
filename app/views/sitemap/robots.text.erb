@@ -6,7 +6,7 @@
   Allow: /
   Sitemap: <%= root_url %>sitemap.xml.gz
 <% else %>
-  Sitemap: <%= root_url %>sitemap.xml.gz
+  Sitemap: <%= root_url(account_route_params) %>sitemap.xml.gz
   User-Agent: *
   Disallow: /
 <% end %>

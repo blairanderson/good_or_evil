@@ -16,4 +16,11 @@ class RegistrationsController < Devise::RegistrationsController
   def after_inactive_sign_up_path_for(resource)
     get_started_path(email: resource.email)
   end
+
+  def user_update
+    if current_user.update!(params.require(:user).permit(:public_name))
+      flash[:notice] = "Good Job #{params.dig(:user, :public_name)}"
+    end
+    redirect_to(edit_registration_path(current_user))
+  end
 end

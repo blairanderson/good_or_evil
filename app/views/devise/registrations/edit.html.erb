@@ -1,20 +1,30 @@
 <h2 class="tc">Edit <%= resource_name.to_s.humanize %></h2>
 
-<%= simple_form_for(resource, :as => resource_name, :url => registration_path(resource_name), :html => {:method => :put}) do |f| %>
-  <%= devise_error_messages! %>
-  <%= f.input :email, autofocus: true %>
+<div class="cf">
+  <div class="fl-ns w-50-ns">
+    <%= simple_form_for(current_user, :url => user_update_path, :html => {:method => :patch}) do |f| %>
+      <%= f.input :public_name, autofocus: true %>
+      <%= f.button :submit %>
+    <% end %>
+  </div>
+  <div class="fl-ns w-50-ns">
+    <%= simple_form_for(resource, :as => resource_name, :url => registration_path(resource_name), :html => {:method => :put}) do |f| %>
+      <%= devise_error_messages! %>
+      <%= f.input :email %>
 
-  <% if devise_mapping.confirmable? && resource.pending_reconfirmation? %>
-    <div>Currently waiting confirmation for: <%= resource.unconfirmed_email %></div>
-  <% end %>
+      <% if devise_mapping.confirmable? && resource.pending_reconfirmation? %>
+        <div>Currently waiting confirmation for: <%= resource.unconfirmed_email %></div>
+      <% end %>
 
-  <%= f.input :password, autocomplete: "off" %>
-  <%= f.input :password_confirmation %>
-  <small class="db tc f6 fw1 mv2"><i>(we need your current password to confirm your changes)</i></small>
-  <%= f.input :current_password %>
-  <small class="db tc f6 fw1 mv2"><i>(we need your current password to confirm your changes)</i></small>
-  <%= f.button :submit %>
-<% end %>
+      <%= f.input :password, autocomplete: "off" %>
+      <%= f.input :password_confirmation %>
+      <%= f.input :current_password %>
+      <small class="db tc f6 fw1 mv2"><i>(we need your current password to confirm your changes)</i></small>
+      <%= f.button :submit %>
+    <% end %>
+  </div>
+</div>
+
 
 <div class="measure center">
   <hr/>

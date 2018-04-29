@@ -15,6 +15,19 @@ class SitemapController < ActionController::Base
   CACHE_TIME = 1.weeks
   CACHE_HEADER = "X-Sitemap-Cache"
 
+  def current_account
+    @current_account ||= Account.find(
+      Account.hosts.has_key?(request.host) || Account.slugs.has_key?(request.subdomain)
+    )
+  end
+
+  def account_route_params
+    current_account.host ? {host: current_account.host} : {subdomain: current_account.slug}
+  end
+
+
+  helper_method :current_account, :account_route_params
+
   def robots
     respond_to :text
     expires_in 6.hours, public: true
@@ -22,10 +35,10 @@ class SitemapController < ActionController::Base
 
   def sitemap
     cache_hit = true
-    default_host = "http://www.giftideaninja.com"
+    default_host = root_url(account_route_params)
     force = Rails.env.development? || params[:force] == 'test'
     version = "1"
-    key = "sitemap/#{version}"
+    key = ["sitemap/#{version}", current_account.updated_at]
     adapter = SitemapGenerator::NeverWriteAdapter.new
 
     sitemap = Rails.cache.fetch(key, expires_in: CACHE_TIME, force: force) do
@@ -69,11 +82,10 @@ class SitemapController < ActionController::Base
 
   # extract(epoch FROM your_datetime_column)
   def find_open_lists
-    select_columns = "lists.id AS id, lists.name, lists.updated_at::timestamptz AS lastmod"
-    List.visible.order("lastmod DESC").limit(max_sitemap_links)
-      .select(select_columns).map do |list|
+    select_columns = "lists.id AS id, CONCAT('/',lists.slug) AS slug, lists.updated_at::timestamptz AS lastmod"
+    current_account.lists.select(select_columns).visible.order("lastmod DESC").limit(max_sitemap_links).map do |list|
       {
-        path: "/lists/#{list.to_param}",
+        path: list.slug,
         lastmod: list.lastmod
       }
     end

@@ -12,10 +12,10 @@
   <%= render partial: 'layouts/nav' %>
   <div class="sans-serif <%= container_class_name %>">
     <% if notice %>
-      <p class="bg-light-blue pa4 tc"><%= notice %></p>
+      <div class="bg-light-blue pa4 tc"><%= notice %></div>
     <% end %>
     <% if alert %>
-      <p class="bg-light-red pa4 tc"><%= alert %></p>
+      <div class="bg-light-red pa4 tc"><%= alert %></div>
     <% end %>
     <%= yield %>
     <%= render "layouts/footer" %>
