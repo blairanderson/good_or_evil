@@ -16,15 +16,14 @@ class SitemapController < ActionController::Base
   CACHE_HEADER = "X-Sitemap-Cache"
 
   def current_account
-    @current_account ||= Account.find(
-      Account.hosts.has_key?(request.host) || Account.slugs.has_key?(request.subdomain)
-    )
+    @current_account ||= begin
+      Account.find(Account.hosts[request.host] || Account.slugs[request.subdomain])
+    end
   end
 
   def account_route_params
     current_account.host ? {host: current_account.host} : {subdomain: current_account.slug}
   end
-
 
   helper_method :current_account, :account_route_params
 
