@@ -10,12 +10,11 @@
       <table class="">
         <tbody>
         <tr>
-          <td><%= link_to('view', site_list_url(list.slug, subdomain: current_account.slug), target: "_blank") %></td>
           <td><%= link_to('edit', edit_account_list_path(current_account, list)) %></td>
           <% if list.published? %>
+            <td><%= link_to('view', site_list_url(list.slug, subdomain: current_account.slug), target: "_blank") %></td>s
             <td><%= link_to('draft?', account_list_path(current_account, list, list: {status: 'draft'}), method: :patch, data: {confirm: 'are you sure?'}) %></td>
           <% end %>
-
         </tr>
         </tbody>
       </table>
