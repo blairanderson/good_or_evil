@@ -20,15 +20,16 @@ class ListsController < UserController
   end
 
   def new
-    @list = current_account.lists.draft.for_user(current_user).where(name: nil).first_or_create
-    @drafts = current_account.lists.draft.for_user(current_user).where.not(name: nil)
+    @list = current_account.lists.build
+    @drafts = current_account.lists.draft.for_user(current_user).order("created_at DESC")
     @published = current_account.lists.published
   end
 
   def create
-    @list = current_account.lists.build(list_params)
-    if @list.save
-      redirect_to new_list_item_path(@list)
+    list = current_account.lists.build(list_params)
+    list.user_id = current_user.id
+    if list.save
+      redirect_to(params[:smart_redirect] || edit_account_list_path(current_account, list))
     else
       render 'new'
     end

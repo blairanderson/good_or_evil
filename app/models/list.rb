@@ -1,9 +1,11 @@
 class List < ActiveRecord::Base
+  validates_presence_of :name
   attachment :image, type: :image
   include PgSearch
   pg_search_scope :search_for, against: {name: 'A', slug: 'B', body: 'C'}, :using => {tsearch: {prefix: true}}
   extend FriendlyId
   friendly_id :name, use: :scoped, scope: [:account]
+
   BOOTSTRAP_USER_ID = 0
   belongs_to :category
   belongs_to :account
