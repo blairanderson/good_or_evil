@@ -12,13 +12,11 @@
       <article class="mw7 ml-auto bb b--black-10 ph3">
         <%= link_to(site_list_path(list), class: "db pv4 ph3 ph0-l no-underline black") do %>
           <div class="flex flex-column flex-row-ns">
-            <div class="pr3-ns mb4 mb0-ns w-100 w-40-ns dim">
-              <% if list.image %>
+            <% if list.image %>
+              <div class="pr3-ns mb4 mb0-ns w-100 w-40-ns dim">
                 <%= attachment_image_tag(list, :image, class: "db") %>
-              <% else %>
-              SHOW A BIG THING HERE
-              <% end %>
-            </div>
+              </div>
+            <% end %>
             <div class="w-100 w-60-ns pl3-ns dim">
               <ul class="pa0 ma0 list pb2 mt0 fr">
                 <% list.list_items.each_with_index do |item, index| %>
