@@ -75,8 +75,8 @@
       <%= link_to("#{up_arrow}move up#{up_arrow}".html_safe, sort_account_list_item_path(current_account.id, current_list.id, list_item.id, pos: :inc), method: :post) %>
       <%= link_to("#{down_arrow}move down#{down_arrow}".html_safe, sort_account_list_item_path(current_account.id, current_list.id, list_item.id, pos: :dec), method: :post) %>
     <% end %>
+    <%= f.button(:submit) %>
   <% end %>
 
-  <%= f.button(:submit) %>
 <% end %>
 
