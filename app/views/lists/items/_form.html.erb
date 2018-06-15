@@ -7,8 +7,26 @@
                      end
 %>
 
-<%= simple_form_for(list_item, url: simple_form_url) do |f| %>
-  <% if list_item.persisted? %>
+<% if list_item.persisted? %>
+  <div class="tr">
+    <h3 class="di"><%= list_item.style.to_s.titleize %></h3>
+    <%= link_to("Remove", simple_form_url, method: :delete, data: {confirm: "Are You Sure?"}) %>
+  </div>
+<% end %>
+
+<% if list_item.persisted? %>
+  <%= simple_form_for(list_item, url: simple_form_url) do |f| %>
+    <div class="cf">
+      <% if list_item.form_title? %>
+        <%= f.input :title, as: :string, placeholder: "Some Awesome Product title here!" %>
+      <% end %>
+    </div>
+    <%= f.button(:submit) %>
+  <% end %>
+<% end %>
+
+<% if list_item.persisted? %>
+  <%= simple_form_for(list_item, url: simple_form_url) do |f| %>
     <div class="tr">
       <h3 class="di"><%= list_item.style.to_s.titleize %></h3>
       <%= link_to("Remove", simple_form_url, method: :delete, data: {confirm: "Are You Sure?"}) %>
@@ -61,3 +79,4 @@
 
   <%= f.button(:submit) %>
 <% end %>
+
