@@ -11,6 +11,14 @@ class ListItem < ActiveRecord::Base
       title_text: 5
     }
 
+  def link_domain
+    PublicSuffix.parse(URI(affiliate_link).host).domain.humanize
+  end
+
+  def has_link?
+    affiliate_link.to_s.length > 0
+  end
+
   # not smart enough to do this right now
   SORT_ENABLED = false
 
@@ -19,7 +27,7 @@ class ListItem < ActiveRecord::Base
   end
 
   def form_title?
-    true
+    !recipe_ingredients?
   end
 
   def form_image?

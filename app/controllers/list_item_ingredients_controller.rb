@@ -1,29 +1,34 @@
 class ListItemIngredientsController < UserController
   def create
-    # if user has access to this list_id
-    binding.pry
-    # ListItemIngredient.create(valid_params)
-    # send_back_to_list
+    if ListItem.exists?(id: valid_params[:list_item_id], user_id: current_user.id)
+      item = ListItem.find(valid_params[:list_item_id])
+      list = item.list
+      ingredient = ListItemIngredient.create(valid_params)
+      flash[:notice] = "added #{ingredient.name}"
+    else
+      flash[:alert] = "NOPE!"
+    end
 
-    # @account = current_user.accounts.build(valid_params)
-
-    # if @account.save
-    #   redirect_to edit_account_path(@account)
-    # else
-    #   flash[:alert] = @account.errors.full_messages.join(", ")
-    #   render :new
-    # end
+    redirect_to edit_account_list_path(list.account, list, anchor: item.id)
   end
 
 
   def update
-    if current_account.update(valid_params)
-      flash[:notice] = "Good Job!"
+    ingredient = ListItemIngredient.find(params[:id])
+    item = ingredient.item
+    list = item.list
+
+    if user_can_edit? && ingredient.update(valid_params)
+      flash[:notice] = "Updated: #{ingredient.name}"
     else
-      flash[:alert] = current_account.errors.full_messages.join(", ")
+      flash[:alert] = "NOPE!"
     end
 
-    redirect_to edit_account_path(current_account)
+    redirect_to :back
+  end
+
+  def user_can_edit?
+    binding.pry
   end
 
 
