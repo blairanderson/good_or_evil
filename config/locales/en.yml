@@ -21,3 +21,9 @@
 
 en:
   hello: "Hello world"
+  list_items:
+    style:
+      product_link: "adds a section with title, image, link, and text description"
+      image: "upload any image and we will make sure its responsive"
+      recipe_ingredients: "add a list of ingredients"
+      title_text: "add a section of text"

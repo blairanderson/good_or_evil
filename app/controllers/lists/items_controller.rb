@@ -8,6 +8,8 @@ module Lists
       item = current_list.list_items.where(user_id: current_user.id).where(item_params).first_or_create
       should_save = false
 
+      binding.pry
+
       if item.amazon? && item.fetch_asin != item.asin
         should_save = true
         item.asin = item.fetch_asin
@@ -54,7 +56,7 @@ module Lists
     end
 
     def item_params
-      params.require(:list_item).permit(:title, :affiliate_link, :body)
+      params.require(:list_item).permit(:title, :affiliate_link, :body, :style, :style_cd)
     end
 
   end

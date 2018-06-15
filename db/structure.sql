@@ -105,7 +105,8 @@ CREATE TABLE accounts (
     header_font integer DEFAULT 0 NOT NULL,
     header_subtitle_font integer DEFAULT 0 NOT NULL,
     list_header_font integer DEFAULT 0 NOT NULL,
-    list_affiliate_disclosure text
+    list_affiliate_disclosure text,
+    contact_page text
 );
 
 
@@ -227,6 +228,41 @@ ALTER SEQUENCE friendly_id_slugs_id_seq OWNED BY friendly_id_slugs.id;
 
 
 --
+-- Name: list_item_ingredients; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE list_item_ingredients (
+    id integer NOT NULL,
+    list_item_id integer,
+    name character varying,
+    quantity numeric(6,2),
+    unit_cd integer,
+    comment character varying,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: list_item_ingredients_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE list_item_ingredients_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: list_item_ingredients_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE list_item_ingredients_id_seq OWNED BY list_item_ingredients.id;
+
+
+--
 -- Name: list_items; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -245,7 +281,8 @@ CREATE TABLE list_items (
     image_id character varying,
     image_filename character varying,
     image_content_size character varying,
-    image_content_type character varying
+    image_content_type character varying,
+    style_cd integer DEFAULT 0
 );
 
 
@@ -506,6 +543,13 @@ ALTER TABLE ONLY friendly_id_slugs ALTER COLUMN id SET DEFAULT nextval('friendly
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
+ALTER TABLE ONLY list_item_ingredients ALTER COLUMN id SET DEFAULT nextval('list_item_ingredients_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
 ALTER TABLE ONLY list_items ALTER COLUMN id SET DEFAULT nextval('list_items_id_seq'::regclass);
 
 
@@ -582,6 +626,14 @@ ALTER TABLE ONLY categories
 
 ALTER TABLE ONLY friendly_id_slugs
     ADD CONSTRAINT friendly_id_slugs_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: list_item_ingredients_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY list_item_ingredients
+    ADD CONSTRAINT list_item_ingredients_pkey PRIMARY KEY (id);
 
 
 --
@@ -696,6 +748,13 @@ CREATE INDEX index_friendly_id_slugs_on_sluggable_type ON friendly_id_slugs USIN
 
 
 --
+-- Name: index_list_item_ingredients_on_list_item_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_list_item_ingredients_on_list_item_id ON list_item_ingredients USING btree (list_item_id);
+
+
+--
 -- Name: index_list_items_on_list_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -795,6 +854,14 @@ ALTER TABLE ONLY account_invitations
 
 
 --
+-- Name: fk_rails_36866a7bf5; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY list_item_ingredients
+    ADD CONSTRAINT fk_rails_36866a7bf5 FOREIGN KEY (list_item_id) REFERENCES list_items(id);
+
+
+--
 -- Name: fk_rails_7a9e106543; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -891,4 +958,8 @@ INSERT INTO schema_migrations (version) VALUES ('20180416190039');
 INSERT INTO schema_migrations (version) VALUES ('20180416231748');
 
 INSERT INTO schema_migrations (version) VALUES ('20180419055056');
+
+INSERT INTO schema_migrations (version) VALUES ('20180615053552');
+
+INSERT INTO schema_migrations (version) VALUES ('20180615142755');
 

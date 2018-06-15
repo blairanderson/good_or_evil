@@ -1,59 +1,30 @@
-<details>
-  <summary>Need Inspiration?</summary>
-  <ul>
-    <li><%= link_to("How to Build a High-Traffic Web Site (or Blog)","https://www.stevepavlina.com/blog/2006/01/how-to-build-a-high-traffic-web-site-or-blog/", target: "_blank") %></li>
-  </ul>
-</details>
-
 <div class="tc"><%= render partial: 'lists/actions' %></div>
-<div class="cf">
-  <div class="fl-ns w-third-ns ph3">
-    <details>
-      <summary>Publishing Checklist</summary>
-      <ul class="list ma0 pa0">
-        <li><%= check_box_tag(:title, "1", current_list.name.present?, readonly: "readonly", disabled: "disabled") %>
-          Title
-        </li>
-        <li title="Highly recommend taking a lifestyle shot from one of your products, and adding a the title overlapping."><%= check_box_tag(:image, "1", current_list.image, readonly: "readonly", disabled: "disabled") %>
-          Header
-          Image
-        </li>
-        <li><%= check_box_tag(:body, "1", current_list.body.to_s.length > 50, readonly: "readonly", disabled: "disabled") %>
-          Page Description
-        </li>
-        <li><%= check_box_tag(:item_count, "1", current_list.item_count > 2, readonly: "readonly", disabled: "disabled") %>
-          at least 3 Items reviewed
-        </li>
-      </ul>
-    </details>
-    <%= content_tag(:details, open: current_list.image.blank?) do %>
-      <summary>Header Image</summary>
-      <%= simple_form_for([current_account, current_list]) do |f| %>
-        <%= small_info("Its suggested that you upload an image before publishing...") %>
-        <%= image_tag attachment_url(current_list, :image) %>
-        <%= f.attachment_field :image %>
-        <div>
-          <%= f.button :submit, 'Save Changes' %>
+<div class="mw8 center">
+  <%= render 'lists/form' %>
+
+  <div class="mw7">
+    <% current_list.list_items.where.not(id: nil).each_with_index do |list_item, index| %>
+      <%= render partial: 'lists/items/form', locals: {list_item: list_item, index: index} %>
+    <% end %>
+  </div>
+
+  <h4>Add New Section To This Page:</h4>
+
+  <div class="cf mv4">
+    <% ListItem.styles.each do |name, id| %>
+      <%= button_to(account_list_items_path(current_account, current_list, list_item: {style_cd: id}), method: :post,
+        class: "fl db w-100 w-25-ns link pointer tc pv4 bg-black-05 hover-bg-black-10") do %>
+        <div class="aspect-ratio aspect-ratio--4x3">
+          <div class="aspect-ratio--object pv4">
+            <h3 class="f3 fw3 mt0">New <%= name.to_s.titleize %></h3>
+            <p class="f5 fw1"><%= t("list_items.style.#{name}") %></p>
+          </div>
         </div>
       <% end %>
     <% end %>
   </div>
-  <div class="fl-ns w-two-thirds-ns ph3">
-    <%= render 'lists/form' %>
-    <%= content_tag(:details, open: current_list.item_count < 2) do %>
-      <summary>New Item</summary>
-      <%= render partial: 'lists/items/form', locals: {list_item: current_list.list_items.build} %>
-    <% end %>
-    <h4 class="tc">List Items</h4>
-    <ol>
-      <% current_list.list_items.where.not(id: nil).each_with_index do |list_item, index| %>
-        <li>
-          <%= render partial: 'lists/items/form', locals: {list_item: list_item, index: index} %>
-        </li>
-      <% end %>
-    </ol>
 
-  </div>
+
 </div>
 
 <script src="https://cdn.rawgit.com/basecamp/trix/e34a0db3c9e0ca303488227fceb6cd9b33cfdd09/dist/trix.js" charset="utf-8"></script>

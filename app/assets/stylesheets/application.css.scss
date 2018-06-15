@@ -21,6 +21,8 @@ details {
     @extend .f4;
     @extend .truncate;
     cursor: pointer;
+    @extend .dim;
+    @extend .hover-bg-black-10;
   }
 }
 

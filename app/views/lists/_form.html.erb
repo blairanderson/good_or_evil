@@ -15,13 +15,27 @@
       input_html: {class: "tc", minlength: 2},
       placeholder: "10 Gifts for Awesome Grandmas"
     %>
-    <%= f.button :submit %>
+    <%= f.button :submit, "Create Draft" %>
+  <% end %>
+<% end %>
+
+<% if current_list.persisted? %>
+  <%= content_tag(:details, open: current_list.image.blank?) do %>
+    <summary>Header Image</summary>
+    <%= simple_form_for([current_account, current_list]) do |f| %>
+      <%= small_info("Upload an image before publishing!") %>
+      <%= image_tag attachment_url(current_list, :image) %>
+      <%= f.attachment_field :image %>
+      <div>
+        <%= f.button :submit, 'Save Changes' %>
+      </div>
+    <% end %>
   <% end %>
 <% end %>
 
 <% if current_list.name.present? %>
   <%= content_tag(:details, open: current_list.word_count < 100) do %>
-    <summary>Page Content, Words: <%= current_list.word_count %></summary>
+    <summary>Header Content, Words: <%= current_list.word_count %></summary>
     <%= simple_form_for([current_account, current_list]) do |f| %>
       <!-- the trix editor goes here: https://github.com/basecamp/trix -->
       <%= f.input :body, as: :hidden, input_html: {id: "new_list_body"} %>

@@ -7,6 +7,9 @@ class LandingController < ApplicationController
 
   end
 
+  def inspiration
+  end
+
   def started
   #   THIS IS A SIGNUP REDIRECT FOR CONVERSION CHECKS
   end

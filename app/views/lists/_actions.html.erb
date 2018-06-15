@@ -2,3 +2,4 @@
 <% can_publish = can_preview %>
 <%= link_to('Preview List!', preview_account_list_path(current_account, @list), {target: "_blank", class: "f6 link dim br1 ba ph3 pv2 mb2 dib dark-blue btn-default #{'disabled' unless can_preview}"}) %>
 <%= link_to('Publish List!', account_list_path(current_account, @list, list: {status: 'published'}), method: :patch, class: "f6 link dim br1 ba ph3 pv2 mb2 dib dark-blue btn-default #{'disabled' unless can_publish}", data: {confirm: 'are you sure?'}) %>
+<%= link_to('List Checklist', account_list_path(current_account, @list, list: {status: 'published'}), method: :patch, class: "f6 link dim br1 ba ph3 pv2 mb2 dib dark-blue btn-default #{'disabled' unless can_publish}", data: {confirm: 'are you sure?'}) %>

@@ -1,0 +1,15 @@
+<ul class="list ma0 pa0">
+  <li><%= check_box_tag(:title, "1", current_list.name.present?, readonly: "readonly", disabled: "disabled") %>
+    Title
+  </li>
+  <li title="Highly recommend taking a lifestyle shot from one of your products, and adding a the title overlapping."><%= check_box_tag(:image, "1", current_list.image, readonly: "readonly", disabled: "disabled") %>
+    Header
+    Image
+  </li>
+  <li><%= check_box_tag(:body, "1", current_list.body.to_s.length > 50, readonly: "readonly", disabled: "disabled") %>
+    Page Description
+  </li>
+  <li><%= check_box_tag(:item_count, "1", current_list.item_count > 2, readonly: "readonly", disabled: "disabled") %>
+    at least 3 Items reviewed
+  </li>
+</ul>

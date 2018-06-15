@@ -19,6 +19,10 @@ class ListsController < UserController
     render layout: "site_preview", template: "sites/show"
   end
 
+  def checklist
+
+  end
+
   def new
     @list = current_account.lists.build
     @drafts = current_account.lists.draft.for_user(current_user).order("created_at DESC")

@@ -10,28 +10,54 @@
 <%= simple_form_for(list_item, url: simple_form_url) do |f| %>
   <% if list_item.persisted? %>
     <div class="tr">
-      <%= link_to("Remove Me", simple_form_url, method: :delete, data: {confirm: "Are You Sure?"}) %>
+      <h3 class="di"><%= list_item.style.to_s.titleize %></h3>
+      <%= link_to("Remove", simple_form_url, method: :delete, data: {confirm: "Are You Sure?"}) %>
     </div>
+
     <div class="cf">
-      <div class="fl w-50">
+      <% if list_item.form_title? %>
+        <%= f.input :title, as: :string, placeholder: "Some Awesome Product title here!" %>
+      <% end %>
+      <% if list_item.form_image? %>
         <%= f.attachment_field :image %>
         <%= image_tag(attachment_url(list_item, :image, format: "png")) %>
-      </div>
-      <div class="fl w-50">
-        <%= f.input :title, as: :string, placeholder: "Some Awesome Product title here!" %>
+      <% end %>
+
+      <% if list_item.form_link? %>
         <%= f.input :affiliate_link, as: :string, placeholder: "your amazon Affiliate link to this product" %>
-      </div>
+      <% end %>
+
+      <% if list_item.form_ingredients? %>
+        <ol>
+          <% list_item.list_item_ingredients.where.not(id: nil).each do |ingredient| %>
+            <li><%= ingredient.inspect %></li>
+          <% end %>
+        </ol>
+
+        <%= simple_form_for(list_item.list_item_ingredients.build(list_item_id: list_item.id)) do |f| %>
+          <div class="cf">
+            <div class="fl w-40">
+              <%= f.input :list_item_id, as: :hidden %>
+              <%= f.input(:name, label: false, placeholder: "1-1/2 Diced Medium Onions") %>
+            </div>
+            <div class="fl w-40">
+              <%= f.button(:submit, "Add") %>
+            </div>
+          </div>
+        <% end %>
+      <% end %>
     </div>
-    <%= f.input :body, as: :hidden, input_html: {id: "list_item_body_#{list_item.id}"} %>
-    <trix-editor input="<%= "list_item_body_#{list_item.id}" %>" placeholder="Add a super cool description about why this thing is worth looking at!"></trix-editor>
+
+    <% if list_item.form_body? %>
+      <%= f.input :body, as: :hidden, input_html: {id: "list_item_body_#{list_item.id}"} %>
+      <trix-editor input="<%= "list_item_body_#{list_item.id}" %>" placeholder="Add a super cool description about why this thing is worth looking at!"></trix-editor>
+    <% end %>
+
     <% if list_item.sorting_enabled? %>
       <%= link_to("#{up_arrow}move up#{up_arrow}".html_safe, sort_account_list_item_path(current_account.id, current_list.id, list_item.id, pos: :inc), method: :post) %>
       <%= link_to("#{down_arrow}move down#{down_arrow}".html_safe, sort_account_list_item_path(current_account.id, current_list.id, list_item.id, pos: :dec), method: :post) %>
     <% end %>
-  <% else %>
-    <%= f.input :title, as: :string, placeholder: "Some Awesome Product title here!" %>
-    <%= f.input :affiliate_link, as: :string, placeholder: "your amazon Affiliate link to this product" %>
   <% end %>
 
-  <%= f.button :submit %>
+  <%= f.button(:submit) %>
 <% end %>

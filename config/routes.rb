@@ -22,6 +22,7 @@ Rails.application.routes.draw do
     end
 
     resources :account_invitations, only: [:index, :create, :destroy]
+    resources :list_item_ingredients, only: [:create, :update]
     resources :accounts do
       resources :lists do
         scope module: :lists do
@@ -33,6 +34,7 @@ Rails.application.routes.draw do
         end
         member do
           get :preview
+          get :checklist
         end
       end
       resources :items
@@ -40,6 +42,7 @@ Rails.application.routes.draw do
       resources :categories, path: 'leaderboard', only: [:show]
       resources :brands
     end
+    get :inspiration, to: "landing#inspiration", as: :inspiration
     get :started, to: "landing#started", as: :get_started
     root to: 'landing#index'
   end
