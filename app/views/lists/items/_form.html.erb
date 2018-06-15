@@ -48,8 +48,9 @@
   <ul>
     <% list_item.list_item_ingredients.where.not(id: nil).each_with_index do |ingredient, index| %>
       <li>
-        <details>
-          <summary><%= ingredient.name %></summary>
+        <h4 class="f3-ns f4 lh-copy di ma0 pa0"><%= ingredient.name %></h4>
+        <details class="fr">
+          <summary>edit</summary>
           <%= simple_form_for(ingredient) do |f| %>
             <div class="cf">
               <div class="fl w-50">
@@ -63,9 +64,7 @@
         </details>
       </li>
     <% end %>
-
   </ul>
-
 
   <%= simple_form_for(list_item.list_item_ingredients.build(list_item_id: list_item.id)) do |f| %>
     <div class="cf">
