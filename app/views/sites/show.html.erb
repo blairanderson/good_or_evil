@@ -67,7 +67,7 @@
           <%= current_list.body.html_safe %>
         </div>
 
-        <% current_list.list_items.each do |item| %>
+        <% current_list.list_items.sorted.each do |item| %>
           <section id="<%= item.id %>">
             <% if item.title %>
               <div class="f4 mb4 center measure lh-copy">

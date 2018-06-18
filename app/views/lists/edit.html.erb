@@ -2,7 +2,7 @@
 <div class="mw8 center">
   <%= render 'lists/form' %>
 
-  <% current_list_items = current_list.list_items.where.not(id: nil) %>
+  <% current_list_items = current_list.list_items.where.not(id: nil).sorted %>
 
   <div class="mw7 center">
     <% current_list_items.each_with_index do |list_item, index| %>
@@ -33,7 +33,6 @@
         <div class="aspect-ratio aspect-ratio--4x3">
           <div class="aspect-ratio--object pv4">
             <h3 class="f3 fw3 mt0">New <%= name.to_s.titleize %></h3>
-
             <p class="f5 fw1"><%= t("list_items.style.#{name}") %></p>
           </div>
         </div>

@@ -12,6 +12,8 @@ class ListItem < ActiveRecord::Base
       title_text: 5
     }
 
+  scope :sorted, -> { order(created_at: :asc) }
+
   def self.available_styles(already_used_enums)
   #   we do not want to allow multiple recipe items on a single list.
     available = self.styles.hash.dup.symbolize_keys

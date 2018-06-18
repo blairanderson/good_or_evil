@@ -20,12 +20,12 @@ module Lists
       end
 
       item.save if should_save
-      redirect_to edit_account_list_path(current_account, current_list)
+      redirect_to edit_account_list_path(current_account, current_list, anchor: item.id)
     end
 
     def update
       @list_item.update!(item_params)
-      redirect_to edit_account_list_path(current_account, current_list)
+      redirect_to edit_account_list_path(current_account, current_list, anchor: @list_item.id)
     end
 
     def sort
@@ -37,12 +37,10 @@ module Lists
       # if increment
       # remove a number from the one that is found
       # 2 -> 1
-
-
-      binding.pry
     end
 
     def destroy
+      @list_item.list_item_ingredients.delete_all
       @list_item.destroy!
       redirect_to edit_account_list_path(current_account, current_list)
     end

@@ -51,13 +51,17 @@
   <%= content_tag(list_item.recipe_ingredients? ? :ul : :ol) do %>
     <% list_item.list_item_ingredients.where.not(id: nil).each_with_index do |ingredient, index| %>
       <li>
-        <h4 class="f3-ns f4 lh-copy di ma0 pa0"><%= ingredient.name %></h4>
+        <% if list_item.recipe_ingredients? %>
+          <h4 class="f3-ns f4 lh-copy di ma0 pa0"><%= ingredient.name %></h4>
+        <% else %>
+          <h4 class="f4-ns f5 lh-title di ma0 pa0"><%= ingredient.comment %></h4>
+        <% end %>
         <details class="fr">
           <summary>edit</summary>
           <%= simple_form_for(ingredient) do |f| %>
             <div class="cf">
               <div class="fl w-50">
-                <%= f.input(:comment, label: false, placeholder: "1-1/2 Diced Medium Onions") %>
+                <%= f.input(list_item.recipe_ingredients? ? :name : :comment, label: false, placeholder: "1-1/2 Diced Medium Onions") %>
               </div>
               <div class="fl w-40">
                 <%= f.button(:submit, "Update") %>
