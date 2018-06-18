@@ -2,21 +2,38 @@
 <div class="mw8 center">
   <%= render 'lists/form' %>
 
-  <div class="mw7">
-    <% current_list.list_items.where.not(id: nil).each_with_index do |list_item, index| %>
+  <% current_list_items = current_list.list_items.where.not(id: nil) %>
+
+  <div class="mw7 center">
+    <% current_list_items.each_with_index do |list_item, index| %>
       <%= render partial: 'lists/items/form', locals: {list_item: list_item, index: index} %>
     <% end %>
   </div>
 
-  <h4>Add New Section To This Page:</h4>
+
 
   <div class="cf mv4">
-    <% ListItem.styles.each do |name, id| %>
+    <hr/>
+    <h4>Add New Section To This Page:</h4>
+    <%
+       styles = ListItem.available_styles(current_list_items.map(&:style_cd))
+       classname = if styles.keys.length == 3
+                     "w-third-ns pv2"
+                   elsif styles.keys.length == 4
+                     "w-25-ns  pv3"
+                   else
+                     "w-20-ns pv4"
+                   end
+
+    %>
+
+    <% styles.each do |name, id| %>
       <%= button_to(account_list_items_path(current_account, current_list, list_item: {style_cd: id}), method: :post,
-        class: "fl db w-100 w-25-ns link pointer tc pv4 bg-black-05 hover-bg-black-10") do %>
+        class: "fl db w-100 #{classname} link pointer tc bg-black-05 hover-bg-black-10") do %>
         <div class="aspect-ratio aspect-ratio--4x3">
           <div class="aspect-ratio--object pv4">
             <h3 class="f3 fw3 mt0">New <%= name.to_s.titleize %></h3>
+
             <p class="f5 fw1"><%= t("list_items.style.#{name}") %></p>
           </div>
         </div>

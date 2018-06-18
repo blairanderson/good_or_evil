@@ -9,7 +9,10 @@
 
 <% if list_item.persisted? %>
   <div class="cf mt4 mb2">
-    <h3 class="di" id="<%= list_item.id %>"><%= list_item.style.to_s.titleize %></h3>
+    <hr class="center mw5 mv4"/>
+    <h3 class="di" id="<%= list_item.id %>">
+      <%= list_item.title || list_item.style.to_s.titleize %>
+    </h3>
     <%= link_to("Remove", simple_form_url, method: :delete, data: {confirm: "Are You Sure?"}) %>
   </div>
 <% end %>
@@ -45,7 +48,7 @@
 
 
 <% if list_item.persisted? && list_item.form_ingredients? %>
-  <ul>
+  <%= content_tag(list_item.recipe_ingredients? ? :ul : :ol) do %>
     <% list_item.list_item_ingredients.where.not(id: nil).each_with_index do |ingredient, index| %>
       <li>
         <h4 class="f3-ns f4 lh-copy di ma0 pa0"><%= ingredient.name %></h4>
@@ -54,7 +57,7 @@
           <%= simple_form_for(ingredient) do |f| %>
             <div class="cf">
               <div class="fl w-50">
-                <%= f.input(:name, label: false, placeholder: "1-1/2 Diced Medium Onions") %>
+                <%= f.input(:comment, label: false, placeholder: "1-1/2 Diced Medium Onions") %>
               </div>
               <div class="fl w-40">
                 <%= f.button(:submit, "Update") %>
@@ -64,7 +67,7 @@
         </details>
       </li>
     <% end %>
-  </ul>
+  <% end %>
 
   <%= simple_form_for(list_item.list_item_ingredients.build(list_item_id: list_item.id)) do |f| %>
     <div class="cf">

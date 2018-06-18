@@ -8,8 +8,17 @@ class ListItem < ActiveRecord::Base
       product_link: 0,
       image_upload: 1,
       recipe_ingredients: 2,
+      recipe_instructions: 3,
       title_text: 5
     }
+
+  def self.available_styles(already_used_enums)
+  #   we do not want to allow multiple recipe items on a single list.
+    available = self.styles.hash.dup.symbolize_keys
+    available = available.except(:recipe_ingredients) if already_used_enums.include?(2)
+    available = available.except(:recipe_instructions) if already_used_enums.include?(3)
+    available
+  end
 
   def link_domain
     PublicSuffix.parse(URI(affiliate_link).host).domain.humanize
@@ -27,7 +36,9 @@ class ListItem < ActiveRecord::Base
   end
 
   def form_title?
-    !recipe_ingredients?
+    return false if recipe_ingredients?
+    return false if recipe_instructions?
+    true
   end
 
   def form_image?
@@ -43,7 +54,7 @@ class ListItem < ActiveRecord::Base
   end
 
   def form_ingredients?
-    recipe_ingredients?
+    recipe_ingredients? || recipe_instructions?
   end
 
   def sorting_enabled?

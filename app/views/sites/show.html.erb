@@ -97,6 +97,17 @@
               </div>
             <% end %>
 
+            <% if item.recipe_instructions? %>
+              <div class="f4 mb4 center measure lh-copy">
+                <h3>Recipe Instructions</h3>
+                <ol>
+                  <% item.list_item_ingredients.each do |ingredient| %>
+                    <li><%= ingredient.comment %></li>
+                  <% end %>
+                </ol>
+              </div>
+            <% end %>
+
             <% if item.body %>
               <div class="f4 mb4 center measure lh-copy">
                 <%= item.body.html_safe %>

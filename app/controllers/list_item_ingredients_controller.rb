@@ -15,10 +15,10 @@ class ListItemIngredientsController < UserController
 
   def update
     ingredient = ListItemIngredient.find(params[:id])
-    item = ingredient.item
+    item = ingredient.list_item
     list = item.list
 
-    if user_can_edit? && ingredient.update(valid_params)
+    if list.account_id.in?(current_accounts.map(&:id)) && ingredient.update(valid_params)
       flash[:notice] = "Updated: #{ingredient.name}"
     else
       flash[:alert] = "NOPE!"
@@ -26,11 +26,6 @@ class ListItemIngredientsController < UserController
 
     redirect_to :back
   end
-
-  def user_can_edit?
-    binding.pry
-  end
-
 
   private
   def valid_params
