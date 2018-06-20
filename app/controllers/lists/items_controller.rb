@@ -24,9 +24,7 @@ module Lists
     end
 
     def update
-      binding.pry
       @list_item.update!(item_params)
-      binding.pry
       redirect_to edit_account_list_path(current_account, current_list, anchor: @list_item.id, autofocus: item.id)
     end
 
