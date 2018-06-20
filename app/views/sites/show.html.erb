@@ -14,7 +14,7 @@
           <% end %>
           <% if current_list.item_count > 1 %>
             <span>, </span>
-            <small class="black-50"><%= current_list.item_count %> products reviewed</small>
+            <small class="black-50"><%= current_list.item_count %> sections</small>
           <% end %>
           <% if false %>
             - 3 Comments
@@ -46,12 +46,14 @@
               </h3>
             </summary>
             <ol class="ma0 pb2 mt0">
-              <% current_list.list_items.each_with_index do |item, index| %>
+              <% current_list_items.each_with_index do |item, index| %>
                 <li class="">
                   <%= link_to({anchor: item.id}, class: "db link near-black dim") do %>
                     <%= attachment_image_tag(item, :image, class: "ba b--black-10 db br2 w2 h2") %>
                     <% if item.title.to_s.length > 0 %>
                       <span class="di truncate"><%= item.title.truncate(30) %></span>
+                    <% elsif item.recipe_instructions? %>
+                      <span class="di truncate">Instructions</span>
                     <% elsif item.recipe_ingredients? %>
                       <span class="di truncate">Ingredients</span>
                     <% end %>
@@ -67,7 +69,7 @@
           <%= current_list.body.html_safe %>
         </div>
 
-        <% current_list.list_items.sorted.each do |item| %>
+        <% current_list_items.each do |item| %>
           <section id="<%= item.id %>">
             <% if item.title %>
               <div class="f4 mb4 center measure lh-copy">
@@ -87,22 +89,22 @@
             <% end %>
 
             <% if item.recipe_ingredients? %>
-              <div class="f4 mb4 center measure lh-copy">
-                <h3>Recipe Ingredients</h3>
+              <div class="f4 mb4 center measure">
+                <h3 class="lh-title">Recipe Ingredients</h3>
                 <ul>
                   <% item.list_item_ingredients.each do |ingredient| %>
-                    <li><%= ingredient.name %></li>
+                    <li class="lh-copy"><%= ingredient.name %></li>
                   <% end %>
                 </ul>
               </div>
             <% end %>
 
             <% if item.recipe_instructions? %>
-              <div class="f4 mb4 center measure lh-copy">
-                <h3>Recipe Instructions</h3>
+              <div class="f4 mb4 center measure">
+                <h3 class="lh-title">Recipe Instructions</h3>
                 <ol>
                   <% item.list_item_ingredients.each do |ingredient| %>
-                    <li><%= ingredient.comment %></li>
+                    <li class="lh-copy"><%= ingredient.comment %></li>
                   <% end %>
                 </ol>
               </div>

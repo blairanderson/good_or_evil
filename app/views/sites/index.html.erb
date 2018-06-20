@@ -20,6 +20,7 @@
             <div class="w-100 w-60-ns pl3-ns dim">
               <ul class="pa0 ma0 list pb2 mt0 fr">
                 <% list.list_items.each_with_index do |item, index| %>
+                  <% next unless item.image? %>
                   <li class="dib h2 w2 ml3 v-mid">
                     <%= attachment_image_tag(item, :image, alt: item.title, class: "ba b--black-10 db br2 w2 h2") %>
                   </li>
@@ -27,7 +28,10 @@
               </ul>
               <h1 class="f3 fw1 baskerville mt0 lh-title"><%= list.name.html_safe %></h1>
               <small class="db black-50"><%= list.page_views %> page views</small>
-              <small class="db black-50"><%= list.item_count %> products reviewed</small>
+              <% product_reviews = list.list_items.count { |i| i.product_link? } %>
+              <% if product_reviews > 0 %>
+                <small class="db black-50"><%= list.item_count %> product reviews</small>
+              <% end %>
               <p class="f6 f5-l lh-copy"><%= truncate(sanitize(list.body, tags: [], attributes: []).strip, length: 120) %></p>
 
               <p class="f6 lh-copy mv0">By <%= list.user.public_name %></p>

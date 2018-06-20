@@ -15,7 +15,11 @@ class SitesController < PublicController
     @list ||= current_account.lists.published.friendly.find(params[:id])
   end
 
-  helper_method :current_list
+  def current_list_items
+    @current_list_items ||= current_list.list_items.sorted
+  end
+
+  helper_method :current_list, :current_list_items
 
   def show
     session[:historical_list_ids] = (Array(session[:historical_list_ids]).unshift(current_list.id)).flatten.uniq.slice(0, 10)
