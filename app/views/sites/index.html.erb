@@ -28,7 +28,7 @@
               </ul>
               <h1 class="f3 fw1 baskerville mt0 lh-title"><%= list.name.html_safe %></h1>
               <small class="db black-50"><%= list.page_views %> page views</small>
-              <% product_reviews = list.list_items.count { |i| i.product_link? } %>
+              <% product_reviews = list.list_items.select { |i| i.product_link? }.size %>
               <% if product_reviews > 0 %>
                 <small class="db black-50"><%= list.item_count %> product reviews</small>
               <% end %>
