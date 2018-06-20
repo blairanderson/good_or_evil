@@ -25,7 +25,7 @@ module Lists
 
     def update
       @list_item.update!(item_params)
-      redirect_to edit_account_list_path(current_account, current_list, anchor: @list_item.id, autofocus: item.id)
+      redirect_to edit_account_list_path(current_account, current_list, anchor: @list_item.id, autofocus: @list_item.id)
     end
 
     def sort
