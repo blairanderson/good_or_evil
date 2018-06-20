@@ -64,6 +64,6 @@ class ListsController < UserController
   end
 
   def list_params
-    params.require(:list).permit(:name, :body, :item_id, :category_id, :status, :display_theme)
+    params.require(:list).permit(:name, :body, :item_id, :image, :category_id, :status, :display_theme)
   end
 end

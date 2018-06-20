@@ -24,7 +24,9 @@ module Lists
     end
 
     def update
+      binding.pry
       @list_item.update!(item_params)
+      binding.pry
       redirect_to edit_account_list_path(current_account, current_list, anchor: @list_item.id, autofocus: item.id)
     end
 
@@ -52,7 +54,7 @@ module Lists
     end
 
     def item_params
-      params.require(:list_item).permit(:title, :affiliate_link, :body, :style, :style_cd)
+      params.require(:list_item).permit(:title, :affiliate_link, :body, :image, :style, :style_cd)
     end
 
   end

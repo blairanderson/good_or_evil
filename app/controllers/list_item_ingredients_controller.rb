@@ -4,7 +4,7 @@ class ListItemIngredientsController < UserController
       item = ListItem.find(valid_params[:list_item_id])
       list = item.list
       ingredient = ListItemIngredient.create(valid_params)
-      flash[:notice] = "added #{ingredient.name}"
+      flash[:notice] = "Added: #{ingredient.name}"
     else
       flash[:alert] = "NOPE!"
     end
@@ -24,7 +24,7 @@ class ListItemIngredientsController < UserController
       flash[:alert] = "NOPE!"
     end
 
-    redirect_to :back
+    redirect_to edit_account_list_path(list.account, list, anchor: item.id)
   end
 
   private
