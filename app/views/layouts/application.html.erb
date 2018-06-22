@@ -8,7 +8,6 @@
   <%= csrf_meta_tags %>
 </head>
 <body>
-
   <%= render partial: 'layouts/nav' %>
   <div class="sans-serif <%= container_class_name %>">
     <% if notice %>
@@ -17,7 +16,6 @@
     <% if alert %>
       <div class="bg-light-red pa4 tc"><%= alert %></div>
     <% end %>
-
     <%= yield %>
     <%= render "layouts/footer" %>
   </div>

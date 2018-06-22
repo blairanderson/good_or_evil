@@ -1,19 +1,14 @@
 <% linker = current_account.host ? "#{request.protocol}#{current_account.host}" : root_url(subdomain: current_account.slug) %>
 <footer class="bg-near-white black-50 mt5 pv4 pv5-l ph4 cf">
   <div class="cf">
-    <div class="fl w-third">
-      <h2 class="tc site.nav_title"><%= current_account.nav_title %></h2>
-    </div>
-
-    <div class="fl w-third">
-      <h3 class="tc"></h3>
-    </div>
+    <h2 class="tc"><%= current_account.nav_title %></h2>
   </div>
-  <div class="tc mw8 center">
-    <p class="pa0 ma1">Copyright © <%= Date.today.year %>by <%= link_to(linker, linker) %></p>
+  <p class="pa0 ma1 tc">Copyright © <%= Date.today.year %> by <%= link_to(linker, linker) %></p>
 
-    <p class="pa1 ma1">
-      <%= link_to(linker, linker) %> is a participant in the Amazon Services LLC Associates Program, an affiliate advertising program designed to provide a means for sites to earn advertising fees by advertising and linking to Amazon.com. Amazon and the Amazon logo are trademarks of Amazon.com, Inc. or its affiliates.
-    </p>
+  <p class="pa1 ma1 mw6 center">
+    <%= link_to(linker, linker) %> is a participant in the Amazon Services LLC Associates Program, an affiliate
+    advertising program designed to provide a means for sites to earn advertising fees by advertising and linking to
+    Amazon.com. Amazon and the Amazon logo are trademarks of Amazon.com, Inc. or its affiliates.
+  </p>
   </div>
 </footer>

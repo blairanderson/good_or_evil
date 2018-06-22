@@ -1,5 +1,6 @@
 <div class="cf mv4">
   <main class="avenir fl-ns w-70-ns">
+    <!--https://developers.google.com/search/docs/guides/mark-up-content-->
     <% itemprops = if current_list_items.any? { |i| i.recipe_ingredients? || i.recipe_instructions? }
                      {itemscope: '', itemtype: "http://schema.org/Recipe"}
                    elsif current_list_items.any? { |i| i.product_link? }

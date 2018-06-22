@@ -15,10 +15,21 @@ class AccountsController < UserController
   end
 
   def show
-    published = current_account.lists.where.not(id: nil)
+    lists = current_account.lists.where.not(id: nil)
+
     @query = params[:q].to_s.strip
-    published = published.search_for(@query) if @query.length > 0
-    @lists = published.includes(:user).paginate(per_page: 25, page: params[:list_page])
+
+    all_types = ["draft", "published"]
+    view_param = params[:status].to_s
+    params[:status] = if view_param.present? && view_param.in?(all_types)
+                        view_param
+                      else
+                        "draft"
+                      end
+
+    lists = lists.where("lists.status = ?", List.statuses[params[:status]])
+    lists = lists.search_for(@query) if @query.length > 0
+    @lists = lists.includes(:user).paginate(per_page: 25, page: params[:list_page])
   end
 
   def new

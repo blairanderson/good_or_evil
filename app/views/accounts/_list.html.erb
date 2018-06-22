@@ -1,34 +1,28 @@
-<li class="bb b--black-10 db w-100 hide-child">
-  <div class="dn db-ns cf-ns child fw7">
-    <%= header %>
-  </div>
-  <div class="cf">
-    <div class="fl w-two-thirds pv2-ns ph3-ns">
-      <h4 class="ma0 pa0 dib"><%= link_to(list.name, edit_account_list_path(current_account, list)) %></h4>
+<li>
+  <%= link_to(edit_account_list_path(current_account, list), class: "bb b--black-10 db w-100 link ph4 pv2") do %>
+    <h4 class="ma0 pa0 link f4 black lh-title"><%= list.name %></h4>
 
-      <div class="fr <%= status_to_class_name(list.status) %> pv1 ph2 br2"><%= list.status.to_s.titleize %></div>
-      <table class="">
-        <tbody>
-        <tr>
-          <td><%= link_to('edit', edit_account_list_path(current_account, list)) %></td>
-          <% if list.published? %>
-            <td><%= link_to('view', site_list_url(list.slug, subdomain: current_account.slug), target: "_blank") %></td>
-            <td><%= link_to('draft?', account_list_path(current_account, list, list: {status: 'draft'}), method: :patch, data: {confirm: 'are you sure?'}) %></td>
-          <% end %>
-        </tr>
-        </tbody>
-      </table>
-    </div>
-    <div class="fl w-third ph3-ns">
-      <div class="cf pb3">
-        <div class="fl-ns w-third-ns"><%= list.user.public_name %></div>
-        <div class="fl-ns w-third-ns">
-          <div>Words: <%= list.word_count %></div>
-          <div>Items: <%= list.item_count %></div>
-          <div>Views: <%= list.page_views %></div>
+    <div class="ma0 pa0 link f5 lh-copy black-50">
+      <span>Last edited <%= list.updated_at.to_formatted_s(:short) %> (<%= list.word_count %> words) so far</span>
+      <span> - </span>
+      <div class="hide-child di absolute"><span> more</span>
+        <div class="child absolute ba">
+          <table class="">
+            <tbody>
+            <tr>
+              <td><%= link_to('edit', edit_account_list_path(current_account, list)) %></td>
+              <td><%= link_to('edit', edit_account_list_path(current_account, list)) %></td>
+              <td><%= link_to('edit', edit_account_list_path(current_account, list)) %></td>
+              <td><%= link_to('edit', edit_account_list_path(current_account, list)) %></td>
+              <td><%= link_to('edit', edit_account_list_path(current_account, list)) %></td>
+              <% if list.published? %>
+                <td><%= link_to('view', site_list_url(list.slug, subdomain: current_account.slug), target: "_blank") %></td>
+              <% end %>
+            </tr>
+            </tbody>
+          </table>
         </div>
-        <div class="fl-ns w-third-ns"><%= content_tag(:div, list.updated_at.to_date, title: list.updated_at) %></div>
       </div>
     </div>
-  </div>
+  <% end %>
 </li>

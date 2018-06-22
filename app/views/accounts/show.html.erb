@@ -1,48 +1,41 @@
 <div class="mw8 center">
   <% if @lists.any? || @query.length > 0 %>
-    <div class="cf">
-      <div class="fl-ns w-30-ns">
-        <h3 class="f2 ma1 pa1">Pages</h3>
-      </div>
-      <div class="fl-ns w-70-ns">
-        <form>
-          <div class="cf mw6 ba">
+    <h3 class="f2 ma1 pa1">Pages/Lists/Reviews/Recipes - <%= link_to('New Post', new_account_list_path(current_account)) %></h3>
+    <div class="bg-white shadow-1 br2 overflow-hidden">
+      <div class="f4 bb bw1 b--black-10 flex cf">
+        <% ['draft', 'published'].each do |status| %>
+          <% if params[:status] == status %>
+            <%= link_to(status.titleize, params.dup.merge(status: status), class: "ttu db tc fl w-25 link pa3 black b--blue b bb bw2") %>
+          <% else %>
+            <%= link_to(status.titleize, params.dup.merge(status: status), class: "ttu db tc fl w-25 link pa3 black dim hover-bg-near-white") %>
+          <% end %>
+        <% end %>
+
+        <form class="fl w-50">
+          <div class="cf mw6 bn mv1">
             <input class="f6 f5-l input-reset bn fl black-80 bg-white pa3 lh-solid w-100 w-75-m w-80-l br2-ns br--left-ns" placeholder="Search..." type="text" name="q" value="<%= params[:q] %>">
             <input class="f6 f5-l button-reset fl pv3 tc bn bg-animate bg-black-70 hover-bg-black white pointer w-100 w-25-m w-20-l br2-ns br--right-ns" type="submit" value="Search">
           </div>
         </form>
       </div>
-    </div>
-    <% header = capture do %>
-      <div class="fl-ns w-two-thirds-ns ph3-ns">
-        <div>Title</div>
-      </div>
-      <div class="fl-ns w-third-ns ph3-ns">
-        <div class="cf">
-          <div class="fl w-third">Author</div>
-          <div class="fl w-third">Stats</div>
-          <div class="fl w-third">Date</div>
-        </div>
-      </div>
-    <% end %>
-    <div class="cf fw9 f6">
-      <%= header %>
-    </div>
-    <hr/>
-    <% if @lists.any? %>
-      <ul class="list ma0 pa0">
-        <%= render partial: "accounts/list", collection: @lists, locals: {header: header} %>
-      </ul>
-      <%= will_paginate(@lists, param_name: :list_page) %>
-    <% else %>
-      <small class="db tc mw6 center bg-washed-yellow">
-        <% if @query.length > 0 %>
-          Nothing found for <strong><em><%= @query %></em></strong>
+
+      <div class="ph3 f4">
+        <% if @lists.any? %>
+          <ul class="list ma0 pa0">
+            <%= render partial: "accounts/list", collection: @lists, locals: {header: ''} %>
+          </ul>
+          <%= will_paginate(@lists, param_name: :list_page) %>
         <% else %>
-          Nothing found yet! <%= link_to("Start Writing!", new_account_list_path(current_account)) %>
+          <small class="db tc mw6 center bg-washed-yellow">
+            <% if @query.length > 0 %>
+              Nothing found for <strong><em><%= @query %></em></strong>
+            <% else %>
+              Nothing found yet! <%= link_to("Start Writing!", new_account_list_path(current_account)) %>
+            <% end %>
+          </small>
         <% end %>
-      </small>
-    <% end %>
+      </div>
+    </div>
   <% else %>
     <h1>You Got This!</h1>
     <%= link_to(new_account_list_path(current_account), class: "link glow ph3") do %>
