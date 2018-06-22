@@ -1,36 +1,46 @@
-<%= content_tag(:details, open: current_list.name.to_s.length < 5) do %>
-  <summary>Title: <span class="bg-light-blue br2"><%= current_list.name %></span></summary>
-  <%= simple_form_for([current_account, current_list]) do |f| %>
-    <% unless current_list.persisted? %>
-      <label for="smart_redirect" class="db">
-        <%= check_box_tag(:smart_redirect, new_account_list_path(current_account, smart_redirect: true), params[:smart_redirect]) %>
-        BurstMode!?
+<%= simple_form_for([current_account, current_list]) do |f| %>
+  <span class="relative f4 gray" style="left: -50px;top: 40px;">Title</span>
+  <div class="cf">
+    <div class="fl w-75">
+      <div class="bl b--gray pl4">
+        <%= f.input :name,
+          label: false,
+          required: true,
+          autofocus: !current_list.persisted?,
+          input_html: {class: "tc f2 measure lh-title fw1 mv0 bn", minlength: 2},
+          placeholder: "10 Gifts for Awesome Grandmas"
+        %>
+      </div>
+    </div>
+    <div class="fl w-25">
+      <%= f.button :submit, current_list.persisted? ? "Update" : "Create Draft" %>
+      <% unless current_list.persisted? %>
+        <label for="smart_redirect" class="db">
+          <%= check_box_tag(:smart_redirect, new_account_list_path(current_account, smart_redirect: true), params[:smart_redirect]) %>
+          BurstMode!?
+        </label>
         <small>make a bunch of article/todos</small>
-      </label>
-    <% end %>
-    <%= f.input :name,
-      label: 'Page Title',
-      required: true,
-      autofocus: !current_list.persisted?,
-      input_html: {class: "tc", minlength: 2},
-      placeholder: "10 Gifts for Awesome Grandmas"
-    %>
-    <%= f.button :submit, "Create Draft" %>
-  <% end %>
+      <% end %>
+    </div>
+  </div>
+  <hr class="mw5 center mv4"/>
 <% end %>
 
 <% if current_list.persisted? %>
-  <%= content_tag(:details, open: current_list.image.blank?) do %>
-    <summary>Header Image</summary>
-    <%= simple_form_for([current_account, current_list]) do |f| %>
-      <%= small_info("Upload an image before publishing!") %>
+  <%= simple_form_for([current_account, current_list]) do |f| %>
+    <%= small_info("Upload an image before publishing!") %>
+    <% if current_list.image_id %>
       <%= image_tag attachment_url(current_list, :image) %>
-      <%= f.attachment_field :image %>
-      <div>
-        <%= f.button :submit, 'Save Changes' %>
-      </div>
+    <% else %>
+      <%= image_tag "//via.placeholder.com/300x300?text=Upload+an+image+before+publishing!" %>
     <% end %>
+    <div class="fr">
+      <%= f.attachment_field :image %>
+      <%= f.button :submit, 'Save Changes' %>
+    </div>
   <% end %>
+
+  <hr class="mw5 center mv4"/>
 <% end %>
 
 <% if current_list.name.present? %>
