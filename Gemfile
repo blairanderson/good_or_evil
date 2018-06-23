@@ -11,6 +11,7 @@ gem 'friendly_id', '~> 5.1.0'
 gem 'geocoder'
 
 gem 'high_voltage', '~> 3.0.0'
+gem 'rails-jquery-ui-sortable'
 gem 'liquid'
 
 gem 'mailgun-ruby'

@@ -14,6 +14,10 @@
       <%= list_item.title || list_item.style.to_s.titleize %>
     </h3>
     <%= link_to("Remove", simple_form_url, method: :delete, data: {confirm: "Are You Sure?"}) %>
+    <div class="dib tr fr">
+      <%= link_to_unless(index == 0, "#{up_arrow} #{up_arrow}".html_safe, "javascript:sortUp(#{list_item.id})", class: "moveup") %>
+      <%= link_to_unless(index == size - 1, "#{down_arrow} #{down_arrow}".html_safe, "javascript:sortDown(#{list_item.id})", class: "movedown") %>
+    </div>
   </div>
 <% end %>
 
@@ -24,10 +28,6 @@
   <% end %>
 <% end %>
 
-<% if list_item.sorting_enabled? %>
-  <%= link_to("#{up_arrow}move up#{up_arrow}".html_safe, sort_account_list_item_path(current_account.id, current_list.id, list_item.id, pos: :inc), method: :post) %>
-  <%= link_to("#{down_arrow}move down#{down_arrow}".html_safe, sort_account_list_item_path(current_account.id, current_list.id, list_item.id, pos: :dec), method: :post) %>
-<% end %>
 
 <% if list_item.persisted? && list_item.form_image? %>
   <%= simple_form_for(list_item, url: simple_form_url) do |f| %>
@@ -45,7 +45,6 @@
     <%= f.button(:submit, "Add Link Here!") %>
   <% end %>
 <% end %>
-
 
 <% if list_item.persisted? && list_item.form_ingredients? %>
   <% list_type = list_item.recipe_ingredients? ? :name : :comment %>
@@ -85,9 +84,7 @@
       </div>
     </div>
   <% end %>
-
 <% end %>
-
 
 <% if list_item.persisted? && list_item.form_body? %>
   <%= simple_form_for(list_item, url: simple_form_url) do |f| %>

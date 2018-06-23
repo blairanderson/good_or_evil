@@ -2,7 +2,7 @@ module Lists
   class ItemsController < UserController
     include SetList
     helper_method :current_list
-    before_filter :set_item, only: [:update, :sort, :destroy]
+    before_filter :set_item, only: [:update, :destroy]
 
     def create
       item = current_list.list_items.where(user_id: current_user.id).where(item_params).first_or_create
@@ -29,14 +29,11 @@ module Lists
     end
 
     def sort
-      if params[:pos] == "inc"
-        ListItem.transaction do
-          current_list.list_items.order(sort: :asc).where("sort ").update_all("sort = sort - 1")
-        end
+      Array.wrap(params[:list_item]).each_with_index do |id, index|
+        ListItem.where(id: id).update_all(sort: index + 1)
       end
-      # if increment
-      # remove a number from the one that is found
-      # 2 -> 1
+
+      render json: {list_item: Array.wrap(params[:list_item])}
     end
 
     def destroy

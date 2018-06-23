@@ -12,7 +12,7 @@ class ListItem < ActiveRecord::Base
       title_text: 5
     }
 
-  scope :sorted, -> { order(created_at: :asc) }
+  scope :sorted, -> { order("sort ASC, created_at ASC") }
 
   def self.available_styles(already_used_enums)
   #   we do not want to allow multiple recipe items on a single list.
@@ -28,13 +28,6 @@ class ListItem < ActiveRecord::Base
 
   def has_link?
     affiliate_link.to_s.length > 0
-  end
-
-  # not smart enough to do this right now
-  SORT_ENABLED = false
-
-  def self.sorting_enabled?
-    SORT_ENABLED
   end
 
   def form_title?

@@ -28,7 +28,7 @@ Rails.application.routes.draw do
       resources :lists do
         scope module: :lists do
           resources :items do
-            member do
+            collection do
               post :sort
             end
           end
