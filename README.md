@@ -1,4 +1,4 @@
-Product-Guide List Builder (WireCutter Clone)
+Blog Builder (multi-tenant website builder with guides / products / pictures / link)
 =================
 
 Why?
@@ -8,8 +8,3 @@ I'm probably underestimating the value of the content, but I wanted a simple way
 
 I was also motivated by a friend that wanted to create sharable lists for tutorials and routines.
 
-Sites have many Lists.
-Sites have many Users.
-Lists have many ListItems.
-Lists have a main image and description.
-ListItems have a main image and description.
