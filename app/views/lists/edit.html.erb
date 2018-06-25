@@ -16,10 +16,10 @@
     <hr class="mw5 center mv4"/>
     <h4>Add New Section To This Page:</h4>
     <%
-       styles = ListItem.available_styles(current_list_items.map(&:style_cd))
-       classname = if styles.keys.length == 3
+       available_list_items = ListItem.available_styles(current_list_items.map(&:style_cd))
+       classname = if available_list_items.keys.length == 3
                      "w-third-ns pv2"
-                   elsif styles.keys.length == 4
+                   elsif available_list_items.keys.length == 4
                      "w-25-ns  pv3"
                    else
                      "w-20-ns pv4"
@@ -27,7 +27,7 @@
 
     %>
 
-    <% styles.each do |name, id| %>
+    <% available_list_items.each do |name, id| %>
       <%= button_to(account_list_items_path(current_account, current_list, list_item: {style_cd: id}), method: :post,
         class: "fl db w-100 #{classname} link pointer tc bg-black-05 hover-bg-black-10") do %>
         <div class="aspect-ratio aspect-ratio--4x3">
