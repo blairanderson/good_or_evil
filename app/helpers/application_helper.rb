@@ -26,7 +26,7 @@ module ApplicationHelper
   end
 
   def small_info(text)
-    content_tag(:small, text.html_safe, class: "db pa3 bg-washed-blue br3 ba b--blue tc")
+    content_tag(:small, text.html_safe, class: "db pa3 bg-washed-blue br3 ba b--blue tc border-pulse")
   end
 
 end

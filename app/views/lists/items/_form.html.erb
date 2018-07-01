@@ -1,4 +1,5 @@
 <%
+   autofocus = params[:autofocus].to_i == list_item.id
    #this FORM is shared for BOTH
    simple_form_url = if list_item.persisted?
                        account_list_item_path(current_account, current_list, list_item)
@@ -13,21 +14,20 @@
     <h3 class="di" id="<%= list_item.id %>">
       <%= list_item.title || list_item.style.to_s.titleize %>
     </h3>
-    <%= link_to("Remove", simple_form_url, method: :delete, data: {confirm: "Are You Sure?"}) %>
+    <%= link_to("Remove", simple_form_url, method: :delete, data: {confirm: "Are You Sure?".freeze}) %>
     <div class="dib tr fr">
-      <%= link_to_unless(index == 0, "#{up_arrow} #{up_arrow}".html_safe, "javascript:sortUp(#{list_item.id})", class: "moveup") %>
-      <%= link_to_unless(index == size - 1, "#{down_arrow} #{down_arrow}".html_safe, "javascript:sortDown(#{list_item.id})", class: "movedown") %>
+      <%= link_to_unless(index == 0, "#{up_arrow} #{up_arrow}".html_safe, "javascript: sortUp(#{list_item.id})") %>
+      <%= link_to_unless(index == size - 1, "#{down_arrow} #{down_arrow}".html_safe, "javascript:sortDown(#{list_item.id})") %>
     </div>
   </div>
 <% end %>
 
 <% if list_item.persisted? && list_item.form_title? %>
   <%= simple_form_for(list_item, url: simple_form_url) do |f| %>
-    <%= f.input :title, as: :string, placeholder: "Some Awesome Product title here!", autofocus: params[:autofocus].to_i == list_item.id %>
+    <%= f.input :title, as: :string, placeholder: "Some Awesome Product title here!", autofocus: autofocus %>
     <%= f.button(:submit, "Update Title") %>
   <% end %>
 <% end %>
-
 
 <% if list_item.persisted? && list_item.form_image? %>
   <%= simple_form_for(list_item, url: simple_form_url) do |f| %>
@@ -37,11 +37,9 @@
   <% end %>
 <% end %>
 
-
-
 <% if list_item.persisted? && list_item.form_link? %>
   <%= simple_form_for(list_item, url: simple_form_url) do |f| %>
-    <%= f.input :affiliate_link, as: :string, placeholder: "your amazon Affiliate link to this product", autofocus: params[:autofocus].to_i == list_item.id %>
+    <%= f.input :affiliate_link, as: :string, placeholder: "your amazon Affiliate link to this product", autofocus: autofocus %>
     <%= f.button(:submit, "Add Link Here!") %>
   <% end %>
 <% end %>
@@ -52,16 +50,16 @@
     <% list_item.list_item_ingredients.where.not(id: nil).each_with_index do |ingredient, index| %>
       <li>
         <% if list_item.recipe_ingredients? %>
-          <h4 class="f3-ns f4 lh-copy di ma0 pa0"><%= ingredient.name %></h4>
+          <h4 class="f3-ns f4 lh-title di ma0 pa0"><%= ingredient.name %></h4>
         <% else %>
-          <h4 class="f4-ns f5 lh-title di ma0 pa0"><%= ingredient.comment %></h4>
+          <h4 class="f4-ns f5 lh-copy di ma0 pa0"><%= ingredient.comment %></h4>
         <% end %>
         <details class="fr">
           <summary>edit</summary>
           <%= simple_form_for(ingredient) do |f| %>
             <div class="cf">
               <div class="fl w-50">
-                <%= f.input(list_type, label: false, placeholder: "1-1/2 Diced Medium Onions") %>
+                <%= f.input(list_type, label: false, placeholder: "1-1/2 Diced Medium Onions", autofocus: autofocus) %>
               </div>
               <div class="fl w-40">
                 <%= f.button(:submit, "Update") %>
@@ -77,7 +75,7 @@
     <div class="cf">
       <div class="fl w-40">
         <%= f.input :list_item_id, as: :hidden %>
-        <%= f.input(list_type, label: false, placeholder: "1-1/2 Diced Medium Onions", autofocus: params[:autofocus].to_i == list_item.id) %>
+        <%= f.input(list_type, label: false, placeholder: "1-1/2 Diced Medium Onions", autofocus: autofocus) %>
       </div>
       <div class="fl w-40">
         <%= f.button(:submit, "Add") %>
@@ -88,8 +86,10 @@
 
 <% if list_item.persisted? && list_item.form_body? %>
   <%= simple_form_for(list_item, url: simple_form_url) do |f| %>
-    <%= f.input :body, as: :hidden, input_html: {id: "list_item_body_#{list_item.id}"} %>
-    <trix-editor input="<%= "list_item_body_#{list_item.id}" %>" placeholder="Add a super cool description about why this thing is worth looking at!"></trix-editor>
+    <%= f.input :body, as: :hidden, autofocus: autofocus,input_html: {id: "list_item_body_#{list_item.id}"} %>
+    <%= content_tag("trix-editor", "", autofocus: autofocus, input: "list_item_body_#{list_item.id}", placeholder: "Add a super cool description about why this thing is worth looking at!") %>
     <%= f.button(:submit) %>
   <% end %>
 <% end %>
+
+

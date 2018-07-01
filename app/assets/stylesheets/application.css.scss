@@ -33,3 +33,25 @@ code {
   @extend .pv0;
   @extend .ph1;
 }
+
+@keyframes border-pulsate {
+  0% {
+    border-color: rgba(0, 255, 255, 1);
+  }
+  25% {
+    border-color: rgba(0, 255, 255, 0);
+  }
+  50% {
+    border-color: rgba(0, 255, 255, 0);
+  }
+  75% {
+    border-color: rgba(0, 255, 255, 0);
+  }
+  100% {
+    border-color: rgba(0, 255, 255, 1);
+  }
+}
+
+.border-pulse {
+  animation: border-pulsate 2s infinite;
+}

@@ -29,10 +29,10 @@ module ListsHelper
   end
 
   def up_arrow
-    "&uarr;".html_safe
+    "&uarr;".freeze
   end
 
   def down_arrow
-    "&darr;".html_safe
+    "&darr;".freeze
   end
 end
