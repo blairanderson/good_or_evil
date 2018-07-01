@@ -9,7 +9,7 @@ Rails.application.routes.draw do
   constraints(SubdomainWhiteList) do
     get '/robots.:format' => 'sitemap#robots'
     get '/sitemap.xml.gz' => 'sitemap#sitemap', format: :xml
-
+    get '/search' => 'sites#search', as: :site_search
     get '/' => 'sites#index', as: :site_root
     get '/:id' => 'sites#show', as: :site_list
   end
@@ -25,6 +25,9 @@ Rails.application.routes.draw do
     resources :account_invitations, only: [:index, :create, :destroy]
     resources :list_item_ingredients, only: [:create, :update]
     resources :accounts do
+      resources :menus do
+        resources :menu_links
+      end
       resources :lists do
         scope module: :lists do
           resources :items do

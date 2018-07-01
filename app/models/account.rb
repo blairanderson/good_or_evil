@@ -1,5 +1,6 @@
 class Account < ActiveRecord::Base
   belongs_to :user
+  has_many :site_menus
   has_many :lists
   has_many :account_invitations
   has_many :memberships

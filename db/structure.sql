@@ -328,7 +328,8 @@ CREATE TABLE lists (
     image_id character varying,
     image_filename character varying,
     image_content_size character varying,
-    image_content_type character varying
+    image_content_type character varying,
+    published_at timestamp without time zone
 );
 
 
@@ -453,6 +454,72 @@ ALTER SEQUENCE saved_items_id_seq OWNED BY saved_items.id;
 CREATE TABLE schema_migrations (
     version character varying NOT NULL
 );
+
+
+--
+-- Name: site_menu_links; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE site_menu_links (
+    id integer NOT NULL,
+    site_menu_id integer,
+    "position" integer DEFAULT 0 NOT NULL,
+    name character varying NOT NULL,
+    link character varying NOT NULL,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: site_menu_links_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE site_menu_links_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: site_menu_links_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE site_menu_links_id_seq OWNED BY site_menu_links.id;
+
+
+--
+-- Name: site_menus; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE site_menus (
+    id integer NOT NULL,
+    account_id integer,
+    location integer DEFAULT 0,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: site_menus_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE site_menus_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: site_menus_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE site_menus_id_seq OWNED BY site_menus.id;
 
 
 --
@@ -585,6 +652,20 @@ ALTER TABLE ONLY saved_items ALTER COLUMN id SET DEFAULT nextval('saved_items_id
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
+ALTER TABLE ONLY site_menu_links ALTER COLUMN id SET DEFAULT nextval('site_menu_links_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY site_menus ALTER COLUMN id SET DEFAULT nextval('site_menus_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
 ALTER TABLE ONLY users ALTER COLUMN id SET DEFAULT nextval('users_id_seq'::regclass);
 
 
@@ -674,6 +755,22 @@ ALTER TABLE ONLY refile_attachments
 
 ALTER TABLE ONLY saved_items
     ADD CONSTRAINT saved_items_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: site_menu_links_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY site_menu_links
+    ADD CONSTRAINT site_menu_links_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: site_menus_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY site_menus
+    ADD CONSTRAINT site_menus_pkey PRIMARY KEY (id);
 
 
 --
@@ -825,6 +922,20 @@ CREATE UNIQUE INDEX index_saved_items_on_item_id_and_user_id ON saved_items USIN
 
 
 --
+-- Name: index_site_menu_links_on_site_menu_id_and_position; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE UNIQUE INDEX index_site_menu_links_on_site_menu_id_and_position ON site_menu_links USING btree (site_menu_id, "position");
+
+
+--
+-- Name: index_site_menus_on_account_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_site_menus_on_account_id ON site_menus USING btree (account_id);
+
+
+--
 -- Name: index_users_on_email; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -854,6 +965,14 @@ ALTER TABLE ONLY account_invitations
 
 
 --
+-- Name: fk_rails_24ef34dff1; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY site_menu_links
+    ADD CONSTRAINT fk_rails_24ef34dff1 FOREIGN KEY (site_menu_id) REFERENCES site_menus(id);
+
+
+--
 -- Name: fk_rails_36866a7bf5; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -875,6 +994,14 @@ ALTER TABLE ONLY account_invitations
 
 ALTER TABLE ONLY memberships
     ADD CONSTRAINT fk_rails_99326fb65d FOREIGN KEY (user_id) REFERENCES users(id);
+
+
+--
+-- Name: fk_rails_aebcefcca7; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY site_menus
+    ADD CONSTRAINT fk_rails_aebcefcca7 FOREIGN KEY (account_id) REFERENCES accounts(id);
 
 
 --
@@ -962,4 +1089,10 @@ INSERT INTO schema_migrations (version) VALUES ('20180419055056');
 INSERT INTO schema_migrations (version) VALUES ('20180615053552');
 
 INSERT INTO schema_migrations (version) VALUES ('20180615142755');
+
+INSERT INTO schema_migrations (version) VALUES ('20180701220706');
+
+INSERT INTO schema_migrations (version) VALUES ('20180701221312');
+
+INSERT INTO schema_migrations (version) VALUES ('20180701223958');
 

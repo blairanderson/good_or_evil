@@ -2,13 +2,22 @@ class SitesController < PublicController
   layout "site"
 
   def index
-    lists = current_account.lists.published
-    @query = params[:q].to_s.strip
-    if @query.length > 0
-      lists = lists.search_for(@query)
+    query = params[:q].to_s.strip
+    if query.length > 0
+      redirect_to(site_search_path(q: query)) and return
     end
-    @lists = lists.paginate(per_page: current_account.lists_per_page, page: params[:page])
     current_account.update_column(:page_views, current_account.page_views+1)
+    @lists = current_account.lists.visible.sorted.paginate(per_page: current_account.lists_per_page, page: params[:page])
+  end
+
+  def search
+    query = params[:q].to_s.strip
+    if query.length < 2
+      redirect_to(site_path) and return
+    end
+
+    current_account.update_column(:page_views, current_account.page_views+1)
+    @lists = current_account.lists.visible.search_for(query).paginate(per_page: current_account.lists_per_page, page: params[:page])
   end
 
   def current_list

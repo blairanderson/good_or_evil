@@ -1,9 +1,13 @@
 <div class="cf mv4">
   <main class="avenir fl-ns w-70-ns">
     <!--https://developers.google.com/search/docs/guides/mark-up-content-->
-    <% itemprops = if current_list_items.any? { |i| i.recipe_ingredients? || i.recipe_instructions? }
+    <%
+       is_recipe = current_list_items.any?(&:form_ingredients?)
+       product_link_count = current_list_items.size(&:product_link?)
+       is_product_guide = !is_recipe && product_link_count > 0
+       itemprops = if is_recipe
                      {itemscope: '', itemtype: "http://schema.org/Recipe"}
-                   elsif current_list_items.any? { |i| i.product_link? }
+                   elsif is_product_guide
                      {itemscope: '', itemtype: "http://schema.org/Review"}
                    else
                      {itemscope: '', itemtype: "http://schema.org/Article"}
@@ -17,11 +21,11 @@
           <time class="f5 f4-l fw1 baskerville mb4"><%= current_list.updated_at.to_date.to_formatted_s(:long) %></time>
           by <%= current_list.user.public_name %>
           <% if current_list.page_views > 10 %>
-            <span>, </span>
+            <span>,&nbsp;</span>
             <small class="black-50"><%= current_list.page_views %> page views</small>
           <% end %>
           <% if current_list.item_count > 1 %>
-            <span>, </span>
+            <span>,&nbsp;</span>
             <small class="black-50"><%= current_list.item_count %> sections</small>
           <% end %>
           <% if false %>
