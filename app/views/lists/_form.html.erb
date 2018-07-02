@@ -10,6 +10,7 @@
       placeholder: "10 Gifts for Awesome Grandmas"
     %>
   </div>
+
   <div class="mw5 center">
     <%= f.button :submit, current_list.persisted? ? "Update" : "Create Draft", class: "w-100" %>
     <% unless current_list.persisted? %>
@@ -41,13 +42,11 @@
 <% end %>
 
 <% if current_list.name.present? %>
-  <%= content_tag(:details, open: current_list.word_count < 100) do %>
-    <summary>Header Content, Words: <%= current_list.word_count %></summary>
-    <%= simple_form_for([current_account, current_list]) do |f| %>
-      <!-- the trix editor goes here: https://github.com/basecamp/trix -->
-      <%= f.input :body, as: :hidden, input_html: {id: "new_list_body"} %>
-      <trix-editor input="new_list_body" placeholder="Add a super cool description to help people find this list!"></trix-editor>
-      <%= f.button :submit, 'Save Changes' %>
-    <% end %>
+  <h3>Words: <%= current_list.word_count %></h3>
+  <%= simple_form_for([current_account, current_list]) do |f| %>
+    <!-- the trix editor goes here: https://github.com/basecamp/trix -->
+    <%= f.input :body, as: :hidden, input_html: {id: "new_list_body"} %>
+    <trix-editor input="new_list_body" placeholder="Add a super cool description to help people find this list!"></trix-editor>
+    <%= f.button :submit, 'Save Changes' %>
   <% end %>
 <% end %>

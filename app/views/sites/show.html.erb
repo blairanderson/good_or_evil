@@ -87,9 +87,12 @@
                 <h3><%= item.title %></h3>
               </div>
             <% end %>
+
             <% if item.image %>
-              <div class="tc">
-                <%= attachment_image_tag(item, :image) %>
+              <div class="measure center">
+                <div class="tc">
+                  <%= attachment_image_tag(item, :image) %>
+                </div>
               </div>
             <% end %>
 

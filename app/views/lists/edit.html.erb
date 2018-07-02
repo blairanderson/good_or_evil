@@ -1,5 +1,5 @@
 <div class="tc"><%= render partial: 'lists/actions' %></div>
-<div class="mw8 center">
+<div class="mw7 center">
   <%= render 'lists/form' %>
 
   <% current_list_items = current_list.list_items.where.not(id: nil).sorted.to_a %>
@@ -50,6 +50,7 @@
   function reload() {
     window.location.reload()
   }
+
   function sortUp(id) {
     var current = $("#list_item_" + id);
     current.prev().before(current);
@@ -62,7 +63,7 @@
     sendSort()
   }
 
-  function sendSort(){
+  function sendSort() {
     $.rails.ajax({
       url: "<%= sort_account_list_items_path(current_account, current_list) %>",
       type: "POST",
@@ -70,10 +71,19 @@
     }).done(reload)
   }
 
-  $(function() {
-    $("#sortable").sortable({
-      update: sendSort
+  function sortable(){
+    //create the sort function for list_items
+    $("#sortable").sortable({update: sendSort});
+  }
+
+  function hideShowSubmit(){
+    $("input[type='submit']").hide();
+    $(document).on("focus change keyup blur", "input, textarea", function(e) {
+      $(this).closest("form").find("input:submit").show();
     });
-  });
+  }
+
+  $(document).ready(sortable);
+//  $(document).ready(hideShowSubmit);
 </script>
 
