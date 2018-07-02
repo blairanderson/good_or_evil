@@ -14,7 +14,7 @@ class List < ActiveRecord::Base
   enum status: {draft: 0, published: 1, archived: 2, hidden: 3}
   enum display_theme: {grid: 0, story: 1}
   scope :for_user, -> (user) { where(user_id: user.id) }
-  scope :sorted, -> { order("published_at") }
+  scope :sorted, -> { order("published_at DESC") }
   scope :popular, -> { order("page_views DESC") }
   scope :visible, -> { where("status = :published", published: List.statuses["published"]) }
   scope :for_sidebar, -> { distinct.select("lists.name, lists.slug") }
