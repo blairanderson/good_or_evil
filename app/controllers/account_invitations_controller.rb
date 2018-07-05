@@ -15,8 +15,12 @@ class AccountInvitationsController < UserController
     end
 
     user = User.invite!(valid_params.slice(:email), current_user)
-    Membership.where(user_id: user.id, account_id: valid_params[:account_id]).first_or_create!(created_by: current_user)
-    flash[:notice] = "Invitation sent to <strong>#{valid_params[:email].truncate(30)}</strong>"
+    if user.valid?
+      Membership.where(user_id: user.id, account_id: valid_params[:account_id]).first_or_create!(created_by: current_user)
+      flash[:notice] = "Invitation sent to <strong>#{valid_params[:email].truncate(30)}</strong>"
+    else
+      flash[:notice] = "<strong>#{valid_params[:email].truncate(30)}</strong> IS A WACK EMAIL<br>Could not send the invite!"
+    end
     redirect_to edit_account_path(valid_params[:account_id], anchor: :invitations, active: :invitations)
   end
 

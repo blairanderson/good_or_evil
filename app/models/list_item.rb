@@ -10,6 +10,7 @@ class ListItem < ActiveRecord::Base
       recipe_ingredients: 2,
       recipe_instructions: 3,
       title_text: 5
+      # review: 6
     }
 
   scope :sorted, -> { order("sort ASC, created_at ASC") }
@@ -17,8 +18,9 @@ class ListItem < ActiveRecord::Base
   def self.available_styles(already_used_enums)
   #   we do not want to allow multiple recipe items on a single list.
     available = self.styles.hash.dup.symbolize_keys
-    available = available.except(:recipe_ingredients) if already_used_enums.include?(2)
-    available = available.except(:recipe_instructions) if already_used_enums.include?(3)
+    available.delete(:recipe_ingredients) if already_used_enums.include?(2)
+    available.delete(:recipe_instructions) if already_used_enums.include?(3)
+    available.delete(:review) if already_used_enums.include?(6)
     available
   end
 
