@@ -1,16 +1,16 @@
 class User < ActiveRecord::Base
   # Include default devise modules. Others available are:
-  # :confirmable, :lockable, :timeoutable and :omniauthable
+  # :lockable, :timeoutable
   devise :database_authenticatable, :registerable,
-         :recoverable, :rememberable, :trackable, :confirmable
+         :recoverable, :rememberable, :trackable, :confirmable, :invitable
 
   has_many :accounts
   has_many :lists
   has_many :list_items
   has_many :saved_items
-  has_many :account_invitations
   has_many :memberships
-  has_many :joined_accounts, through: :memberships, source: :account
+  has_many :invited_accounts, -> { where(memberships: {accepted_by_user: false}) }, through: :memberships, source: :account
+  has_many :joined_accounts, -> { where(memberships: {accepted_by_user: true}) }, through: :memberships, source: :account
 
 
   # ALLOWING USERS TO SIGN UP WITHOUT EMAIL
@@ -21,6 +21,14 @@ class User < ActiveRecord::Base
     p[:password] = params[:password]
     p[:password_confirmation] = params[:password_confirmation]
     update_attributes(p)
+  end
+
+  def pending_invitation_count
+    @pending_invitation_count ||= User.where(invited_by_id: id, invitation_accepted_at: nil).count
+  end
+
+  def has_invitations_left?
+    pending_invitation_count < Membership::PENDING_LIMIT
   end
 
   # new function to return whether a password has been set

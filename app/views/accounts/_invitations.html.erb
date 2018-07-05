@@ -1,20 +1,25 @@
-<h4>Invite Users!</h4>
-<%= simple_form_for(current_account.account_invitations.build) do |f| %>
-  <%= f.input(:account_id, as: :hidden, value: current_account.id) %>
-  <%= f.input(:email, placeholder: "Invite your employees to the site") %>
-  <%= f.button(:submit) %>
+<%
+   current_pending_invite_count = current_account.invited_members.count
+   cannot_send_more_invites = current_pending_invite_count >= Membership::PENDING_LIMIT
+   added_class_names = {class: ('disabled' if cannot_send_more_invites)}
+%>
+<% if cannot_send_more_invites %>
+  <%= small_info("You've hit your invitation limit! No more than #{Membership::PENDING_LIMIT} PENDING invites per user") %>
 <% end %>
-<% if current_account.account_invitations.any? %>
+<%= simple_form_for(current_account.account_invitations.build, html: added_class_names) do |f| %>
+  <%= f.input(:account_id, as: :hidden, value: current_account.id, input_html: added_class_names) %>
+  <%= f.input(:email, placeholder: "Invite friends/employees/people to help edit #{current_account.slug}", input_html: added_class_names) %>
+  <%= f.button(:submit, added_class_names) %>
+<% end %>
+
+<% if current_account.invited_members.any? %>
+  <h4>Pending Members</h4>
   <ul>
-    <% current_account.account_invitations.order("invitation_accepted_at DESC NULLS FIRST").each do |acinv| %>
+    <% current_account.invited_members.order("created_at DESC").each do |acinv| %>
       <li>
         <%= acinv.email %>
-        <% if acinv.invitation_accepted_at %>
-          - <%= acinv.invitation_accepted_at %>
-        <% else %>
-          Pending
-          - <%= link_to('Delete', account_invitation_path(acinv), method: :delete, data: {confirm: "Are you sure?"}) %>
-        <% end %>
+        - <%= link_to('ReSend', account_invitations_path(account_invitation: {account_id: current_account.id, email: acinv.email}), method: :post) %>
+        - <%= link_to('Delete', account_invitation_path(acinv), method: :delete, data: {confirm: "Are you sure?"}) %>
       </li>
     <% end %>
   </ul>
@@ -25,7 +30,12 @@
   <h4>Account Members</h4>
   <ul>
     <% current_account.members.each do |member| %>
-      <li><%= member.email %> - <%= member.public_name %></li>
+      <li>
+        <%= member.email %>
+        <% if member.public_name %>
+          &nbsp;-&nbsp;<%= member.public_name %>
+        <% end %>
+      </li>
     <% end %>
   </ul>
 <% end %>

@@ -22,9 +22,9 @@ Rails.application.routes.draw do
       patch '/confirm' => 'confirmations#confirm'
     end
 
-    resources :account_invitations, only: [:index, :create, :destroy]
+    resources :account_invitations, only: [:index, :create, :update, :destroy]
     resources :list_item_ingredients, only: [:create, :update]
-    resources :accounts do
+    resources :accounts, only: [] do
       resources :menus do
         resources :menu_links
       end
@@ -46,6 +46,7 @@ Rails.application.routes.draw do
       resources :categories, path: 'leaderboard', only: [:show]
       resources :brands
     end
+    resources :accounts, param: :account_id
     get :inspiration, to: 'landing#inspiration', as: :inspiration
     get :started, to: 'landing#started', as: :get_started
     root to: 'landing#index'

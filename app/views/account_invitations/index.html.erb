@@ -1,10 +1,21 @@
-<h2>Someone Invited you to join their website!</h2>
-<ul>
+<h2 class="tc">Someone Invited you to join their website!</h2>
+<table class="mw7 tc w-100 center ba">
+  <thead>
+  <tr>
+    <th class="ba">Invitation from</th>
+    <th class="ba">Account Name</th>
+    <th class="ba">Accept</th>
+    <th class="ba">Deny</th>
+  </tr>
+  </thead>
+  <tbody>
   <% @invitations.each do |invitation| %>
-    <li>
-      Invitation from <strong><%= "#{invitation.user.email}" %></strong><br/>
-      To Edit <strong><%= invitation.account.name %></strong><br/>
-      <%= link_to('Accept', '#') %> | <%= link_to('Deny', account_invitation_path(invitation), method: :delete, data: {confirm: "Are you sure? #{invitation.user.email} will have to send another invitation for you to edit."}) %>
-    </li>
+    <tr>
+      <td class="ba"><%= "#{invitation.created_by.email}" %></td>
+      <td class="ba"><%= invitation.account.name %></td>
+      <td class="ba"><%= link_to('Accept', account_invitation_path(invitation), method: :patch, data: {confirm: "Are you sure you want to accept this invitation??"}) %></td>
+      <td class="ba"><%= link_to('Deny', account_invitation_path(invitation), method: :delete, data: {confirm: "Are you sure you want to reject this invitation??"}) %></td>
+    </tr>
   <% end %>
-</ul>
+  </tbody>
+</table>

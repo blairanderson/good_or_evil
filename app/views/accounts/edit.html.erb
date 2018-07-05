@@ -21,10 +21,6 @@
   <% end %>
 
   <% content_tag(:details, open: false) do %>
-    <summary>About Page</summary>
-  <% end %>
-
-  <% content_tag(:details, open: false) do %>
     <summary>Contact Page</summary>
   <% end %>
 
@@ -56,8 +52,12 @@
     </h2>
   </details>
 
-  <details>
+  <%= content_tag(:details, id: "invitations", open: params[:active]=="invitations") do %>
     <summary>User Invitations</summary>
+    <% if flash[:notice].to_s.include?("Invitation") %>
+      <%= small_info(flash[:notice]) %>
+    <% end %>
     <%= render partial: "invitations" %>
-  </details>
+  <% end %>
+
 </div>

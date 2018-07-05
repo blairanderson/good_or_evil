@@ -1,7 +1,7 @@
 <div class="mw8 center">
   <% if @lists.any? || @query.length > 0 %>
     <h3 class="f2 ma1 pa1">Pages/Lists/Reviews/Recipes - <%= link_to('New Post', new_account_list_path(current_account)) %></h3>
-    <div class="bg-white shadow-1 br2 overflow-hidden">
+    <div class="bg-white shadow-1 br2">
       <div class="f4 bb bw1 b--black-10 flex cf">
         <% ['draft', 'published'].each do |status| %>
           <% if params[:status] == status %>

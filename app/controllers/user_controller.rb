@@ -18,9 +18,9 @@ class UserController < ApplicationController
     @accounts ||= current_accounts
   end
 
-
   def current_account
-    @account ||= Account.friendly.find(params[:account_id] || params[:id]) rescue nil
+    return nil unless params.has_key?(:account_id)
+    @account ||= Account.friendly.find(params[:account_id])
   end
 
   def account_route_params
@@ -31,7 +31,7 @@ class UserController < ApplicationController
     @accounts ||= [
       current_user.accounts.order(page_views: :desc).to_a,
       current_user.joined_accounts.order(page_views: :desc).to_a,
-    ].flatten rescue []
+    ].flatten
   end
 
   def accounts_count

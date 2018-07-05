@@ -1,14 +1,16 @@
 <div class="cf mw8 center nl2 nr2">
-  <div class="fl w-30 ph2">
-    <%= simple_form_for(resource, :as => resource_name, :url => registration_path(resource_name)) do |f| %>
-      <%= devise_error_messages! %>
-      <%= f.input :email, :autofocus => true %>
-      <%= f.button :submit, "Sign up" %>
-    <% end %>
-    <%= render "devise/shared/links" %>
+  <div class="fl w-30 ph2 vh-50 dt">
+    <div class="dtc v-mid">
+      <%= simple_form_for(resource, :as => resource_name, :url => registration_path(resource_name)) do |f| %>
+        <%= devise_error_messages! %>
+        <%= f.input :email, :autofocus => true %>
+        <%= f.button :submit, "Sign up" %>
+      <% end %>
+      <%= render "devise/shared/links" %>
+    </div>
   </div>
-  <div class="fl w-70 ph2">
-    <div class="mw7 center">
+  <div class="fl w-70 ph2 vh-50 dt">
+    <div class="dtc v-mid mw7 center">
       <h1>Create multiple Affiliate Sites</h1>
       <h2>Build Content, Build Traffic, Get Clicks, Make Money!</h2>
       <h3>Features:</h3>
@@ -20,12 +22,7 @@
       <h3>Todos:</h3>
       <ul>
         <li><%= todo("Email Signup without password") %></li>
-        <li><%= todo("Upload List image") %></li>
-        <li><%= todo("Upload ListItem image") %></li>
         <li><%= todo("Change nav Colors") %></li>
-        <li><%= todo("ListItem import image from Amazon directly") %></li>
-        <li><%= todo("PageScan for Affiliate links") %></li>
-        <li><%= todo("Info Pages for non-affiliate content") %></li>
       </ul>
     </div>
   </div>

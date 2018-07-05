@@ -1,7 +1,8 @@
 class AccountsController < UserController
   def index
-    if AccountInvitation.where(email: current_user.email, invitation_accepted_at: nil).count > 0
-      redirect_to(account_invitations_path) and return
+    # if an invite exists force them to see and make a decision
+    if current_user.invited_accounts.exists?
+      redirect_to account_invitations_path and return
     end
 
     if accounts_count == 0
