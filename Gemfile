@@ -5,7 +5,8 @@ gem 'rails', '4.2.5'
 gem 'pg'
 gem 'amazon-ecs'
 gem 'coffee-rails'
-gem 'devise'
+gem 'devise', '3.5.3'
+gem 'devise_invitable', '~> 1.6.1' #https://github.com/scambra/devise_invitable/tree/v1.6.1
 gem 'jquery-rails'
 gem 'friendly_id', '~> 5.1.0'
 gem 'geocoder'
@@ -25,6 +26,7 @@ gem 'public_suffix'
 
 gem 'quiet_assets'
 
+# gem 'recaptcha'
 gem 'refile', require: 'refile/rails'
 gem 'refile-postgres', '~> 1.4.0'
 gem 'refile-mini_magick'

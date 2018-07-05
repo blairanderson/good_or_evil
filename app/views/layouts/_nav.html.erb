@@ -1,4 +1,4 @@
-<% current_account_boolean = controller.respond_to?(:current_account) && current_account %>
+<% current_account_boolean = controller.respond_to?(:current_account) && current_account && current_account.persisted? %>
 
 <nav class="db dt-l w-100 border-box bb b--black-50 bg-washed-blue pa3 ph5-l system-sans-serif ttu">
   <% if user_signed_in? %>
