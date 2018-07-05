@@ -22,6 +22,33 @@
   </div>
 <% end %>
 
+<% if list_item.persisted? && list_item.review_rating? %>
+  <%= simple_form_for(list_item, url: simple_form_url) do |f| %>
+    <fieldset class="rating">
+      <legend>Please rate:</legend>
+      <%
+         {
+           5 => "Rocks",
+           4 => "Pretty Good",
+           3 => "Meh",
+           2 => "Kinda Bad",
+           1 => "Sucks Big Time"
+         }.each do |rating, title|
+      %>
+        <input
+        type="radio"
+        <%= 'checked=checked' if list_item.rating == rating %>
+        id="star<%= rating %>"
+        name="list_item[rating]"
+        onchange="this.form.submit()"
+        value="<%= rating %>" />
+        <label for="star<%= rating %>" title="<%= title %>"><%= rating %> stars</label>
+      <% end %>
+    </fieldset>
+  <% end %>
+<% end %>
+
+
 <% if list_item.persisted? && list_item.form_title? %>
   <%= simple_form_for(list_item, url: simple_form_url) do |f| %>
     <%= f.input :title, as: :string, placeholder: "Some Awesome Product title here!", autofocus: autofocus %>
@@ -86,7 +113,7 @@
 
 <% if list_item.persisted? && list_item.form_body? %>
   <%= simple_form_for(list_item, url: simple_form_url) do |f| %>
-    <%= f.input :body, as: :hidden, autofocus: autofocus,input_html: {id: "list_item_body_#{list_item.id}"} %>
+    <%= f.input :body, as: :hidden, autofocus: autofocus, input_html: {id: "list_item_body_#{list_item.id}"} %>
     <%= content_tag("trix-editor", "", autofocus: autofocus, input: "list_item_body_#{list_item.id}", placeholder: "Add a super cool description about why this thing is worth looking at!") %>
     <%= f.button(:submit) %>
   <% end %>

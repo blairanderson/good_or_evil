@@ -1,6 +1,12 @@
 <%= t("devise.mailer.invitation_instructions.hello", email: @resource.email) %>
 
-<%= t("devise.mailer.invitation_instructions.someone_invited_you", url: root_url) %>
+<%
+   invited_by = @resource.invited_by
+   invited_by_email = invited_by.email
+   invited_to_account = Account.joins(:memberships).where(memberships: {user_id: @resource.id, created_by_id: invited_by.id}).first.name
+%>
+<%= t("devise.mailer.invitation_instructions.someone_invited_you", inviter: invited_by_email, account_name: invited_to_account, url: root_url) %>
+
 
 <%= accept_invitation_url(@resource, :invitation_token => @token) %>
 

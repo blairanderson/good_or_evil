@@ -282,7 +282,8 @@ CREATE TABLE list_items (
     image_filename character varying,
     image_content_size character varying,
     image_content_type character varying,
-    style_cd integer DEFAULT 0
+    style_cd integer DEFAULT 0,
+    rating integer
 );
 
 
@@ -1131,4 +1132,6 @@ INSERT INTO schema_migrations (version) VALUES ('20180701223958');
 INSERT INTO schema_migrations (version) VALUES ('20180704184411');
 
 INSERT INTO schema_migrations (version) VALUES ('20180704190554');
+
+INSERT INTO schema_migrations (version) VALUES ('20180705153050');
 

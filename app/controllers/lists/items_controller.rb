@@ -49,7 +49,15 @@ module Lists
     end
 
     def item_params
-      params.require(:list_item).permit(:title, :affiliate_link, :body, :image, :style, :style_cd)
+      params.require(:list_item).permit(
+        :title,
+        :affiliate_link,
+        :body,
+        :image,
+        :style,
+        :style_cd,
+        :rating
+      )
     end
 
   end
