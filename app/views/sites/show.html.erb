@@ -15,8 +15,7 @@
     %>
     <%= content_tag(:article, {class: "baskerville pb5"}.merge(itemprops)) do %>
       <header class="avenir tc-l ph3 ph4-ns pt0">
-        <h1 class="f2 f1-l measure lh-title fw1 mv0"><%= link_to(current_list.name, params, class: "link near-black") %></h1>
-
+        <h1 class="f2 f1-l measure lh-title fw1 mv0"><%= link_to(current_list.name, params, class: "link near-black", itemprop: "name") %></h1>
         <p>
           Published
           <time class="f5 f4-l fw1 baskerville mb4"><%= current_list.updated_at.to_date.to_formatted_s(:long) %></time>
@@ -122,7 +121,7 @@
                 <h3 class="lh-title">Recipe Instructions</h3>
                 <ol itemprop="recipeInstructions">
                   <% item.list_item_ingredients.each do |ingredient| %>
-                    <li class="lh-copy"><%= ingredient.comment %></li>
+                    <li class="lh-copy" itemprop="HowToStep"><%= ingredient.comment %></li>
                   <% end %>
                 </ol>
               </div>
