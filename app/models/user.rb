@@ -11,6 +11,7 @@ class User < ActiveRecord::Base
   has_many :memberships
   has_many :invited_accounts, -> { where(memberships: {accepted_by_user: false}) }, through: :memberships, source: :account
   has_many :joined_accounts, -> { where(memberships: {accepted_by_user: true}) }, through: :memberships, source: :account
+  has_many :pending_invitation_members, -> { where(memberships: {accepted_by_user: false}) }, through: :memberships, source: :user
 
 
   # ALLOWING USERS TO SIGN UP WITHOUT EMAIL

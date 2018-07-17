@@ -12,17 +12,20 @@
   <%= f.button(:submit, added_class_names) %>
 <% end %>
 
-<% if current_user.invited_members.any? %>
+
+<% if current_user.pending_invitation_members.any? %>
   <h4>Pending Members</h4>
   <ul>
-    <% current_account.invited_members.order("created_at DESC").each do |acinv| %>
+    <% current_user.pending_invitation_members.order("created_at DESC").each do |u| %>
       <li>
         <%= acinv.email %>
-        - <%= link_to('ReSend', account_invitations_path(account_invitation: {account_id: current_account.id, email: acinv.email}), method: :post) %>
-        - <%= link_to('Delete', account_invitation_path(acinv), method: :delete, data: {confirm: "Are you sure?"}) %>
+        - <%= link_to('ReSend', account_invitations_path(account_invitation: {account_id: current_account.id, email: u.email}), method: :post) %>
+        - <%# link_to('Delete', account_invitation_path(acinv), method: :delete, data: {confirm: "Are you sure?"}) %>
       </li>
     <% end %>
   </ul>
+<% else %>
+  <h4>No Pending Invitations</h4>
 <% end %>
 
 <% if current_account.members.any? %>
