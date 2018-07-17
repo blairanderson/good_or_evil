@@ -12,7 +12,7 @@
   <%= f.button(:submit, added_class_names) %>
 <% end %>
 
-<% if current_account.invited_members.any? %>
+<% if current_user.invited_members.any? %>
   <h4>Pending Members</h4>
   <ul>
     <% current_account.invited_members.order("created_at DESC").each do |acinv| %>

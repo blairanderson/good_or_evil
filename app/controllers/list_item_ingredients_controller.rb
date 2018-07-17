@@ -9,7 +9,7 @@ class ListItemIngredientsController < UserController
       flash[:alert] = "NOPE!"
     end
 
-    redirect_to edit_account_list_path(list.account, list, anchor: item.id)
+    redirect_to edit_account_list_path(list.account, list, anchor: item.id, autofocus: item.id)
   end
 
 
@@ -24,7 +24,7 @@ class ListItemIngredientsController < UserController
       flash[:alert] = "NOPE!"
     end
 
-    redirect_to edit_account_list_path(list.account, list, anchor: item.id)
+    redirect_to edit_account_list_path(list.account, list, anchor: item.id, autofocus: item.id)
   end
 
   private

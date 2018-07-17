@@ -5,7 +5,7 @@ module Lists
     before_filter :set_item, only: [:update, :destroy]
 
     def create
-      item = current_list.list_items.where(user_id: current_user.id).where(item_params).first_or_create
+      item = current_list.list_items.where(user_id: current_user.id).where(item_params).create!
       should_save = false
 
       if item.amazon? && item.fetch_asin != item.asin

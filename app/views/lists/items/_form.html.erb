@@ -22,33 +22,6 @@
   </div>
 <% end %>
 
-<% if list_item.persisted? && list_item.review_rating? %>
-  <%= simple_form_for(list_item, url: simple_form_url) do |f| %>
-    <fieldset class="rating">
-      <legend>Please rate:</legend>
-      <%
-         {
-           5 => "Rocks",
-           4 => "Pretty Good",
-           3 => "Meh",
-           2 => "Kinda Bad",
-           1 => "Sucks Big Time"
-         }.each do |rating, title|
-      %>
-        <input
-        type="radio"
-        <%= 'checked=checked' if list_item.rating == rating %>
-        id="star<%= rating %>"
-        name="list_item[rating]"
-        onchange="this.form.submit()"
-        value="<%= rating %>" />
-        <label for="star<%= rating %>" title="<%= title %>"><%= rating %> stars</label>
-      <% end %>
-    </fieldset>
-  <% end %>
-<% end %>
-
-
 <% if list_item.persisted? && list_item.form_title? %>
   <%= simple_form_for(list_item, url: simple_form_url) do |f| %>
     <%= f.input :title, as: :string, placeholder: "Some Awesome Product title here!", autofocus: autofocus %>
@@ -81,12 +54,15 @@
         <% else %>
           <h4 class="f4-ns f5 lh-copy fw3 di ma0 pa0"><%= ingredient.comment %></h4>
         <% end %>
-        <details class="fr">
-          <summary>edit</summary>
+        <details>
+          <summary class="fr">edit</summary>
           <%= simple_form_for(ingredient) do |f| %>
             <div class="cf">
               <div class="fl w-50">
-                <%= f.input(list_type, label: false, placeholder: "1-1/2 Diced Medium Onions", autofocus: autofocus) %>
+                <%= f.input(list_type,
+                  label: false,
+                  placeholder: (list_item.recipe_ingredients? ? "1-1/2 Diced Medium Onions" : "Toss things into a blender"),
+                  autofocus: autofocus) %>
               </div>
               <div class="fl w-40">
                 <%= f.button(:submit, "Update") %>

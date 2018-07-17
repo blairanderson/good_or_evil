@@ -16,10 +16,11 @@
     <%= content_tag(:article, {class: "baskerville pb5"}.merge(itemprops)) do %>
       <header class="avenir tc-l ph3 ph4-ns pt0">
         <h1 class="f2 f1-l measure lh-title fw1 mv0"><%= link_to(current_list.name, params, class: "link near-black") %></h1>
+
         <p>
           Published
           <time class="f5 f4-l fw1 baskerville mb4"><%= current_list.updated_at.to_date.to_formatted_s(:long) %></time>
-          by <%= current_list.user.public_name %>
+          by <span itemprop="author"><%= current_list.user.public_name %></span>
           <% if current_list.page_views > 10 %>
             <span>,&nbsp;</span>
             <small class="black-50"><%= current_list.page_views %> page views</small>
@@ -49,6 +50,7 @@
           </p>
         <% end %>
       </header>
+
       <% if current_list.item_count > 0 %>
         <div class="cf">
           <details class="f4 mb4 center measure lh-copy pointer">
@@ -76,10 +78,12 @@
           </details>
         </div>
       <% end %>
+
       <div class="ph3 ph4-m ph5-l">
-        <div class="f4 mb4 center measure lh-copy">
+        <div itemprop="description" class="f4 mb4 center measure lh-copy">
           <%= current_list.body.html_safe %>
         </div>
+
         <% current_list_items.each do |item| %>
           <section id="<%= item.id %>">
             <% if item.title %>
@@ -136,6 +140,8 @@
             <% end %>
           </section>
         <% end %>
+        <!--allow ratings?-->
+        <!--# Missing field "aggregateRating"-->
       </div>
     <% end %>
   </main>

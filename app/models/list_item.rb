@@ -9,10 +9,9 @@ class ListItem < ActiveRecord::Base
       image_upload: 1,
       recipe_ingredients: 2,
       recipe_instructions: 3,
-      title_text: 5,
-      review_rating: 6
+      title_text: 5
     }
-
+  # Missing field "cookTime"
   scope :sorted, -> { order("sort ASC, created_at ASC") }
 
   def self.available_styles(already_used_enums)
@@ -20,7 +19,6 @@ class ListItem < ActiveRecord::Base
     available = self.styles.hash.dup.symbolize_keys
     available.delete(:recipe_ingredients) if already_used_enums.include?(2)
     available.delete(:recipe_instructions) if already_used_enums.include?(3)
-    available.delete(:review_rating) if already_used_enums.include?(6)
     available
   end
 

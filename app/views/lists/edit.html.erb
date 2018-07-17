@@ -18,25 +18,29 @@
     <%
        available_list_items = ListItem.available_styles(current_list_items.map(&:style_cd))
        classname = if available_list_items.keys.length == 3
-                     "w-third-ns pv2"
+                     "w-third-ns pv4"
                    elsif available_list_items.keys.length == 4
                      "w-25-ns  pv3"
+                   elsif available_list_items.keys.length == 5
+                     "w-20-ns pv2"
                    else
-                     "w-20-ns pv4"
+                     "w-sixth-ns pv2"
                    end
 
     %>
 
     <% available_list_items.each do |name, id| %>
       <%= button_to(account_list_items_path(current_account, current_list, list_item: {style_cd: id}), method: :post,
-        class: "fl db w-100 #{classname} link pointer tc bg-black-05 hover-bg-black-10") do %>
-        <div class="aspect-ratio aspect-ratio--4x3">
-          <div class="aspect-ratio--object pv4">
-            <h3 class="f3 fw3 mt0">Add <%= name.to_s.titleize %></h3>
-
-            <p class="f5 fw1"><%= t("list_items.style.#{name}") %></p>
+        class: "fl db w-100 #{classname} hide-child") do %>
+        <div class="child cf w-100 h-100 absolute bg-blue tc white f3">
+          <div class="dt w-100 h-100">
+            <div class="dtc v-mid">
+              <p class="f5 fw1"><%= t("list_items.style.#{name}") %></p>
+            </div>
           </div>
         </div>
+        <small class="db tc">Add</small>
+        <h3 class="f3 fw3 mt0"><%= name.to_s.titleize %></h3>
       <% end %>
     <% end %>
   </div>
@@ -71,12 +75,12 @@
     }).done(reload)
   }
 
-  function sortable(){
+  function sortable() {
     //create the sort function for list_items
     $("#sortable").sortable({update: sendSort});
   }
 
-  function hideShowSubmit(){
+  function hideShowSubmit() {
     $("input[type='submit']").hide();
     $(document).on("focus change keyup blur", "input, textarea", function(e) {
       $(this).closest("form").find("input:submit").show();
@@ -84,6 +88,6 @@
   }
 
   $(document).ready(sortable);
-//  $(document).ready(hideShowSubmit);
+  //  $(document).ready(hideShowSubmit);
 </script>
 
