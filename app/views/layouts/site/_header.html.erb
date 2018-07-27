@@ -1,10 +1,15 @@
-<header class="tc ph4">
+<header class="ph4 tc">
   <% if current_account.header_image %>
-    <%= attachment_image_tag(current_account, :header_image) %>
+    <a class="link" href="<%= root_path %>" title="">
+      <%= attachment_image_tag(current_account, :header_image) %>
+    </a>
+
   <% else %>
-    <h1 class="<%= current_account.header_font.to_s.dasherize %> measure lh-title fw1 mt0 f3 f2-m f1-l fw2 black-90 mv3">
-      <%= current_account.name %>
-    </h1>
+    <a class="link" href="<%= root_path %>" title="<%= current_account.name %>">
+      <h1 class="<%= current_account.header_font.to_s.dasherize %> lh-title fw1 mt0 f3 f2-m f1-l fw2 black-90 mv3">
+        <%= current_account.name %>
+      </h1>
+    </a>
     <% if current_account.header_subtitle %>
       <h2 class="<%= current_account.subtitle_font.to_s.dasherize %> f5 f4-m f3-l fw2 black-50 mt0 lh-copy">
         <%= current_account.header_subtitle %>

@@ -23,6 +23,7 @@ gem 'money-rails', '~>1'
 gem 'platform-api'
 gem 'pg_search'
 gem 'public_suffix'
+gem 'puma'
 
 gem 'quiet_assets'
 

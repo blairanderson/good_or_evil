@@ -14,37 +14,19 @@
 
   <div class="cf mv4">
     <hr class="mw5 center mv4"/>
-    <h4>Add New Section To This Page:</h4>
-    <%
-       available_list_items = ListItem.available_styles(current_list_items.map(&:style_cd))
-       classname = if available_list_items.keys.length == 3
-                     "w-third-ns pv4"
-                   elsif available_list_items.keys.length == 4
-                     "w-25-ns  pv3"
-                   elsif available_list_items.keys.length == 5
-                     "w-20-ns pv2"
-                   else
-                     "w-sixth-ns pv2"
-                   end
-
-    %>
-
-    <% available_list_items.each do |name, id| %>
-      <%= button_to(account_list_items_path(current_account, current_list, list_item: {style_cd: id}), method: :post,
-        class: "fl db w-100 #{classname} hide-child") do %>
-        <div class="child cf w-100 h-100 absolute bg-blue tc white f3">
-          <div class="dt w-100 h-100">
-            <div class="dtc v-mid">
-              <p class="f5 fw1"><%= t("list_items.style.#{name}") %></p>
-            </div>
-          </div>
-        </div>
-        <small class="db tc">Add</small>
-        <h3 class="f3 fw3 mt0"><%= name.to_s.titleize %></h3>
+    <h4 class="tc">Add New Section To This Page</h4>
+    <ul class="list pl0 ml0 center mw5 ba b--light-silver br3">
+      <% ListItem.available_styles(current_list_items.map(&:style_cd)).each do |name, id| %>
+        <%= button_to(account_list_items_path(current_account, current_list, list_item: {style_cd: id}), method: :post,
+          class: "button-reset pointer hover-bg-near-white w-100 ph3 pv2 bb b--light-silver") do %>
+          <h1 class="f6 f5-ns fw6 lh-title black mv0"><small class="db tc">Add</small><%= name.to_s.titleize %></h1>
+          <h2 class="f6 fw4 mt2 mb0 black-60"><%= t("list_items.style.#{name}") %></h2>
+        <% end %>
       <% end %>
-    <% end %>
-  </div>
+    </ul>
 
+
+  </div>
 
 </div>
 
