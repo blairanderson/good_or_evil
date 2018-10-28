@@ -212,7 +212,8 @@ CREATE TABLE schema_migrations (
 CREATE TABLE sources (
     id integer NOT NULL,
     title text,
-    url text,
+    host character varying,
+    feed_url character varying,
     image text,
     description text,
     created_at timestamp without time zone NOT NULL,
@@ -314,6 +315,8 @@ CREATE TABLE users (
     id integer NOT NULL,
     email character varying DEFAULT ''::character varying NOT NULL,
     encrypted_password character varying DEFAULT ''::character varying NOT NULL,
+    public_name character varying,
+    admin boolean DEFAULT false,
     reset_password_token character varying,
     reset_password_sent_at timestamp without time zone,
     remember_created_at timestamp without time zone,
@@ -322,11 +325,6 @@ CREATE TABLE users (
     last_sign_in_at timestamp without time zone,
     current_sign_in_ip character varying,
     last_sign_in_ip character varying,
-    created_at timestamp without time zone,
-    updated_at timestamp without time zone,
-    admin boolean DEFAULT false,
-    robot boolean DEFAULT false,
-    public_name character varying,
     confirmation_token character varying,
     confirmed_at timestamp without time zone,
     confirmation_sent_at timestamp without time zone,
@@ -340,7 +338,9 @@ CREATE TABLE users (
     invitation_limit integer,
     invited_by_id integer,
     invited_by_type character varying,
-    invitations_count integer DEFAULT 0
+    invitations_count integer DEFAULT 0,
+    created_at timestamp without time zone,
+    updated_at timestamp without time zone
 );
 
 
@@ -583,10 +583,10 @@ CREATE INDEX index_refile_attachments_on_oid ON refile_attachments USING btree (
 
 
 --
--- Name: index_sources_on_url; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_sources_on_host; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
-CREATE UNIQUE INDEX index_sources_on_url ON sources USING btree (url);
+CREATE UNIQUE INDEX index_sources_on_host ON sources USING btree (host);
 
 
 --
@@ -601,6 +601,13 @@ CREATE INDEX index_subject_page_views_on_subject_id ON subject_page_views USING 
 --
 
 CREATE UNIQUE INDEX index_subject_page_views_on_subject_id_and_page_view_date ON subject_page_views USING btree (subject_id, page_view_date DESC);
+
+
+--
+-- Name: index_users_on_confirmation_token; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE UNIQUE INDEX index_users_on_confirmation_token ON users USING btree (confirmation_token);
 
 
 --
@@ -691,17 +698,9 @@ ALTER TABLE ONLY subject_page_views
 
 SET search_path TO "$user",public;
 
-INSERT INTO schema_migrations (version) VALUES ('20140115112043');
-
 INSERT INTO schema_migrations (version) VALUES ('20170930170453');
 
-INSERT INTO schema_migrations (version) VALUES ('20171011233958');
-
-INSERT INTO schema_migrations (version) VALUES ('20180412164214');
-
 INSERT INTO schema_migrations (version) VALUES ('20180413183943');
-
-INSERT INTO schema_migrations (version) VALUES ('20180416190039');
 
 INSERT INTO schema_migrations (version) VALUES ('20180704184411');
 

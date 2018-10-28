@@ -59,7 +59,7 @@ class CreateArticles < ActiveRecord::Migration
 
     add_index :subject_page_views, [:subject_id, :page_view_date], unique: true, order: { page_view_date: "DESC" }
     add_index :article_page_views, [:article_id, :page_view_date], unique: true, order: { page_view_date: "DESC" }
-    add_index :sources, :url, unique: true
+    add_index :sources, :host, unique: true
     add_index :articles, :url, unique: true
   end
 end
