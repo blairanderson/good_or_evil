@@ -23,20 +23,6 @@ CREATE EXTENSION IF NOT EXISTS plpgsql WITH SCHEMA pg_catalog;
 COMMENT ON EXTENSION plpgsql IS 'PL/pgSQL procedural language';
 
 
---
--- Name: citext; Type: EXTENSION; Schema: -; Owner: -
---
-
-CREATE EXTENSION IF NOT EXISTS citext WITH SCHEMA public;
-
-
---
--- Name: EXTENSION citext; Type: COMMENT; Schema: -; Owner: -
---
-
-COMMENT ON EXTENSION citext IS 'data type for case-insensitive character strings';
-
-
 SET search_path = public, pg_catalog;
 
 SET default_tablespace = '';
@@ -44,25 +30,24 @@ SET default_tablespace = '';
 SET default_with_oids = false;
 
 --
--- Name: account_invitations; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: article_page_views; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
-CREATE TABLE account_invitations (
+CREATE TABLE article_page_views (
     id integer NOT NULL,
-    user_id integer NOT NULL,
-    account_id integer NOT NULL,
-    email character varying NOT NULL,
-    invitation_accepted_at timestamp without time zone,
+    article_id integer,
+    page_view_date date NOT NULL,
+    page_views integer DEFAULT 0 NOT NULL,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL
 );
 
 
 --
--- Name: account_invitations_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+-- Name: article_page_views_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE account_invitations_id_seq
+CREATE SEQUENCE article_page_views_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -71,50 +56,30 @@ CREATE SEQUENCE account_invitations_id_seq
 
 
 --
--- Name: account_invitations_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+-- Name: article_page_views_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
-ALTER SEQUENCE account_invitations_id_seq OWNED BY account_invitations.id;
+ALTER SEQUENCE article_page_views_id_seq OWNED BY article_page_views.id;
 
 
 --
--- Name: accounts; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: article_subjects; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
-CREATE TABLE accounts (
+CREATE TABLE article_subjects (
     id integer NOT NULL,
-    name character varying,
-    slug character varying,
+    article_id integer,
+    subject_id integer,
     created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL,
-    lazy_logo_url character varying,
-    user_id integer NOT NULL,
-    host character varying,
-    page_views integer DEFAULT 0 NOT NULL,
-    header_image_id character varying,
-    header_image_filename character varying,
-    header_image_content_size character varying,
-    header_image_content_type character varying,
-    domain_info json DEFAULT '{}'::json,
-    host_status integer,
-    host_added_at timestamp without time zone,
-    host_confirmed_at timestamp without time zone,
-    header_subtitle character varying,
-    google_tag_manager character varying,
-    about_page text,
-    header_font integer DEFAULT 0 NOT NULL,
-    header_subtitle_font integer DEFAULT 0 NOT NULL,
-    list_header_font integer DEFAULT 0 NOT NULL,
-    list_affiliate_disclosure text,
-    contact_page text
+    updated_at timestamp without time zone NOT NULL
 );
 
 
 --
--- Name: accounts_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+-- Name: article_subjects_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE accounts_id_seq
+CREATE SEQUENCE article_subjects_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -123,31 +88,36 @@ CREATE SEQUENCE accounts_id_seq
 
 
 --
--- Name: accounts_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+-- Name: article_subjects_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
-ALTER SEQUENCE accounts_id_seq OWNED BY accounts.id;
+ALTER SEQUENCE article_subjects_id_seq OWNED BY article_subjects.id;
 
 
 --
--- Name: brands; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: articles; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
-CREATE TABLE brands (
+CREATE TABLE articles (
     id integer NOT NULL,
-    name citext,
-    slug character varying,
-    created_at timestamp without time zone,
-    updated_at timestamp without time zone,
-    items_count integer DEFAULT 0
+    source_id integer,
+    title text,
+    url text,
+    published_at timestamp without time zone,
+    image text,
+    author character varying,
+    categories json DEFAULT '[]'::json,
+    summary text,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
 );
 
 
 --
--- Name: brands_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+-- Name: articles_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE brands_id_seq
+CREATE SEQUENCE articles_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -156,42 +126,10 @@ CREATE SEQUENCE brands_id_seq
 
 
 --
--- Name: brands_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+-- Name: articles_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
-ALTER SEQUENCE brands_id_seq OWNED BY brands.id;
-
-
---
--- Name: categories; Type: TABLE; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE TABLE categories (
-    id integer NOT NULL,
-    name character varying,
-    slug character varying,
-    created_at timestamp without time zone,
-    updated_at timestamp without time zone
-);
-
-
---
--- Name: categories_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE categories_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: categories_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE categories_id_seq OWNED BY categories.id;
+ALTER SEQUENCE articles_id_seq OWNED BY articles.id;
 
 
 --
@@ -228,167 +166,6 @@ ALTER SEQUENCE friendly_id_slugs_id_seq OWNED BY friendly_id_slugs.id;
 
 
 --
--- Name: list_item_ingredients; Type: TABLE; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE TABLE list_item_ingredients (
-    id integer NOT NULL,
-    list_item_id integer,
-    name character varying,
-    quantity numeric(6,2),
-    unit_cd integer,
-    comment character varying,
-    created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
-);
-
-
---
--- Name: list_item_ingredients_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE list_item_ingredients_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: list_item_ingredients_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE list_item_ingredients_id_seq OWNED BY list_item_ingredients.id;
-
-
---
--- Name: list_items; Type: TABLE; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE TABLE list_items (
-    id integer NOT NULL,
-    list_id integer NOT NULL,
-    sort integer DEFAULT 0 NOT NULL,
-    created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL,
-    user_id integer DEFAULT 0,
-    title text,
-    body text,
-    affiliate_link text,
-    click_count integer DEFAULT 0,
-    asin character varying,
-    image_id character varying,
-    image_filename character varying,
-    image_content_size character varying,
-    image_content_type character varying,
-    style_cd integer DEFAULT 0,
-    rating integer
-);
-
-
---
--- Name: list_items_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE list_items_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: list_items_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE list_items_id_seq OWNED BY list_items.id;
-
-
---
--- Name: lists; Type: TABLE; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE TABLE lists (
-    id integer NOT NULL,
-    name character varying,
-    slug character varying,
-    body text,
-    status integer DEFAULT 0,
-    item_count integer DEFAULT 0,
-    display_theme integer DEFAULT 0,
-    category_id integer,
-    user_id integer DEFAULT 1,
-    created_at timestamp without time zone,
-    updated_at timestamp without time zone,
-    sort integer DEFAULT 0,
-    page_views integer DEFAULT 0,
-    source character varying,
-    account_id integer NOT NULL,
-    image_id character varying,
-    image_filename character varying,
-    image_content_size character varying,
-    image_content_type character varying,
-    published_at timestamp without time zone
-);
-
-
---
--- Name: lists_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE lists_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: lists_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE lists_id_seq OWNED BY lists.id;
-
-
---
--- Name: memberships; Type: TABLE; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE TABLE memberships (
-    id integer NOT NULL,
-    user_id integer,
-    account_id integer,
-    created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL,
-    accepted_by_user boolean DEFAULT false NOT NULL,
-    created_by_id integer,
-    created_by_type character varying
-);
-
-
---
--- Name: memberships_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE memberships_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: memberships_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE memberships_id_seq OWNED BY memberships.id;
-
-
---
 -- Name: refile_attachments; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -420,38 +197,6 @@ ALTER SEQUENCE refile_attachments_id_seq OWNED BY refile_attachments.id;
 
 
 --
--- Name: saved_items; Type: TABLE; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE TABLE saved_items (
-    id integer NOT NULL,
-    item_id integer,
-    user_id integer,
-    created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
-);
-
-
---
--- Name: saved_items_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE saved_items_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: saved_items_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE saved_items_id_seq OWNED BY saved_items.id;
-
-
---
 -- Name: schema_migrations; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -461,25 +206,25 @@ CREATE TABLE schema_migrations (
 
 
 --
--- Name: site_menu_links; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: sources; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
-CREATE TABLE site_menu_links (
+CREATE TABLE sources (
     id integer NOT NULL,
-    site_menu_id integer,
-    "position" integer DEFAULT 0 NOT NULL,
-    name character varying NOT NULL,
-    link character varying NOT NULL,
+    title text,
+    url text,
+    image text,
+    description text,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL
 );
 
 
 --
--- Name: site_menu_links_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+-- Name: sources_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE site_menu_links_id_seq
+CREATE SEQUENCE sources_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -488,30 +233,31 @@ CREATE SEQUENCE site_menu_links_id_seq
 
 
 --
--- Name: site_menu_links_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+-- Name: sources_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
-ALTER SEQUENCE site_menu_links_id_seq OWNED BY site_menu_links.id;
+ALTER SEQUENCE sources_id_seq OWNED BY sources.id;
 
 
 --
--- Name: site_menus; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: subject_page_views; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
-CREATE TABLE site_menus (
+CREATE TABLE subject_page_views (
     id integer NOT NULL,
-    account_id integer,
-    location integer DEFAULT 0,
+    subject_id integer,
+    page_view_date date NOT NULL,
+    page_views integer DEFAULT 0 NOT NULL,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL
 );
 
 
 --
--- Name: site_menus_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+-- Name: subject_page_views_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE site_menus_id_seq
+CREATE SEQUENCE subject_page_views_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -520,10 +266,44 @@ CREATE SEQUENCE site_menus_id_seq
 
 
 --
--- Name: site_menus_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+-- Name: subject_page_views_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
-ALTER SEQUENCE site_menus_id_seq OWNED BY site_menus.id;
+ALTER SEQUENCE subject_page_views_id_seq OWNED BY subject_page_views.id;
+
+
+--
+-- Name: subjects; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE subjects (
+    id integer NOT NULL,
+    title text,
+    image text,
+    description text,
+    page_views integer DEFAULT 0 NOT NULL,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: subjects_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE subjects_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: subjects_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE subjects_id_seq OWNED BY subjects.id;
 
 
 --
@@ -587,28 +367,21 @@ ALTER SEQUENCE users_id_seq OWNED BY users.id;
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY account_invitations ALTER COLUMN id SET DEFAULT nextval('account_invitations_id_seq'::regclass);
+ALTER TABLE ONLY article_page_views ALTER COLUMN id SET DEFAULT nextval('article_page_views_id_seq'::regclass);
 
 
 --
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY accounts ALTER COLUMN id SET DEFAULT nextval('accounts_id_seq'::regclass);
+ALTER TABLE ONLY article_subjects ALTER COLUMN id SET DEFAULT nextval('article_subjects_id_seq'::regclass);
 
 
 --
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY brands ALTER COLUMN id SET DEFAULT nextval('brands_id_seq'::regclass);
-
-
---
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY categories ALTER COLUMN id SET DEFAULT nextval('categories_id_seq'::regclass);
+ALTER TABLE ONLY articles ALTER COLUMN id SET DEFAULT nextval('articles_id_seq'::regclass);
 
 
 --
@@ -622,34 +395,6 @@ ALTER TABLE ONLY friendly_id_slugs ALTER COLUMN id SET DEFAULT nextval('friendly
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY list_item_ingredients ALTER COLUMN id SET DEFAULT nextval('list_item_ingredients_id_seq'::regclass);
-
-
---
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY list_items ALTER COLUMN id SET DEFAULT nextval('list_items_id_seq'::regclass);
-
-
---
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY lists ALTER COLUMN id SET DEFAULT nextval('lists_id_seq'::regclass);
-
-
---
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY memberships ALTER COLUMN id SET DEFAULT nextval('memberships_id_seq'::regclass);
-
-
---
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
---
-
 ALTER TABLE ONLY refile_attachments ALTER COLUMN id SET DEFAULT nextval('refile_attachments_id_seq'::regclass);
 
 
@@ -657,21 +402,21 @@ ALTER TABLE ONLY refile_attachments ALTER COLUMN id SET DEFAULT nextval('refile_
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY saved_items ALTER COLUMN id SET DEFAULT nextval('saved_items_id_seq'::regclass);
+ALTER TABLE ONLY sources ALTER COLUMN id SET DEFAULT nextval('sources_id_seq'::regclass);
 
 
 --
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY site_menu_links ALTER COLUMN id SET DEFAULT nextval('site_menu_links_id_seq'::regclass);
+ALTER TABLE ONLY subject_page_views ALTER COLUMN id SET DEFAULT nextval('subject_page_views_id_seq'::regclass);
 
 
 --
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY site_menus ALTER COLUMN id SET DEFAULT nextval('site_menus_id_seq'::regclass);
+ALTER TABLE ONLY subjects ALTER COLUMN id SET DEFAULT nextval('subjects_id_seq'::regclass);
 
 
 --
@@ -682,35 +427,27 @@ ALTER TABLE ONLY users ALTER COLUMN id SET DEFAULT nextval('users_id_seq'::regcl
 
 
 --
--- Name: account_invitations_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: article_page_views_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
 --
 
-ALTER TABLE ONLY account_invitations
-    ADD CONSTRAINT account_invitations_pkey PRIMARY KEY (id);
-
-
---
--- Name: accounts_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
---
-
-ALTER TABLE ONLY accounts
-    ADD CONSTRAINT accounts_pkey PRIMARY KEY (id);
+ALTER TABLE ONLY article_page_views
+    ADD CONSTRAINT article_page_views_pkey PRIMARY KEY (id);
 
 
 --
--- Name: brands_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: article_subjects_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
 --
 
-ALTER TABLE ONLY brands
-    ADD CONSTRAINT brands_pkey PRIMARY KEY (id);
+ALTER TABLE ONLY article_subjects
+    ADD CONSTRAINT article_subjects_pkey PRIMARY KEY (id);
 
 
 --
--- Name: categories_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: articles_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
 --
 
-ALTER TABLE ONLY categories
-    ADD CONSTRAINT categories_pkey PRIMARY KEY (id);
+ALTER TABLE ONLY articles
+    ADD CONSTRAINT articles_pkey PRIMARY KEY (id);
 
 
 --
@@ -722,38 +459,6 @@ ALTER TABLE ONLY friendly_id_slugs
 
 
 --
--- Name: list_item_ingredients_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
---
-
-ALTER TABLE ONLY list_item_ingredients
-    ADD CONSTRAINT list_item_ingredients_pkey PRIMARY KEY (id);
-
-
---
--- Name: list_items_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
---
-
-ALTER TABLE ONLY list_items
-    ADD CONSTRAINT list_items_pkey PRIMARY KEY (id);
-
-
---
--- Name: lists_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
---
-
-ALTER TABLE ONLY lists
-    ADD CONSTRAINT lists_pkey PRIMARY KEY (id);
-
-
---
--- Name: memberships_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
---
-
-ALTER TABLE ONLY memberships
-    ADD CONSTRAINT memberships_pkey PRIMARY KEY (id);
-
-
---
 -- Name: refile_attachments_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -762,27 +467,27 @@ ALTER TABLE ONLY refile_attachments
 
 
 --
--- Name: saved_items_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: sources_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
 --
 
-ALTER TABLE ONLY saved_items
-    ADD CONSTRAINT saved_items_pkey PRIMARY KEY (id);
-
-
---
--- Name: site_menu_links_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
---
-
-ALTER TABLE ONLY site_menu_links
-    ADD CONSTRAINT site_menu_links_pkey PRIMARY KEY (id);
+ALTER TABLE ONLY sources
+    ADD CONSTRAINT sources_pkey PRIMARY KEY (id);
 
 
 --
--- Name: site_menus_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: subject_page_views_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
 --
 
-ALTER TABLE ONLY site_menus
-    ADD CONSTRAINT site_menus_pkey PRIMARY KEY (id);
+ALTER TABLE ONLY subject_page_views
+    ADD CONSTRAINT subject_page_views_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: subjects_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY subjects
+    ADD CONSTRAINT subjects_pkey PRIMARY KEY (id);
 
 
 --
@@ -794,38 +499,45 @@ ALTER TABLE ONLY users
 
 
 --
--- Name: index_account_invitations_on_account_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_article_page_views_on_article_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
-CREATE INDEX index_account_invitations_on_account_id ON account_invitations USING btree (account_id);
-
-
---
--- Name: index_account_invitations_on_account_id_and_email; Type: INDEX; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE UNIQUE INDEX index_account_invitations_on_account_id_and_email ON account_invitations USING btree (account_id, email);
+CREATE INDEX index_article_page_views_on_article_id ON article_page_views USING btree (article_id);
 
 
 --
--- Name: index_account_invitations_on_user_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_article_page_views_on_article_id_and_page_view_date; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
-CREATE INDEX index_account_invitations_on_user_id ON account_invitations USING btree (user_id);
-
-
---
--- Name: index_accounts_on_host; Type: INDEX; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE UNIQUE INDEX index_accounts_on_host ON accounts USING btree (host);
+CREATE UNIQUE INDEX index_article_page_views_on_article_id_and_page_view_date ON article_page_views USING btree (article_id, page_view_date DESC);
 
 
 --
--- Name: index_brands_on_slug; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_article_subjects_on_article_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
-CREATE UNIQUE INDEX index_brands_on_slug ON brands USING btree (slug);
+CREATE INDEX index_article_subjects_on_article_id ON article_subjects USING btree (article_id);
+
+
+--
+-- Name: index_article_subjects_on_subject_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_article_subjects_on_subject_id ON article_subjects USING btree (subject_id);
+
+
+--
+-- Name: index_articles_on_source_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_articles_on_source_id ON articles USING btree (source_id);
+
+
+--
+-- Name: index_articles_on_url; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE UNIQUE INDEX index_articles_on_url ON articles USING btree (url);
 
 
 --
@@ -857,62 +569,6 @@ CREATE INDEX index_friendly_id_slugs_on_sluggable_type ON friendly_id_slugs USIN
 
 
 --
--- Name: index_list_item_ingredients_on_list_item_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE INDEX index_list_item_ingredients_on_list_item_id ON list_item_ingredients USING btree (list_item_id);
-
-
---
--- Name: index_list_items_on_list_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE INDEX index_list_items_on_list_id ON list_items USING btree (list_id);
-
-
---
--- Name: index_lists_on_category_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE INDEX index_lists_on_category_id ON lists USING btree (category_id);
-
-
---
--- Name: index_lists_on_slug; Type: INDEX; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE INDEX index_lists_on_slug ON lists USING btree (slug);
-
-
---
--- Name: index_lists_on_user_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE INDEX index_lists_on_user_id ON lists USING btree (user_id);
-
-
---
--- Name: index_memberships_on_account_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE INDEX index_memberships_on_account_id ON memberships USING btree (account_id);
-
-
---
--- Name: index_memberships_on_user_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE INDEX index_memberships_on_user_id ON memberships USING btree (user_id);
-
-
---
--- Name: index_memberships_on_user_id_and_account_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE UNIQUE INDEX index_memberships_on_user_id_and_account_id ON memberships USING btree (user_id, account_id);
-
-
---
 -- Name: index_refile_attachments_on_namespace; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -927,24 +583,24 @@ CREATE INDEX index_refile_attachments_on_oid ON refile_attachments USING btree (
 
 
 --
--- Name: index_saved_items_on_item_id_and_user_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_sources_on_url; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
-CREATE UNIQUE INDEX index_saved_items_on_item_id_and_user_id ON saved_items USING btree (item_id, user_id);
-
-
---
--- Name: index_site_menu_links_on_site_menu_id_and_position; Type: INDEX; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE UNIQUE INDEX index_site_menu_links_on_site_menu_id_and_position ON site_menu_links USING btree (site_menu_id, "position");
+CREATE UNIQUE INDEX index_sources_on_url ON sources USING btree (url);
 
 
 --
--- Name: index_site_menus_on_account_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_subject_page_views_on_subject_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
-CREATE INDEX index_site_menus_on_account_id ON site_menus USING btree (account_id);
+CREATE INDEX index_subject_page_views_on_subject_id ON subject_page_views USING btree (subject_id);
+
+
+--
+-- Name: index_subject_page_views_on_subject_id_and_page_view_date; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE UNIQUE INDEX index_subject_page_views_on_subject_id_and_page_view_date ON subject_page_views USING btree (subject_id, page_view_date DESC);
 
 
 --
@@ -990,59 +646,43 @@ CREATE UNIQUE INDEX unique_schema_migrations ON schema_migrations USING btree (v
 
 
 --
--- Name: fk_rails_13d898ae60; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: fk_rails_25087a080c; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY account_invitations
-    ADD CONSTRAINT fk_rails_13d898ae60 FOREIGN KEY (user_id) REFERENCES users(id);
-
-
---
--- Name: fk_rails_24ef34dff1; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY site_menu_links
-    ADD CONSTRAINT fk_rails_24ef34dff1 FOREIGN KEY (site_menu_id) REFERENCES site_menus(id);
+ALTER TABLE ONLY articles
+    ADD CONSTRAINT fk_rails_25087a080c FOREIGN KEY (source_id) REFERENCES sources(id);
 
 
 --
--- Name: fk_rails_36866a7bf5; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: fk_rails_2f8c861d4c; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY list_item_ingredients
-    ADD CONSTRAINT fk_rails_36866a7bf5 FOREIGN KEY (list_item_id) REFERENCES list_items(id);
-
-
---
--- Name: fk_rails_7a9e106543; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY account_invitations
-    ADD CONSTRAINT fk_rails_7a9e106543 FOREIGN KEY (account_id) REFERENCES accounts(id);
+ALTER TABLE ONLY article_page_views
+    ADD CONSTRAINT fk_rails_2f8c861d4c FOREIGN KEY (article_id) REFERENCES articles(id);
 
 
 --
--- Name: fk_rails_99326fb65d; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: fk_rails_711f991559; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY memberships
-    ADD CONSTRAINT fk_rails_99326fb65d FOREIGN KEY (user_id) REFERENCES users(id);
-
-
---
--- Name: fk_rails_aebcefcca7; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY site_menus
-    ADD CONSTRAINT fk_rails_aebcefcca7 FOREIGN KEY (account_id) REFERENCES accounts(id);
+ALTER TABLE ONLY article_subjects
+    ADD CONSTRAINT fk_rails_711f991559 FOREIGN KEY (subject_id) REFERENCES subjects(id);
 
 
 --
--- Name: fk_rails_edbc202c67; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: fk_rails_764f65b290; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY memberships
-    ADD CONSTRAINT fk_rails_edbc202c67 FOREIGN KEY (account_id) REFERENCES accounts(id);
+ALTER TABLE ONLY article_subjects
+    ADD CONSTRAINT fk_rails_764f65b290 FOREIGN KEY (article_id) REFERENCES articles(id);
+
+
+--
+-- Name: fk_rails_d77c7d4d7f; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY subject_page_views
+    ADD CONSTRAINT fk_rails_d77c7d4d7f FOREIGN KEY (subject_id) REFERENCES subjects(id);
 
 
 --
@@ -1051,87 +691,19 @@ ALTER TABLE ONLY memberships
 
 SET search_path TO "$user",public;
 
-INSERT INTO schema_migrations (version) VALUES ('20140113171241');
-
 INSERT INTO schema_migrations (version) VALUES ('20140115112043');
-
-INSERT INTO schema_migrations (version) VALUES ('20160110002849');
-
-INSERT INTO schema_migrations (version) VALUES ('20160110003157');
-
-INSERT INTO schema_migrations (version) VALUES ('20160110014658');
-
-INSERT INTO schema_migrations (version) VALUES ('20160111062736');
 
 INSERT INTO schema_migrations (version) VALUES ('20170930170453');
 
-INSERT INTO schema_migrations (version) VALUES ('20171003153754');
-
-INSERT INTO schema_migrations (version) VALUES ('20171003162206');
-
-INSERT INTO schema_migrations (version) VALUES ('20171006220027');
-
-INSERT INTO schema_migrations (version) VALUES ('20171009235818');
-
-INSERT INTO schema_migrations (version) VALUES ('20171011214319');
-
 INSERT INTO schema_migrations (version) VALUES ('20171011233958');
-
-INSERT INTO schema_migrations (version) VALUES ('20171016155226');
-
-INSERT INTO schema_migrations (version) VALUES ('20180411232110');
-
-INSERT INTO schema_migrations (version) VALUES ('20180411232224');
-
-INSERT INTO schema_migrations (version) VALUES ('20180411232824');
-
-INSERT INTO schema_migrations (version) VALUES ('20180412044242');
 
 INSERT INTO schema_migrations (version) VALUES ('20180412164214');
 
-INSERT INTO schema_migrations (version) VALUES ('20180412192447');
-
-INSERT INTO schema_migrations (version) VALUES ('20180413002411');
-
-INSERT INTO schema_migrations (version) VALUES ('20180413034523');
-
-INSERT INTO schema_migrations (version) VALUES ('20180413034557');
-
-INSERT INTO schema_migrations (version) VALUES ('20180413040417');
-
-INSERT INTO schema_migrations (version) VALUES ('20180413044028');
-
-INSERT INTO schema_migrations (version) VALUES ('20180413183007');
-
 INSERT INTO schema_migrations (version) VALUES ('20180413183943');
-
-INSERT INTO schema_migrations (version) VALUES ('20180413221027');
-
-INSERT INTO schema_migrations (version) VALUES ('20180416025327');
-
-INSERT INTO schema_migrations (version) VALUES ('20180416030905');
-
-INSERT INTO schema_migrations (version) VALUES ('20180416054448');
 
 INSERT INTO schema_migrations (version) VALUES ('20180416190039');
 
-INSERT INTO schema_migrations (version) VALUES ('20180416231748');
-
-INSERT INTO schema_migrations (version) VALUES ('20180419055056');
-
-INSERT INTO schema_migrations (version) VALUES ('20180615053552');
-
-INSERT INTO schema_migrations (version) VALUES ('20180615142755');
-
-INSERT INTO schema_migrations (version) VALUES ('20180701220706');
-
-INSERT INTO schema_migrations (version) VALUES ('20180701221312');
-
-INSERT INTO schema_migrations (version) VALUES ('20180701223958');
-
 INSERT INTO schema_migrations (version) VALUES ('20180704184411');
 
-INSERT INTO schema_migrations (version) VALUES ('20180704190554');
-
-INSERT INTO schema_migrations (version) VALUES ('20180705153050');
+INSERT INTO schema_migrations (version) VALUES ('20181027230825');
 

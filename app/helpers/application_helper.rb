@@ -1,6 +1,6 @@
 module ApplicationHelper
   def nav_title
-    "An Awesome Website Builder"
+    "Good_Or_Evil"
   end
 
   def url_domain(uri)

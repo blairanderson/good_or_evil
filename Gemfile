@@ -8,6 +8,7 @@ gem 'coffee-rails'
 gem 'devise', '3.5.3'
 gem 'devise_invitable', '~> 1.6.1' #https://github.com/scambra/devise_invitable/tree/v1.6.1
 gem 'jquery-rails'
+gem 'feedjira'
 gem 'friendly_id', '~> 5.1.0'
 gem 'geocoder'
 
