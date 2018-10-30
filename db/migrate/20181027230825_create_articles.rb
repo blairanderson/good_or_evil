@@ -3,7 +3,7 @@ class CreateArticles < ActiveRecord::Migration
 
     create_table :sources do |t|
       t.text :title
-      t.string :host
+      t.string :url
       t.string :feed_url
       t.text :image
       t.text :description
@@ -59,7 +59,7 @@ class CreateArticles < ActiveRecord::Migration
 
     add_index :subject_page_views, [:subject_id, :page_view_date], unique: true, order: { page_view_date: "DESC" }
     add_index :article_page_views, [:article_id, :page_view_date], unique: true, order: { page_view_date: "DESC" }
-    add_index :sources, :host, unique: true
+    add_index :sources, :url, unique: true
     add_index :articles, :url, unique: true
   end
 end

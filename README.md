@@ -1,10 +1,15 @@
-Blog Builder (multi-tenant website builder with guides / products / pictures / link)
+Good Or Evil (news map)
 =================
 
 Why?
 
-I've always loved wirecutter, specifically organized data and content about things.
-I'm probably underestimating the value of the content, but I wanted a simple way to save sharable lists of things. 
+I love the internet, but often people will lazily link to articles without caring for the source. 
+I believe in putting my time/money where my mouth is. 
 
-I was also motivated by a friend that wanted to create sharable lists for tutorials and routines.
+The goal of this project:
+
+- allow users to define which sources they believe are "Good" or "Evil" in their own mind. 
+- allow users to submit "Evil" links, and be shown quickly to "Good" replacements
+- allow users on chrome to see a notification "View Good Source?" if they visit an "Evil" site.
+- no "user tracking and selling user data" - just showing alternative sources for links that are provided. 
 
